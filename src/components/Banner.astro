@@ -1,0 +1,51 @@
+<section class='marquee'>
+	<div class='marquee__inner'>
+		<span>Desarrollador Web</span> <span>·</span>
+		<span>Creador de botones</span> <span>·</span>
+		<span>Ensamblador de enlaces</span> <span>·</span>
+		<span>Maestro del "Ponme un popup"</span> <span>·</span>
+		<span>Chapuzas creativo</span> <span>·</span>
+		<span>Ayudante de la IA</span> <span>·</span>
+	</div>
+
+	<div class='marquee__inner'>
+		<span>Desarrollador Web</span><span>·</span>
+		<span>Creador de botones</span> <span>·</span>
+		<span>Ensamblador de enlaces</span> <span>·</span>
+		<span>Maestro del "Ponme un popup"</span> <span>·</span>
+		<span>Chapuzas creativo</span> <span>·</span>
+		<span>Ayudante de la IA</span> <span>·</span>
+	</div>
+</section>
+
+<style>
+	.marquee {
+		position: relative;
+		overflow: hidden;
+		margin: 0 10%;
+		padding: 10px 0;
+		border-top: 1px solid #0000003b;
+		border-bottom: 1px solid #0000003b;
+		white-space: nowrap;
+		display: flex;
+	}
+
+	.marquee__inner {
+		display: flex;
+		flex-shrink: 0;
+		animation: marquee 30s linear infinite;
+	}
+
+	.marquee__inner span {
+		margin-right: 2em;
+	}
+
+	@keyframes marquee {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-100%);
+		}
+	}
+</style>

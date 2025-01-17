@@ -1,0 +1,121 @@
+---
+import CloseIcon from './CloseIcon.astro'
+import ToggleIcon from './ToggleIcon.astro'
+---
+
+<header>
+	<h1>Daniel Domínguez</h1>
+	<div class='right-area'>
+		<nav>
+			<ul>
+				<li><a href='#works'>Trabajos</a></li>
+				<li><a href='#about'>Sobre mi</a></li>
+				<li><a href='#contact'>Contacto</a></li>
+			</ul>
+		</nav>
+		<a class='contact' href='#'>¿Hablamos?</a>
+	</div>
+	<div class='toggle'>
+		<ToggleIcon />
+	</div>
+	<div class='close'>
+		<CloseIcon />
+	</div>
+</header>
+
+<style>
+	header {
+		display: flex;
+		align-items: center;
+		margin: 0px 10%;
+		justify-content: space-between;
+		padding: 30px 0px;
+	}
+
+	.close {
+		display: none;
+	}
+
+	.right-area{
+		display: flex;
+		align-items: center;
+		gap: 30px
+	}
+
+	nav ul {
+		display: flex;
+		list-style: none;
+		gap: 30px;
+	}
+
+	a {
+		color: black;
+		text-decoration: none;
+	}
+
+	.contact {
+		background-color: rgb(43, 43, 43);
+		color: white;
+		padding: 5px 15px;
+	}
+
+	.toggle {
+		display: none;
+	}
+
+	@media (max-width: 1000px) {
+		nav,
+		.contact {
+			display: none;
+		}
+
+		nav.visible {
+			display: flex;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100dvh;
+			background: url('/body_bg.jpg');
+			background-size: 10px;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.close.visible {
+			display: flex;
+		}
+
+		nav ul {
+			flex-direction: column;
+		}
+
+		nav ul li {
+			font-size: 3em;
+		}
+
+		.toggle {
+			display: flex;
+		}
+
+		h1 {
+			font-size: 1.5em;
+		}
+	}
+</style>
+
+<script>
+	const toggleBtn = document.querySelector('.toggle')
+	const navElement = document.querySelector('nav')
+	const closeBtn = document.querySelector('.close')
+
+	toggleBtn?.addEventListener('click', () => {
+		navElement?.classList.add('visible')
+		closeBtn?.classList.add('visible')
+	})
+
+	closeBtn?.addEventListener('click', () => {
+		navElement?.classList.remove('visible')
+		closeBtn?.classList.remove('visible')
+	})
+</script>
