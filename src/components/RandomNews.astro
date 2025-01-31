@@ -1,0 +1,87 @@
+---
+const news = [
+	{
+		category: 'Diseño Web',
+		headline: 'Experto en crear interfaces de usuario atractivas y funcionales',
+	},
+	{
+		category: 'Frontend',
+		headline: 'Desarrollo de páginas web interactivas y responsivas con React y Vue',
+	},
+	{
+		category: 'Backend',
+		headline: 'Construcción de servidores y APIs robustas y seguras con Node.js, Express y Next',
+	},
+	{
+		category: 'Optimización Web',
+		headline: 'Desarrollo de aplicaciones web rápidas y eficientes',
+	},
+]
+---
+
+<section>
+	{
+		news.map((item) => (
+			<article>
+				<p>{item.category}</p>
+				<h2>{item.headline}</h2>
+			</article>
+		))
+	}
+</section>
+
+<style>
+	section {
+		margin: 50px 10%;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 20px;
+	}
+
+	article {
+		border-right: 1px solid #0000003b;
+		padding: 0px 20px;
+	}
+
+	@media (min-width: 768px) {
+		article:first-child {
+			padding-left: 0;
+		}
+
+		article:last-child {
+			border-right: none;
+			padding-right: 0;
+		}
+	}
+
+	p {
+		background-color: #e1e1e1;
+		width: fit-content;
+		padding: 2px 5px;
+	}
+
+	h2 {
+		font-size: 1em;
+		margin-top: 10px;
+		text-wrap: pretty;
+	}
+
+	@media (max-width: 768px) {
+		section {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		article:nth-child(odd) {
+			padding-left: 0px;
+			padding-right: 10px;
+		}
+		article:nth-child(even) {
+			padding-right: 0px;
+			border: none;
+		}
+
+		article {
+			width: 100%;
+		}
+	}
+</style>

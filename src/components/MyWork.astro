@@ -1,0 +1,108 @@
+---
+const works = [
+	{
+		img: '/works/placeholder.webp',
+		title: 'Barmanager.app',
+		description: 'Una plataforma web para gestionar bares y restaurantes. Funciona como SaaS y cuenta con un panel de administración para los dueños de los locales.',
+	},
+	{
+		img: '/works/placeholder.webp',
+		title: 'Trivify.es',
+		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien.',
+	},
+	{
+		img: '/works/placeholder.webp',
+		title: 'Cartas QR',
+		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien.',
+	},
+	{
+		img: '/works/placeholder.webp',
+		title: 'Gottan.com',
+		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien.',
+	},
+	{
+		img: '/works/placeholder.webp',
+		title: 'Dak Burger',
+		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien.',
+	},
+	{
+		img: '/works/placeholder.webp',
+		title: 'Asador Ovidio',
+		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien.',
+	}
+]
+---
+
+<section>
+	<header>
+		<hr />
+		<h2>Mis trabajos</h2>
+		<hr />
+	</header>
+	<div class='container'>
+		{
+			works.map((work) => (
+				<article>
+					<img src={work.img} alt={work.title} />
+					<div class='info'>
+						<h3>{work.title}</h3>
+						<p>{work.description}</p>
+					</div>
+				</article>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	section {
+		margin: 50px 10%;
+	}
+
+	header {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+		margin-bottom: 50px;
+	}
+
+	h2 {
+		font-size: 2em;
+		white-space: nowrap;
+	}
+	hr {
+		width: 100%;
+		opacity: 0.6;
+	}
+
+	.container {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+		row-gap: 50px;
+	}
+
+	article {
+		background-color: white;
+	}
+
+	.info{
+		padding: 20px;
+	}
+
+	img {
+		width: 100%;
+	}
+
+	h3 {
+		font-size: 1em;
+		margin-bottom: 10px;
+	}
+
+	@media (max-width: 768px) {
+		.container {
+			grid-template-columns: repeat(1, 1fr);
+		}
+		
+	}
+</style>
