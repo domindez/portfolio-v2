@@ -1,34 +1,67 @@
+---
+import Github from './icons/Github.astro'
+import LinkedIn from './icons/LinkedIn.astro'
+import Mail from './icons/Mail.astro'
+import WhatsApp from './icons/WhatsApp.astro'
+---
+
 <section>
 	<div class='container'>
 		<h2>"Hago cosas para la web"</h2>
 		<p>
-			Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis temporibus labore facilis architecto adipisci
-			maxime eaque!
+			Desarrollador web con experiencia en el desarrollo de aplicaciones y sitios web. Me gusta trabajar con tecnologías
+			web modernas y crear experiencias que sean útiles y atractivas.
 		</p>
 
-		<div class='socials'>Aquí las redes</div>
+		<div class='socials'>
+			<ul>
+				<a href=''><li><Mail /></li></a>
+				<a href=''><li><WhatsApp /></li></a>
+				<a href=''><li><Github /></li></a>
+				<a href=''><li><LinkedIn /></li></a>
+			</ul>
+		</div>
 	</div>
+
+	<style>
+		section {
+			max-width: 600px;
+			margin: auto;
+		}
+
+		h2 {
+			text-align: center;
+			margin-bottom: 20px;
+			color: var(--dark);
+		}
+
+		p {
+			text-align: center;
+			text-wrap: pretty;
+		}
+
+		.socials {
+			display: flex;
+			justify-content: center;
+			margin-top: 30px;
+		}
+
+		.socials ul {
+			display: flex;
+			gap: 20px;
+			list-style: none;
+		}
+		.socials a {
+			color: var(--dark);
+		}
+
+		.socials ul li {
+			background-color: #ffffff;
+			padding: 12px 12px 10px;
+		}
+
+		svg {
+			stroke-width: 1.5;
+		}
+	</style>
 </section>
-
-<style>
-	section {
-		max-width: 600px;
-		margin: auto;
-	}
-
-	h2 {
-		text-align: center;
-		margin-bottom: 20px;
-	}
-
-	p {
-		text-align: center;
-		text-wrap: pretty;
-	}
-
-	.socials{
-		display: flex;
-		justify-content: center;
-		margin-top: 30px;
-	}
-</style>
