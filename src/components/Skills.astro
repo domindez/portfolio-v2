@@ -1,13 +1,81 @@
 ---
 import SectionTitle from './SectionTitle.astro'
+
+const logos = [
+	'/logos/html.png',
+	'/logos/css.png',
+	'/logos/js.png',
+	'/logos/ts.png',
+	'/logos/react.png',
+	'/logos/astro.png',
+	'/logos/node.png',
+	'/logos/azure.png',
+	'/logos/firebase.png',
+	'/logos/next.png',
+	'/logos/express.png',
+	'/logos/mongo.png',
+	'/logos/tailwind.png',
+	'/logos/git.png',
+]
 ---
 
 <section>
-	<SectionTitle title='Mis Habilidades' />
+	<SectionTitle title='Mis Tecnologías' />
+	<div class='container'>
+		<ul>
+			{
+				logos.map((logo) => (
+					<li>
+						<img src={logo} alt='logo' />
+					</li>
+				))
+			}
+		</ul>
+	</div>
 </section>
 
 <style>
 	section {
 		margin: 50px 10%;
+	}
+
+	ul {
+		list-style: none;
+		display: flex;
+		gap: 20px;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		row-gap: 40px;
+	}
+
+	li {
+		min-width: 100px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 20px;
+	}
+
+	li img {
+		height: 80px;
+		width: auto;
+	}
+
+	@media (max-width: 768px) {
+		ul {
+			gap: 20px;
+			row-gap: 20px;
+		}
+
+		li {
+			min-width: 50px;
+			padding: 10px;
+		}
+
+		li img {
+			height: 50px;
+			width: auto;
+		}
 	}
 </style>
