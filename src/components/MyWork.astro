@@ -1,9 +1,11 @@
 ---
+import { Image } from 'astro:assets'
 import SectionTitle from './SectionTitle.astro'
 
 // 1280x691
 const works = [
 	{
+		link: 'https://barmanager.app',
 		img: '/works/barmanager.webp',
 		title: 'Barmanager.app',
 		description:
@@ -11,6 +13,7 @@ const works = [
 		stack: ['next', 'react', 'firebase', 'mongo', 'ts', 'azure'],
 	},
 	{
+		link: 'https://trivify.es',
 		img: '/works/trivify.webp',
 		title: 'Trivify.es',
 		description:
@@ -18,42 +21,49 @@ const works = [
 		stack: ['react', 'js', 'mongo', 'electron', 'express'],
 	},
 	{
+		link: 'https://trivify.es/cartas-qr',
 		img: '/works/cartas-qr.webp',
 		title: 'Cartas QR',
 		description: 'La plataforma de cartas digitales de Trivify. Con mantenimiento de productos y categorías.',
 		stack: ['react', 'ts', 'mongo', 'express', 'firebase'],
 	},
 	{
+		link: 'https://gottangrill.com',
 		img: '/works/gottan.webp',
 		title: 'Gottan.com',
 		description: 'La web de Gottan Grill. Haburguesería galardonada con la mejor burger de España y Europa en 2024',
 		stack: ['react', 'ts', 'css'],
 	},
 	{
+		link: 'https://dak-burger.pages.dev/',
 		img: '/works/dak.webp',
 		title: 'Dak Burger',
 		description: 'La web de Dak Burger. Con un menú digital propio e integración de sistema de delivery y reservas.',
 		stack: ['react', 'ts', 'next', 'css'],
 	},
 	{
+		link: 'https://smash-by-dak.pages.dev/',
 		img: '/works/bsmash.webp',
 		title: 'BSmash',
 		description: 'La web de Bsmash, con un menú digital propio e integración de sistema de pedido a domicilio.',
 		stack: ['astro', 'ts', 'css'],
 	},
 	{
+		link: 'https://apartamentoslolamalaga.com',
 		img: '/works/apartamentos.webp',
 		title: 'Apartamentos Lola',
 		description: 'La web de los Apartamentos Lola en Málaga, con integración de un motor de reservas.',
 		stack: ['react', 'js', 'css'],
 	},
 	{
+		link: 'https://www.asadorovidio.es/',
 		img: '/works/ovidio.webp',
 		title: 'Asador Ovidio',
 		description: 'La web del prestigioso Asador Ovidio. Con integración de menú digital propio y sistema de reservas.',
 		stack: ['react', 'ts', 'css'],
 	},
 	{
+		link: 'https://www.hotelnch.com/',
 		img: '/works/nch.webp',
 		title: 'Hotel NCH',
 		description: 'La web del Hotel NCH. Con integración de un sistema de reservas.',
@@ -68,20 +78,24 @@ const works = [
 		{
 			works.map((work) => (
 				<article>
-					<img src={work.img} alt={work.title} />
-					<div class='info'>
-						<h3>{work.title}</h3>
-						<p>{work.description}</p>
-						{work.stack && (
-							<ul class='stack-list'>
-								{work.stack.map((tech) => (
-									<li>
-										<img src={`/logos/${tech}.png`} alt={tech} />
-									</li>
-								))}
-							</ul>
-						)}
-					</div>
+					<a href={work.link} target='_blank'>
+						<div class='img-container'>
+							<img src={work.img} alt={work.title} />
+						</div>
+						<div class='info'>
+							<h3>{work.title}</h3>
+							<p>{work.description}</p>
+							{work.stack && (
+								<ul class='stack-list'>
+									{work.stack.map((tech) => (
+										<li>
+											<Image src={`/logos/${tech}.png`} alt={tech} height={200} width={500} />
+										</li>
+									))}
+								</ul>
+							)}
+						</div>
+					</a>
 				</article>
 			))
 		}
@@ -93,6 +107,49 @@ const works = [
 		margin: 50px 10%;
 	}
 
+	a {
+		text-decoration: none;
+		color: black;
+	}
+
+	a:hover .img-container img {
+		transform: scale(1.05);
+	}
+
+	article:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.053);
+}
+
+	.img-container {
+		overflow: hidden;
+		height: 200px;
+		position: relative;
+	}
+
+	.img-container::before {
+		content: '';
+		position: absolute;
+		bottom: -20px;
+		transform: rotate(5deg) scale(1.2);
+		left: 0;
+		width: 100%;
+		height: 25px;
+		background: linear-gradient(to bottom, #ffffffc5 0%, #fffffffa 40%, #ffffff 100%);
+		z-index: 5;
+	}
+
+	.img-container::after {
+		content: '';
+		position: absolute;
+		bottom: -20px;
+		transform: rotate(-5deg) scale(1.2);
+		right: 0;
+		width: 100%;
+		height: 15px;
+		background: linear-gradient(to bottom, #ffffffc5 0%, #fffffffa 40%, #ffffff 100%);
+		z-index: 4;
+	}
+
 	.container {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -102,6 +159,7 @@ const works = [
 
 	article {
 		background-color: white;
+		transition: 0.3s ease-in-out;
 	}
 
 	.info {
@@ -112,6 +170,7 @@ const works = [
 
 	img {
 		width: 100%;
+		transition: 0.3s ease-in-out;
 	}
 
 	h3 {
@@ -140,6 +199,16 @@ const works = [
 		height: 25px;
 		width: 25px;
 		object-fit: contain;
+	}
+
+	@media (max-width: 1000px) {
+		.container {
+			grid-template-columns: repeat(2, 2fr);
+		}
+
+		.img-container {
+			height: 180px;
+		}
 	}
 
 	@media (max-width: 768px) {
