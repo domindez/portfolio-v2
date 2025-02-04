@@ -31,8 +31,8 @@
 
 <style>
 	.marquee {
-		gap: var(--gap);
-
+		--gap: 20px;
+		
 		position: relative;
 		overflow: hidden;
 		margin: 0 10%;
@@ -41,7 +41,8 @@
 		border-bottom: 1px solid #0000003b;
 		white-space: nowrap;
 		display: flex;
-		--gap: 20px;
+		flex-direction: row;
+		gap: var(--gap);
 	}
 
 	.marquee__inner {
@@ -51,7 +52,13 @@
 		justify-content: space-between;
 		gap: var(--gap);
 		align-items: center;
-		width: 100%;
+	}
+
+	@media screen and (min-width: 768px) {
+		.marquee__inner{
+			width: 100%;
+		}
+
 	}
 
 	@keyframes marquee {
