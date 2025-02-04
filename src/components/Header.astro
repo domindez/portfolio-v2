@@ -36,10 +36,10 @@ import ToggleIcon from './ToggleIcon.astro'
 		display: none;
 	}
 
-	.right-area{
+	.right-area {
 		display: flex;
 		align-items: center;
-		gap: 30px
+		gap: 30px;
 	}
 
 	nav ul {
@@ -86,6 +86,9 @@ import ToggleIcon from './ToggleIcon.astro'
 		.close.visible {
 			display: flex;
 			z-index: 11;
+			position: fixed;
+			top: 30px;
+			right: 10%;
 		}
 
 		nav ul {
@@ -114,10 +117,12 @@ import ToggleIcon from './ToggleIcon.astro'
 	toggleBtn?.addEventListener('click', () => {
 		navElement?.classList.add('visible')
 		closeBtn?.classList.add('visible')
+		document.body.style.overflow = 'hidden'
 	})
 
 	closeBtn?.addEventListener('click', () => {
 		navElement?.classList.remove('visible')
 		closeBtn?.classList.remove('visible')
+		document.body.style.overflow = ''
 	})
 </script>
