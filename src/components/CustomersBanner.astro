@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets'
+import SectionTitle from './SectionTitle.astro'
+
+const logos = [
+	'gottan',
+	'iturrialde',
+	'lucky',
+	'masai',
+	'premier2',
+	'shanao',
+	'bsmash',
+	'Tabanco',
+	'unter',
+	'vermu',
+	'victoria'
+]
+
+const logos2 = [
+'dak',
+	'amar',
+	'arancaes',
+	'cafe-plaza',
+	'casita-abuela',
+	'dorado',
+	'la-emperatriz',
+	'la-mexicana',
+	'mediterraneo',
+	'meson-santiso',
+	'the-corner',
+	'victoria'
+]
+---
+
+<section id='customers'>
+	<SectionTitle title='Clientes' />
+	<h4>Algunos de mis últimos clientes</h4>
+
+	<div class='marquee'>
+		<div class='marquee__inner'>
+			{logos.map((logo) => <img width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />)}
+		</div>
+
+		<div class='marquee__inner'>
+			{logos.map((logo) => <img width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />)}
+		</div>
+	</div>
+
+	<div class='marquee reverse'>
+		<div class='marquee__inner'>
+			{logos2.map((logo) => <img width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />)}
+		</div>
+
+		<div class='marquee__inner'>
+			{logos2.map((logo) => <img width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />)}
+		</div>
+	</div>
+</section>
+
+<style>
+	section {
+		margin: 0 10%;
+	}
+
+	h4 {
+		margin-top: -30px;
+		margin-bottom: 30px;
+		text-align: center;
+		font-weight: 400;
+	}
+	.marquee {
+		--gap: 50px;
+		position: relative;
+		overflow: hidden;
+		padding: 10px 0;
+		white-space: nowrap;
+		display: flex;
+		flex-direction: row;
+		gap: var(--gap);
+		margin-bottom: 50px;
+	}
+
+	.marquee__inner {
+		display: flex;
+		flex-shrink: 0;
+		animation: marquee 30s linear infinite;
+		justify-content: space-between;
+		gap: var(--gap);
+		align-items: center;
+	}
+
+	.marquee.reverse .marquee__inner {
+		animation-direction: reverse;
+	}
+
+	img {
+		height: 70px;
+		width: auto;
+		filter: grayscale(1);
+		background-color: white;
+		padding: 20px;
+		border-radius: 10px;
+	}
+
+	@media screen and (max-width: 768px) {
+		img {
+			height: 50px;
+			width: auto;
+		}
+	}
+
+	@keyframes marquee {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(calc(-100% - var(--gap)));
+		}
+	}
+</style>

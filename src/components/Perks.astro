@@ -44,6 +44,27 @@ const news = [
 		background-color: white;
 		border: none;
 		position: relative;
+		opacity: 0;
+		transform: translateY(20px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* Cuando el article entra en vista se le añade la clase "animate" para activar la animación */
+	article.animate {
+		animation: fadeInUp 0.6s forwards;
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 	p {
 		width: fit-content;
@@ -74,3 +95,19 @@ const news = [
 		}
 	}
 </style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const articles = document.querySelectorAll('article');
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('animate');
+					observer.unobserve(entry.target);
+				}
+			});
+		}, { threshold: 0.1 });
+
+		articles.forEach((article) => observer.observe(article));
+	});
+</script>
