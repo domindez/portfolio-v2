@@ -6,10 +6,10 @@ import WhatsApp from './icons/WhatsApp.astro'
 
 // Definimos un array de redes sociales con su href e ícono.
 const socials = [
-	{ href: 'https://tusitio.com/mail', icon: Mail },
-	{ href: 'https://tusitio.com/whatsapp', icon: WhatsApp },
-	{ href: 'https://tusitio.com/github', icon: Github },
-	{ href: 'https://tusitio.com/linkedin', icon: LinkedIn },
+	{ href: 'mailto:hola@domindez.com', icon: Mail },
+	{ href: 'https://wa.me/34660882876', icon: WhatsApp },
+	{ href: 'https://github.com/domindez', icon: Github },
+	{ href: 'https://www.linkedin.com/in/domindez/', icon: LinkedIn },
 ]
 ---
 
@@ -31,6 +31,7 @@ const socials = [
 				}
 			</ul>
 		</div>
+		<!-- <a class='contact' href='#contact'>¿Hablamos?</a> -->
 	</div>
 </section>
 
@@ -38,6 +39,12 @@ const socials = [
 	section {
 		max-width: 600px;
 		margin: auto;
+	}
+
+	.container{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	h2 {
@@ -89,6 +96,15 @@ const socials = [
 		stroke-width: 1.5;
 	}
 
+	.contact{
+		background: var(--dark);
+		padding: 5px 10px;
+		margin-top: 40px;
+		font-size: 1.2em;
+		color: white;
+		text-decoration: none;
+	}
+
 	@keyframes fadeInUp {
 		from {
 			opacity: 0;
@@ -97,6 +113,12 @@ const socials = [
 		to {
 			opacity: 1;
 			transform: translateY(0);
+		}
+	}
+
+	@media (min-width: 1000px) {
+		.contact{
+			display: none;
 		}
 	}
 </style>

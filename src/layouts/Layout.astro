@@ -1,6 +1,7 @@
 ---
 import '@fontsource/quattrocento'
 import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
 ---
 
 <!doctype html>
@@ -13,9 +14,9 @@ import Header from '../components/Header.astro'
 		<title>Daniel Domínguez - Desarrollador Web</title>
 	</head>
 	<body>
-	<Header />
-
+		<Header />
 		<slot />
+		<Footer />
 	</body>
 </html>
 
@@ -27,7 +28,7 @@ import Header from '../components/Header.astro'
 		scroll-behavior: smooth;
 
 		--dark: #2b2b2b;
-		--main: #60a39d
+		--main: #60a39d;
 	}
 
 	html {
