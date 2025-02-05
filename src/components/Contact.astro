@@ -5,12 +5,16 @@ import SectionTitle from './SectionTitle.astro'
 <section id='contact'>
 	<SectionTitle title='Contacto' />
 
-	<!-- Formulario de contacto -->
 	<form id='contact-form'>
 		<input type='text' name='user_name' placeholder='Nombre' required />
 		<input type='email' name='user_email' placeholder='Email' required />
 		<textarea name='message' placeholder='Tu mensaje' rows='5' required></textarea>
-		<button type='submit'>Enviar</button>
+		<button type='submit' id='submit-btn'>
+			<span class='btn-text'>Enviar</span>
+			<span class='spinner hidden'></span>
+		</button>
+		<!-- Mensaje de respuesta -->
+		<p id='form-message'></p>
 	</form>
 </section>
 
@@ -25,6 +29,7 @@ import SectionTitle from './SectionTitle.astro'
 		gap: 1rem;
 		max-width: 500px;
 		margin: auto;
+		position: relative;
 	}
 
 	input,
@@ -40,6 +45,51 @@ import SectionTitle from './SectionTitle.astro'
 		cursor: pointer;
 		border: none;
 		background-color: #b1dedb;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+
+	.spinner {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 1rem;
+		height: 1rem;
+		border: 2px solid rgba(0, 0, 0, 0.2);
+		border-top-color: rgba(0, 0, 0, 0.6);
+		border-radius: 50%;
+		animation: spin 0.6s linear infinite;
+		vertical-align: middle;
+	}
+
+	@keyframes spin {
+		to {
+			transform: translate(-50%, -50%) rotate(360deg);
+		}
+	}
+
+	.hidden {
+		display: none;
+	}
+
+	.text-transparent {
+		color: transparent;
+	}
+
+	/* Estilos para el mensaje debajo del botón */
+	#form-message {
+		font-size: 0.9rem;
+		text-align: center;
+		margin-top: 0.5rem;
+	}
+	#form-message.success {
+		color: green;
+	}
+	#form-message.error {
+		color: red;
 	}
 </style>
 
@@ -47,23 +97,40 @@ import SectionTitle from './SectionTitle.astro'
 	import emailjs from 'emailjs-com'
 
 	const form = document.getElementById('contact-form') as HTMLFormElement
+	const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement
+	const btnText = submitBtn.querySelector('.btn-text') as HTMLSpanElement
+	const spinner = submitBtn.querySelector('.spinner') as HTMLSpanElement
+	const formMessage = document.getElementById('form-message') as HTMLParagraphElement
 
-	form?.addEventListener('submit', function (e) {
+	form?.addEventListener('submit', async function (e) {
 		e.preventDefault()
+
+		// Limpiar mensaje previo
+		formMessage.textContent = ''
+		formMessage.classList.remove('success', 'error')
+
+		// Mostrar spinner y ocultar texto
+		btnText.classList.add('text-transparent')
+		spinner.classList.remove('hidden')
+		submitBtn.disabled = true
 
 		const serviceID = 'service_g5v1uj4'
 		const templateID = 'template_3xmufai'
 		const userID = '5oguhkuB2Q-TsHoRK'
 
-		emailjs.sendForm(serviceID, templateID, e.target as HTMLFormElement, userID).then(
-			() => {
-				alert('¡Mensaje enviado!')
-				form.reset()
-			},
-			(error) => {
-				console.error('Error al enviar el mensaje:', error)
-				alert('Hubo un error al enviar el mensaje. Inténtalo de nuevo.')
-			}
-		)
+		try {
+			await emailjs.sendForm(serviceID, templateID, e.target as HTMLFormElement, userID)
+			formMessage.textContent = '¡Mensaje enviado!'
+			formMessage.classList.add('success')
+			form.reset()
+		} catch (error) {
+			console.error('Error al enviar el mensaje:', error)
+			formMessage.textContent = 'Hubo un error al enviar el mensaje. Inténtalo de nuevo.'
+			formMessage.classList.add('error')
+		} finally {
+			btnText.classList.remove('text-transparent')
+			spinner.classList.add('hidden')
+			submitBtn.disabled = false
+		}
 	})
 </script>
