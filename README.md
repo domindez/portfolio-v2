@@ -1,4 +1,4 @@
 # Portfolio.
 
-
-Todo: Poner una banda de noticias de broma 
+Portfolio Daniel Domíngez.
+Desarrollador Web Fullstack
