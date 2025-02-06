@@ -49,6 +49,20 @@ const works = [
 		stack: ['react', 'ts', 'next', 'css'],
 	},
 	{
+		link: 'https://domindez.github.io/pluviometria-castillodelocubin/',
+		img: '/works/pluviometria.webp',
+		title: 'Pluviometría Castillo',
+		description: 'Una web que automatiza la recolección de datos de una estación meteorológica en Castillo de Locubín.',
+		stack: ['react', 'js', 'css', 'mongo'],
+	},
+	{
+		link: 'https://tombolator.com',
+		img: '/works/tombolator.webp',
+		title: 'Tombolator',
+		description: 'Una plataforma para crear y jugar tómbolas. Genera tickets y reparte los premios.',
+		stack: ['next', 'ts', 'react', 'mongo', 'firebase'],
+	},
+	{
 		link: 'https://apartamentoslolamalaga.com',
 		img: '/works/apartamentos.webp',
 		title: 'Apartamentos Lola',
@@ -70,13 +84,14 @@ const works = [
 		stack: ['wordpress', 'js', 'css'],
 	},
 ]
+
 ---
 
 <section id='works'>
 	<SectionTitle title='Mis Trabajos' />
 	<div class='container'>
 		{
-			works.map((work) => (
+			works.slice(0, 6).map((work) => (
 				<article>
 					<a href={work.link} target='_blank'>
 						<div class='img-container'>
@@ -255,4 +270,6 @@ const works = [
 
 		articles.forEach((article) => observer.observe(article));
 	});
+
+	
 </script>
