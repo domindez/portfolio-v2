@@ -24,6 +24,18 @@ import Footer from '../components/Footer.astro'
 		/>
 		<meta name='robots' content='index, follow' />
 
+		<!-- Google tag (gtag.js) -->
+		<script type='text/partytown' async src='https://www.googletagmanager.com/gtag/js?id=G-XG3D9SZ7TW'></script>
+		<script type='text/partytown'>
+			window.dataLayer = window.dataLayer || []
+			function gtag() {
+				dataLayer.push(arguments)
+			}
+			gtag('js', new Date())
+
+			gtag('config', 'G-XG3D9SZ7TW')
+		</script>
+
 		<!-- Open Graph (para Facebook y otros) -->
 		<meta property='og:title' content='Daniel Domínguez - Desarrollador Web Fullstack' />
 		<meta
