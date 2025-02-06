@@ -5,13 +5,46 @@ import Footer from '../components/Footer.astro'
 ---
 
 <!doctype html>
-<html lang='en'>
+<html lang='es'>
 	<head>
 		<meta charset='UTF-8' />
-		<meta name='viewport' content='width=device-width' />
+		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
 		<meta name='generator' content={Astro.generator} />
-		<title>Daniel Domínguez - Desarrollador Web</title>
+
+		<!-- Título y descripción -->
+		<title>Daniel Domínguez - Desarrollador Web Fullstack</title>
+		<meta
+			name='description'
+			content='Soy Daniel Domínguez, desarrollador web y fullstack. En mi portafolio encontrarás mis proyectos y las vías de contacto para contratarme.'
+		/>
+		<meta
+			name='keywords'
+			content='Daniel Domínguez, desarrollador web, fullstack, portafolio, proyectos, contacto, contratar'
+		/>
+		<meta name='robots' content='index, follow' />
+
+		<!-- Open Graph (para Facebook y otros) -->
+		<meta property='og:title' content='Daniel Domínguez - Desarrollador Web Fullstack' />
+		<meta
+			property='og:description'
+			content='Descubre mis proyectos y contáctame para colaborar en tu próximo proyecto.'
+		/>
+		<meta property='og:type' content='website' />
+		<meta property='og:url' content='https://domindez.com' />
+		<meta property='og:image' content='https://domindez.com/image-og.jpg' />
+
+		<!-- Twitter Cards -->
+		<meta name='twitter:card' content='summary_large_image' />
+		<meta name='twitter:title' content='Daniel Domínguez - Desarrollador Web y Fullstack' />
+		<meta
+			name='twitter:description'
+			content='Soy Daniel Domínguez, desarrollador web y fullstack. Explora mi portafolio y contáctame.'
+		/>
+		<meta name='twitter:image' content='https://domindez.com/image-og.jpg' />
+
+		<!-- Canonical -->
+		<link rel='canonical' href='https://domindez.com' />
 	</head>
 	<body>
 		<Header />
