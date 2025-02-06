@@ -84,15 +84,14 @@ const works = [
 		stack: ['wordpress', 'js', 'css'],
 	},
 ]
-
 ---
 
 <section id='works'>
 	<SectionTitle title='Mis Trabajos' />
 	<div class='container'>
 		{
-			works.slice(0, 6).map((work) => (
-				<article>
+			works.map((work, index) => (
+				<article class={index >= 6 ? 'hidden' : ''}>
 					<a href={work.link} target='_blank'>
 						<div class='img-container'>
 							<img src={work.img} alt={work.title} />
@@ -115,6 +114,7 @@ const works = [
 			))
 		}
 	</div>
+	<button id='load-more' class='btn'>Mostrar más</button>
 </section>
 
 <style>
@@ -212,7 +212,7 @@ const works = [
 		margin-bottom: 10px;
 	}
 
-	p{
+	p {
 		line-height: 1.5em;
 	}
 
@@ -239,6 +239,28 @@ const works = [
 		object-fit: contain;
 	}
 
+	/* Oculta los artículos con la clase "hidden" */
+	.hidden {
+		display: none;
+	}
+
+	.btn {
+		display: block;
+		margin: 50px auto 30px;
+		padding: 10px 20px;
+		border: none;
+		border: 1px solid #333;
+		cursor: pointer;
+		border-radius: 3px;
+		transition: background-color 0.3s;
+		font-size: 1em;
+		background: none;
+	}
+
+	.btn:hover {
+		background-color: #d5d5d564;
+	}
+
 	@media (max-width: 1000px) {
 		.container {
 			grid-template-columns: repeat(2, 2fr);
@@ -257,19 +279,36 @@ const works = [
 </style>
 
 <script>
+	// Manejador de la animación cuando los elementos entran en vista
 	document.addEventListener('DOMContentLoaded', () => {
-		const articles = document.querySelectorAll('article');
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('animate');
-					observer.unobserve(entry.target);
-				}
-			});
-		}, { threshold: 0.1 });
+		const articles = document.querySelectorAll('article:not(.hidden)')
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('animate')
+						observer.unobserve(entry.target)
+					}
+				})
+			},
+			{ threshold: 0.1 }
+		)
 
-		articles.forEach((article) => observer.observe(article));
-	});
+		articles.forEach((article) => observer.observe(article))
+	})
 
-	
+	// Funcionalidad del botón "Mostrar más"
+	const loadMoreButton = document.getElementById('load-more')
+	loadMoreButton?.addEventListener('click', () => {
+		// Selecciona los próximos 3 artículos que están ocultos
+		const hiddenArticles = document.querySelectorAll('.container article.hidden')
+		for (let i = 0; i < 3 && i < hiddenArticles.length; i++) {
+			hiddenArticles[i].classList.remove('hidden')
+			hiddenArticles[i].classList.add('animate')
+		}
+		// Si ya no quedan artículos ocultos, se oculta el botón
+		if (document.querySelectorAll('.container article.hidden').length === 0) {
+			loadMoreButton.style.display = 'none'
+		}
+	})
 </script>
