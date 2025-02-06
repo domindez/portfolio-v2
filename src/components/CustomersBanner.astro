@@ -13,11 +13,11 @@ const logos = [
 	'Tabanco',
 	'unter',
 	'vermu',
-	'victoria'
+	'victoria',
 ]
 
 const logos2 = [
-'dak',
+	'dak',
 	'amar',
 	'arancaes',
 	'cafe-plaza',
@@ -28,7 +28,7 @@ const logos2 = [
 	'mediterraneo',
 	'meson-santiso',
 	'the-corner',
-	'victoria'
+	'victoria',
 ]
 ---
 
@@ -38,21 +38,37 @@ const logos2 = [
 
 	<div class='marquee'>
 		<div class='marquee__inner'>
-			{logos.map((logo) => <img width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />)}
+			{
+				logos.map((logo) => (
+					<Image loading='lazy' width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />
+				))
+			}
 		</div>
 
 		<div class='marquee__inner'>
-			{logos.map((logo) => <img width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />)}
+			{
+				logos.map((logo) => (
+					<Image loading='lazy' width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />
+				))
+			}
 		</div>
 	</div>
 
 	<div class='marquee reverse'>
 		<div class='marquee__inner'>
-			{logos2.map((logo) => <img width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />)}
+			{
+				logos2.map((logo) => (
+					<Image loading='lazy' width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />
+				))
+			}
 		</div>
 
 		<div class='marquee__inner'>
-			{logos2.map((logo) => <img width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />)}
+			{
+				logos2.map((logo) => (
+					<Image loading='lazy' width={200} height={200} src={`/customers-logos/${logo}.webp`} alt={logo} />
+				))
+			}
 		</div>
 	</div>
 </section>

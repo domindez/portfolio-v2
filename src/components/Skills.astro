@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets'
 import SectionTitle from './SectionTitle.astro'
 
 const logos = [
@@ -30,7 +31,7 @@ const logos = [
 				// Se utiliza el segundo parámetro "index" para calcular el retraso de cada elemento.
 				logos.map((logo, index) => (
 					<li style={`--delay: ${index * 0.05}s;`}>
-						<img src={logo} alt='logo' />
+						<Image loading={'lazy'} width={100} height={100} src={logo} alt='logo' />
 					</li>
 				))
 			}

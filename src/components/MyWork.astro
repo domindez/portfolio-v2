@@ -34,19 +34,26 @@ const works = [
 		description: 'La plataforma de cartas digitales de Trivify. Con mantenimiento de productos y categorías.',
 		stack: ['react', 'ts', 'mongo', 'express', 'firebase'],
 	},
-	{
-		link: 'https://smash-by-dak.pages.dev/',
-		img: '/works/bsmash.webp',
-		title: 'BSmash',
-		description: 'La web de Bsmash, con un menú digital propio e integración de sistema de pedido a domicilio.',
-		stack: ['astro', 'ts', 'css'],
-	},
+	// {
+	// 	link: 'https://smash-by-dak.pages.dev/',
+	// 	img: '/works/bsmash.webp',
+	// 	title: 'BSmash',
+	// 	description: 'La web de Bsmash, con un menú digital propio e integración de sistema de pedido a domicilio.',
+	// 	stack: ['astro', 'ts', 'css'],
+	// },
 	{
 		link: 'https://dak-burger.pages.dev/',
 		img: '/works/dak.webp',
 		title: 'Dak Burger',
 		description: 'La web de Dak Burger. Con un menú digital propio e integración de sistema de delivery y reservas.',
 		stack: ['react', 'ts', 'next', 'css'],
+	},
+	{
+		link: 'https://road-house.pages.dev/',
+		img: '/works/roadhouse.webp',
+		title: 'Smoke House',
+		description: 'Diseño y Web de un Smoke House. Con menú digital propio e integración de sistema de delivery y rservas. En desarrollo.',
+		stack: ['react', 'js', 'css', 'mongo'],
 	},
 	{
 		link: 'https://domindez.github.io/pluviometria-castillodelocubin/',
@@ -63,13 +70,6 @@ const works = [
 		stack: ['next', 'ts', 'react', 'mongo', 'firebase'],
 	},
 	{
-		link: 'https://apartamentoslolamalaga.com',
-		img: '/works/apartamentos.webp',
-		title: 'Apartamentos Lola',
-		description: 'La web de los Apartamentos Lola en Málaga, con integración de un motor de reservas.',
-		stack: ['react', 'js', 'css'],
-	},
-	{
 		link: 'https://www.asadorovidio.es/',
 		img: '/works/ovidio.webp',
 		title: 'Asador Ovidio',
@@ -83,18 +83,27 @@ const works = [
 		description: 'La web del Hotel NCH. Con integración de un sistema de reservas.',
 		stack: ['wordpress', 'js', 'css'],
 	},
+	{
+		link: 'https://apartamentoslolamalaga.com',
+		img: '/works/apartamentos.webp',
+		title: 'Apartamentos Lola',
+		description: 'La web de los Apartamentos Lola en Málaga, con integración de un motor de reservas.',
+		stack: ['react', 'js', 'css'],
+	},
 ]
 ---
 
 <section id='works'>
 	<SectionTitle title='Mis Trabajos' />
+	<h4>Algunos de mis últimos proyectos</h4>
+
 	<div class='container'>
 		{
 			works.map((work, index) => (
 				<article class={index >= 6 ? 'hidden' : ''}>
 					<a href={work.link} target='_blank'>
 						<div class='img-container'>
-							<img src={work.img} alt={work.title} />
+							<Image height={300} width={500} src={work.img} alt={work.title} />
 						</div>
 						<div class='info'>
 							<h3>{work.title}</h3>
@@ -120,6 +129,12 @@ const works = [
 <style>
 	section {
 		margin: 50px 10%;
+	}
+	h4 {
+		margin-top: -30px;
+		margin-bottom: 30px;
+		text-align: center;
+		font-weight: 400;
 	}
 
 	a {
@@ -204,6 +219,7 @@ const works = [
 
 	img {
 		width: 100%;
+		height: auto;
 		transition: 0.3s ease-in-out;
 	}
 

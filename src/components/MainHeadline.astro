@@ -5,25 +5,24 @@ import LinkedIn from './icons/LinkedIn.astro'
 import Mail from './icons/Mail.astro'
 import WhatsApp from './icons/WhatsApp.astro'
 
-// Definimos un array de redes sociales con su href e ícono.
 const socials = [
-	{ href: 'mailto:hola@domindez.com', icon: Mail },
-	{ href: 'https://wa.me/34660882876', icon: WhatsApp },
-	{ href: 'https://github.com/domindez', icon: Github },
-	{ href: 'https://www.linkedin.com/in/domindez/', icon: LinkedIn },
+	{ href: 'mailto:hola@domindez.com', icon: Mail, label: 'mail' },
+	{ href: 'https://wa.me/34660882876', icon: WhatsApp, label: 'whatsapp' },
+	{ href: 'https://github.com/domindez', icon: Github, label: 'gituhub' },
+	{ href: 'https://www.linkedin.com/in/domindez/', icon: LinkedIn, label: 'linkedin' },
 ]
 ---
 
 <section>
 	<div class='container'>
 		<h2>Desarrollador web</h2>
-		<p>Transformo ideas en experiencias digitales que destacan. <br>¿Listo para crear algo increíble juntos?</p>
+		<p>Transformo ideas en experiencias digitales que destacan. <br />¿Creamos algo increíble juntos?</p>
 
 		<div class='socials'>
 			<ul>
 				{
 					socials.map((social, index) => (
-						<a href={social.href} target='_blank'>
+						<a href={social.href} target='_blank' aria-label={social.label}>
 							<li style={`--delay: ${index * 0.1}s;`}>
 								<social.icon />
 							</li>
@@ -32,7 +31,7 @@ const socials = [
 				}
 			</ul>
 		</div>
-		<a href='#works' class='chevron-wrapper'>
+		<a href='#works' class='chevron-wrapper' aria-label='arrow down'>
 			<ChevronDown class='chevron-down' />
 		</a>
 		<!-- <a class='contact' href='#contact'>¿Hablamos?</a> -->
@@ -100,7 +99,7 @@ const socials = [
 		stroke-width: 1.5;
 	}
 
-	.chevron-wrapper{
+	.chevron-wrapper {
 		height: fit-content;
 		margin-top: 45px;
 		padding: 10px;
