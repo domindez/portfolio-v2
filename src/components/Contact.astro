@@ -9,7 +9,7 @@ import SectionTitle from './SectionTitle.astro'
 	<form id='contact-form'>
 		<input type='text' name='user_name' placeholder='Nombre' required />
 		<input type='email' name='user_email' placeholder='Email' required />
-		<input type='tel' name='user_phone' placeholder='Teléfono' required/>
+		<input type='tel' name='user_phone' placeholder='Teléfono' required />
 		<textarea name='message' placeholder='Tu mensaje' rows='5' required></textarea>
 		<button type='submit' id='submit-btn'>
 			<span class='btn-text'>Enviar</span>
@@ -106,6 +106,12 @@ import SectionTitle from './SectionTitle.astro'
 <script>
 	import emailjs from 'emailjs-com'
 
+	declare global {
+	interface Window {
+		dataLayer: any[];
+	}
+}
+
 	const form = document.getElementById('contact-form') as HTMLFormElement
 	const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement
 	const btnText = submitBtn.querySelector('.btn-text') as HTMLSpanElement
@@ -131,6 +137,10 @@ import SectionTitle from './SectionTitle.astro'
 		try {
 			await emailjs.sendForm(serviceID, templateID, e.target as HTMLFormElement, userID)
 			formMessage.textContent = '¡Mensaje enviado!'
+			window.dataLayer = window.dataLayer || []
+			window.dataLayer.push({
+				event: 'formulario_enviado',
+			})
 			formMessage.classList.add('success')
 			form.reset()
 		} catch (error) {
