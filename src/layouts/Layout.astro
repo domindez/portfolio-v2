@@ -24,6 +24,13 @@ import Footer from '../components/Footer.astro'
 		/>
 		<meta name='robots' content='index, follow' />
 
+		<script is:inline>
+			window.dataLayer = window.dataLayer || []
+			function gtag() {
+				dataLayer.push(arguments)
+			}
+		</script>
+
 		<!-- GTM: Head -->
 		<script is:inline>
 			;(function (w, d, s, l, i) {
