@@ -9,7 +9,7 @@ const works = [
 		img: '/works/barmanager.webp',
 		title: 'Barmanager.app',
 		description:
-			'Una plataforma web para gestionar bares y restaurantes. Cuenta con una integración de Stripe para pagos, sistema de reservas y mailing.',
+			'Una plataforma web para gestionar bares y restaurantes. Cuenta con una integración de Stripe para pagos, sistema de reservas y pedidos a domicilio.',
 		stack: ['next', 'react', 'firebase', 'mongo', 'ts', 'azure'],
 	},
 	{
@@ -101,24 +101,32 @@ const works = [
 		{
 			works.map((work, index) => (
 				<article class={index >= 6 ? 'hidden' : ''}>
-					<a href={work.link} target='_blank'>
-						<div class='img-container'>
-							<Image height={300} width={500} src={work.img} alt={work.title} />
-						</div>
-						<div class='info'>
-							<h3>{work.title}</h3>
-							<p>{work.description}</p>
-							{work.stack && (
-								<ul class='stack-list'>
-									{work.stack.map((tech) => (
-										<li>
-											<Image src={`/logos/${tech}.png`} alt={tech} height={200} width={500} />
-										</li>
-									))}
-								</ul>
-							)}
-						</div>
-					</a>
+					<div class='img-container'>
+						<Image
+							class='main-img'
+							height={300}
+							width={500}
+							src={work.img}
+							alt={work.title}
+							style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+						/>
+					</div>
+					<div class='info'>
+						<h3>{work.title}</h3>
+						{work.stack && (
+							<ul class='stack-list'>
+								{work.stack.map((tech) => (
+									<li>
+										<Image src={`/logos/${tech}.png`} alt={tech} height={200} width={500} />
+									</li>
+								))}
+							</ul>
+						)}
+						<p>{work.description}</p>
+						<a href={work.link} target='_blank'>
+							Ir a la web!
+						</a>
+					</div>
 				</article>
 			))
 		}
@@ -137,54 +145,22 @@ const works = [
 		font-weight: 400;
 	}
 
-	a {
-		text-decoration: none;
-		color: black;
-	}
-
-	a:hover .img-container img {
-		transform: scale(1.1) translateY(5%);
-	}
-
 	article:hover {
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.053);
 	}
 
 	.img-container {
 		overflow: hidden;
-		height: 200px;
-		position: relative;
-	}
-
-	.img-container::before {
-		content: '';
-		position: absolute;
-		bottom: -22px;
-		transform: rotate(5deg) scale(1.2);
-		left: 0;
-		width: 100%;
-		height: 25px;
-		background: linear-gradient(to bottom, #ffffffc5 0%, #fffffffa 40%, #ffffff 100%);
-		z-index: 5;
-	}
-
-	.img-container::after {
-		content: '';
-		position: absolute;
-		bottom: -22px;
-		transform: rotate(-5deg) scale(1.2);
-		right: 0;
-		width: 100%;
-		height: 15px;
-		background: linear-gradient(to bottom, #ffffffc5 0%, #fffffffa 40%, #ffffff 100%);
-		z-index: 4;
+		position: relative; /* Required for absolute positioning of .info */
+		transition: opacity 0.3s ease-in-out; /* Transition for opacity */
+		padding-bottom: 100%; /* Make it a square */
+		height: 0; /* Override the height */
 	}
 
 	.container {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajuste automático con tamaño mínimo */
 		gap: 20px;
-		row-gap: 50px;
 	}
 
 	/* Estado inicial oculto para la animación */
@@ -193,6 +169,18 @@ const works = [
 		transition: 0.3s ease-in-out;
 		opacity: 0;
 		transform: translateY(20px);
+		position: relative;
+		width: 100%;
+		transition: 0.3s ease-in-out;
+	}
+
+	article:hover .info {
+		opacity: 1;
+		z-index: 2;
+	}
+
+	article:hover .img-container {
+		opacity: 0;
 	}
 
 	/* Cuando el article entra en vista se le añade la clase "animate" para activar la animación */
@@ -215,12 +203,37 @@ const works = [
 		padding: 20px;
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+		justify-content: space-evenly;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		background-color: white;
+		opacity: 0;
+		transition: opacity 0.3s ease-in-out; /* Transition for opacity */
+		box-sizing: border-box; /* Ensure padding doesn't increase the size */
 	}
 
-	img {
+	a {
+		text-decoration: none;
+		color: black;
+		border: 1px solid black;
+		padding: 10px 20px;
+	}
+
+	.main-img {
 		width: 100%;
 		height: auto;
 		transition: 0.3s ease-in-out;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	h3 {
@@ -235,10 +248,7 @@ const works = [
 	.stack-list {
 		display: flex;
 		list-style: none;
-		margin-top: 20px;
-		border: 1px solid #e8e8e8;
 		width: fit-content;
-		margin-left: auto;
 		border-radius: 5px;
 	}
 
@@ -277,19 +287,13 @@ const works = [
 		background-color: #5b5b5b;
 	}
 
-	@media (max-width: 1000px) {
-		.container {
-			grid-template-columns: repeat(2, 2fr);
-		}
-
-		.img-container {
-			height: 180px;
-		}
-	}
-
 	@media (max-width: 768px) {
 		.container {
-			grid-template-columns: repeat(1, 1fr);
+			grid-template-columns: 1fr; /* Force single column */
+		}
+
+		article {
+			min-width: 300px; /* Ensure a minimum width */
 		}
 	}
 </style>
