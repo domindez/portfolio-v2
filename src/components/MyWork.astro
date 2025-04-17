@@ -100,7 +100,7 @@ const works = [
 	<div class='container'>
 		{
 			works.map((work, index) => (
-				<article class={index >= 6 ? 'hidden' : ''}>
+				<article class={`work-item ${index >= 6 ? 'mobile-hidden' : ''}`}>
 					<div class='img-container'>
 						<Image
 							class='main-img'
@@ -270,8 +270,13 @@ const works = [
 		display: none;
 	}
 
+	/* Nueva clase para ocultar elementos solo en móvil */
+	.mobile-hidden {
+		display: none;
+	}
+
 	.btn {
-		display: block;
+		display: none; /* Hidden by default */
 		margin: 50px auto 30px;
 		padding: 10px 20px;
 		border: none;
@@ -296,6 +301,24 @@ const works = [
 			min-width: 300px; /* Ensure a minimum width */
 		}
 	}
+
+	@media (max-width: 1190px) {
+		.btn {
+			display: block; /* Show button on smaller screens */
+		}
+
+		/* Keep mobile-hidden active at smaller screens */
+		.mobile-hidden {
+			display: none;
+		}
+	}
+
+	@media (min-width: 1191px) {
+		/* Show all works on larger screens */
+		.mobile-hidden {
+			display: block;
+		}
+	}
 </style>
 
 <script>
@@ -315,19 +338,41 @@ const works = [
 		)
 
 		articles.forEach((article) => observer.observe(article))
+
+		// Check width to decide if load more button should be visible
+		const loadMoreButton = document.getElementById('load-more')
+
+		// Initial check for button visibility based on screen size
+		function checkScreenSize() {
+			if (loadMoreButton) {
+				if (window.innerWidth <= 1190) {
+					loadMoreButton.style.display = 'block'
+				} else {
+					loadMoreButton.style.display = 'none'
+				}
+			}
+		}
+
+		// Check on load
+		checkScreenSize()
+
+		// Check on resize
+		window.addEventListener('resize', () => {
+			checkScreenSize()
+		})
 	})
 
 	// Funcionalidad del botón "Mostrar más"
 	const loadMoreButton = document.getElementById('load-more')
 	loadMoreButton?.addEventListener('click', () => {
 		// Selecciona los próximos 3 artículos que están ocultos
-		const hiddenArticles = document.querySelectorAll('.container article.hidden')
+		const hiddenArticles = document.querySelectorAll('.container article.mobile-hidden')
 		for (let i = 0; i < 3 && i < hiddenArticles.length; i++) {
-			hiddenArticles[i].classList.remove('hidden')
+			hiddenArticles[i].classList.remove('mobile-hidden')
 			hiddenArticles[i].classList.add('animate')
 		}
 		// Si ya no quedan artículos ocultos, se oculta el botón
-		if (document.querySelectorAll('.container article.hidden').length === 0) {
+		if (document.querySelectorAll('.container article.mobile-hidden').length === 0) {
 			loadMoreButton.style.display = 'none'
 		}
 	})
