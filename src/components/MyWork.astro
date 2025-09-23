@@ -5,12 +5,34 @@ import SectionTitle from './SectionTitle.astro'
 // 1280x691
 const works = [
 	{
+		link: 'https://www.zerobil.com',
+		img: '/works/zerobil.webp',
+		title: 'Zerobil',
+		description: 'Una plataforma de facturación, CRM y contabilidad para autónomos y pequeñas empresas.',
+		stack: ['next', 'react', 'mongo', 'ts', 'openai'],
+	},
+	{
 		link: 'https://barmanager.app',
 		img: '/works/barmanager.webp',
 		title: 'Barmanager.app',
 		description:
 			'Una plataforma web para gestionar bares y restaurantes. Cuenta con una integración de Stripe para pagos, sistema de reservas y pedidos a domicilio.',
 		stack: ['next', 'react', 'firebase', 'mongo', 'ts', 'azure'],
+	},
+	{
+		link: 'https://roadhousegroup.com/es',
+		img: '/works/roadhouse.webp',
+		title: 'Grupo RoadHouse',
+		description:
+			'La web del Grupo RoadHouse y de sus restaurantes, con menús digitales e integración de reservas y delivery.',
+		stack: ['react', 'ts', 'next', 'css', 'stripe'],
+	},
+	{
+		link: 'https://www.seixis.es/',
+		img: '/works/seixis.webp',
+		title: 'Seixis',
+		description: 'La web de Seixis, las cheescakes más virales de España. Con integración de pedidos a domicilio.',
+		stack: ['react', 'ts', 'css'],
 	},
 	{
 		link: 'https://trivify.es',
@@ -21,11 +43,32 @@ const works = [
 		stack: ['react', 'js', 'mongo', 'electron', 'express'],
 	},
 	{
+		link: 'https://www.asadorovidio.es/',
+		img: '/works/ovidio.webp',
+		title: 'Asador Ovidio',
+		description: 'La web del prestigioso Asador Ovidio. Con integración de menú digital propio y sistema de reservas.',
+		stack: ['react', 'ts', 'css'],
+	},
+	{
 		link: 'https://gottangrill.com',
 		img: '/works/gottan.webp',
 		title: 'Gottan.com',
 		description: 'La web de Gottan Grill. Hamburguesería galardonada con la mejor burger de España y Europa en 2024',
 		stack: ['react', 'ts', 'css'],
+	},
+	{
+		link: 'https://mariacontreraspsicologa.com/',
+		img: '/works/mariacontreras.webp',
+		title: 'María Contreras Psicóloga',
+		description: 'La web de la psicóloga María Contreras.',
+		stack: ['astro', 'ts', 'css'],
+	},
+	{
+		link: 'https://hotelnogalera.com/',
+		img: '/works/nogalera.webp',
+		title: 'Hotel Nogalera',
+		description: 'La web del Hotel Nogalera, con integración de un sistema de reservas.',
+		stack: ['astro', 'ts', 'css'],
 	},
 	{
 		link: 'https://trivify.es/cartasqr/bsmash',
@@ -48,13 +91,6 @@ const works = [
 		description: 'La web de Dak Burger. Con un menú digital propio e integración de sistema de delivery y reservas.',
 		stack: ['react', 'ts', 'next', 'css'],
 	},
-	// {
-	// 	link: 'https://road-house.pages.dev/',
-	// 	img: '/works/roadhouse.webp',
-	// 	title: 'Smoke House',
-	// 	description: 'Diseño y Web de un Smoke House. Con menú digital propio e integración de sistema de delivery y reservas. En desarrollo.',
-	// 	stack: ['astro', 'ts', 'css'],
-	// },
 	{
 		link: 'https://domindez.github.io/pluviometria-castillodelocubin/',
 		img: '/works/pluviometria.webp',
@@ -70,25 +106,11 @@ const works = [
 		stack: ['next', 'ts', 'react', 'mongo', 'firebase'],
 	},
 	{
-		link: 'https://www.asadorovidio.es/',
-		img: '/works/ovidio.webp',
-		title: 'Asador Ovidio',
-		description: 'La web del prestigioso Asador Ovidio. Con integración de menú digital propio y sistema de reservas.',
-		stack: ['react', 'ts', 'css'],
-	},
-	{
 		link: 'https://www.hotelnch.com/',
 		img: '/works/nch.webp',
 		title: 'Hotel NCH',
 		description: 'La web del Hotel NCH. Con integración de un sistema de reservas.',
 		stack: ['wordpress', 'js', 'css'],
-	},
-	{
-		link: 'https://apartamentoslolamalaga.com',
-		img: '/works/apartamentos.webp',
-		title: 'Apartamentos Lola',
-		description: 'La web de los Apartamentos Lola en Málaga, con integración de un motor de reservas.',
-		stack: ['react', 'js', 'css'],
 	},
 ]
 ---
@@ -159,7 +181,7 @@ const works = [
 
 	.container {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajuste automático con tamaño mínimo */
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajuste automático con tamaño mínimo */
 		gap: 20px;
 	}
 
