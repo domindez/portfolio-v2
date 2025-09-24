@@ -50,15 +50,26 @@ import SectionTitle from './SectionTitle.astro'
 	}
 
 	button {
-		padding: 0.7rem;
-		font-size: 1rem;
+		padding: 15px 30px;
+		font-size: 1.1em;
 		cursor: pointer;
 		border: none;
-		background-color: #b1dedb;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		position: relative;
+		border-radius: 30px;
+		color: white;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+		font-weight: 600;
+	}
+
+	button:hover {
+		background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+		transform: translateY(-3px);
+		box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
 	}
 
 	.spinner {
@@ -107,10 +118,10 @@ import SectionTitle from './SectionTitle.astro'
 	import emailjs from 'emailjs-com'
 
 	declare global {
-	interface Window {
-		dataLayer: any[];
+		interface Window {
+			dataLayer: any[]
+		}
 	}
-}
 
 	const form = document.getElementById('contact-form') as HTMLFormElement
 	const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement
