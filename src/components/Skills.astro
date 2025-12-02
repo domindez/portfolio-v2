@@ -2,23 +2,32 @@
 import { Image } from 'astro:assets'
 import SectionTitle from './SectionTitle.astro'
 
-const logos = [
-	'/logos/html.png',
-	'/logos/css.png',
-	'/logos/js.png',
-	'/logos/ts.png',
-	'/logos/react.png',
-	'/logos/astro.png',
-	'/logos/node.png',
-	'/logos/azure.png',
-	'/logos/firebase.png',
-	'/logos/next.png',
-	'/logos/express.png',
-	'/logos/mongo.png',
-	'/logos/tailwind.png',
-	'/logos/wordpress.png',
-	'/logos/electron.png',
-	'/logos/git.png',
+const skills = [
+	{ src: '/logos/html.png', name: 'HTML5', alt: 'Logo de HTML5 - Lenguaje de marcado para estructura web' },
+	{ src: '/logos/css.png', name: 'CSS3', alt: 'Logo de CSS3 - Hojas de estilo en cascada para diseño web' },
+	{ src: '/logos/js.png', name: 'JavaScript', alt: 'Logo de JavaScript - Lenguaje de programación web' },
+	{ src: '/logos/ts.png', name: 'TypeScript', alt: 'Logo de TypeScript - JavaScript con tipado estático' },
+	{ src: '/logos/react.png', name: 'React', alt: 'Logo de React - Biblioteca JavaScript para interfaces de usuario' },
+	{ src: '/logos/astro.png', name: 'Astro', alt: 'Logo de Astro - Framework web para sitios rápidos' },
+	{
+		src: '/logos/node.png',
+		name: 'Node.js',
+		alt: 'Logo de Node.js - Entorno de ejecución JavaScript del lado del servidor',
+	},
+	{ src: '/logos/azure.png', name: 'Azure', alt: 'Logo de Microsoft Azure - Plataforma de servicios en la nube' },
+	{
+		src: '/logos/firebase.png',
+		name: 'Firebase',
+		alt: 'Logo de Firebase - Plataforma de desarrollo de aplicaciones de Google',
+	},
+	{ src: '/logos/next.png', name: 'Next.js', alt: 'Logo de Next.js - Framework React para producción' },
+	{ src: '/logos/express.png', name: 'Express', alt: 'Logo de Express.js - Framework minimalista para Node.js' },
+	{ src: '/logos/supabase.png', name: 'Supabase', alt: 'Logo de Supabase - Alternativa open source a Firebase' },
+	{ src: '/logos/mongo.png', name: 'MongoDB', alt: 'Logo de MongoDB - Base de datos NoSQL orientada a documentos' },
+	{ src: '/logos/tailwind.png', name: 'Tailwind CSS', alt: 'Logo de Tailwind CSS - Framework CSS utility-first' },
+	{ src: '/logos/wordpress.png', name: 'WordPress', alt: 'Logo de WordPress - Sistema de gestión de contenidos' },
+	{ src: '/logos/electron.png', name: 'Electron', alt: 'Logo de Electron - Framework para aplicaciones de escritorio' },
+	{ src: '/logos/git.png', name: 'Git', alt: 'Logo de Git - Sistema de control de versiones distribuido' },
 ]
 ---
 
@@ -28,10 +37,10 @@ const logos = [
 	<div class='container'>
 		<ul>
 			{
-				// Se utiliza el segundo parámetro "index" para calcular el retraso de cada elemento.
-				logos.map((logo, index) => (
-					<li style={`--delay: ${index * 0.05}s;`}>
-						<Image loading={'lazy'} width={100} height={100} src={logo} alt='logo' />
+				skills.map((skill, index) => (
+					<li style={`--delay: ${index * 0.05}s;`} data-tooltip={skill.name}>
+						<Image loading={'lazy'} width={100} height={100} src={skill.src} alt={skill.alt} title={skill.name} />
+						<span class='tooltip'>{skill.name}</span>
 					</li>
 				))
 			}
@@ -62,6 +71,8 @@ const logos = [
 		padding: 20px;
 		opacity: 0;
 		transform: translateY(20px);
+		position: relative;
+		cursor: pointer;
 	}
 
 	li.animate {
@@ -83,6 +94,48 @@ const logos = [
 		width: 70px;
 		height: 70px;
 		object-fit: contain;
+		transition: transform 0.3s ease;
+	}
+
+	li:hover img {
+		transform: scale(1.1);
+	}
+
+	.tooltip {
+		position: absolute;
+		bottom: -8px;
+		left: 50%;
+		transform: translateX(-50%) translateY(100%);
+		background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+		color: #fff;
+		padding: 8px 14px;
+		border-radius: 8px;
+		font-size: 0.85rem;
+		font-weight: 500;
+		white-space: nowrap;
+		opacity: 0;
+		visibility: hidden;
+		transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		z-index: 10;
+	}
+
+	.tooltip::before {
+		content: '';
+		position: absolute;
+		top: -6px;
+		left: 50%;
+		transform: translateX(-50%);
+		border-width: 0 6px 6px 6px;
+		border-style: solid;
+		border-color: transparent transparent #1a1a2e transparent;
+	}
+
+	li:hover .tooltip {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(-50%) translateY(100%) translateY(4px);
 	}
 
 	h4 {
@@ -106,6 +159,11 @@ const logos = [
 		li img {
 			width: 50px;
 			height: 50px;
+		}
+
+		.tooltip {
+			font-size: 0.75rem;
+			padding: 6px 10px;
 		}
 	}
 </style>
