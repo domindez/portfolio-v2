@@ -5,25 +5,27 @@ import SectionTitle from './SectionTitle.astro'
 // 1280x691
 const works = [
 	{
-		link: 'https://www.moneyz.app',
-		img: '/works/moneyz.webp',
-		title: 'Moneyz',
-		description: 'Un tracker de portfolios de inversión para controlar tus inversiones de forma sencilla y visual.',
-		stack: ['next', 'supabase', 'tailwind', 'react', 'ts'],
+		link: 'https://hotelnogalera.com/',
+		img: '/works/nogalera.webp',
+		title: 'Hotel Nogalera',
+		description: 'La web del Hotel Nogalera, con integración de un sistema de reservas.',
+		stack: ['astro', 'ts', 'tailwind'],
 	},
 	{
-		link: 'https://politichance.com',
-		img: '/works/politichance.webp',
-		title: 'Politichance',
-		description: 'Una plataforma de predicciones políticas y económicas en tiempo real basada en mercados de predicción.',
+		link: 'https://bsmash.es',
+		img: '/works/bsmash.webp',
+		title: 'BSmash',
+		description:
+			'La web de Bsmash, con un menú digital propio e integración de sistema de reservas y pedidos a domicilio.',
 		stack: ['astro', 'tailwind', 'ts'],
 	},
 	{
-		link: 'https://www.zerobil.com',
-		img: '/works/zerobil.webp',
-		title: 'Zerobil',
-		description: 'Una plataforma de facturación, CRM y contabilidad para autónomos y pequeñas empresas.',
-		stack: ['next', 'react', 'mongo', 'ts', 'openai'],
+		link: 'https://roadhousegroup.es/es',
+		img: '/works/roadhouse.webp',
+		title: 'Grupo RoadHouse',
+		description:
+			'La web del Grupo RoadHouse y de sus restaurantes, con menús digitales e integración de reservas y delivery.',
+		stack: ['astro', 'ts', 'css'],
 	},
 	{
 		link: 'https://barmanager.app',
@@ -34,19 +36,26 @@ const works = [
 		stack: ['next', 'react', 'firebase', 'mongo', 'ts', 'azure'],
 	},
 	{
-		link: 'https://roadhousegroup.es/es',
-		img: '/works/roadhouse.webp',
-		title: 'Grupo RoadHouse',
-		description:
-			'La web del Grupo RoadHouse y de sus restaurantes, con menús digitales e integración de reservas y delivery.',
-		stack: ['astro', 'ts', 'css'],
+		link: 'https://www.moneyz.app',
+		img: '/works/moneyz.webp',
+		title: 'Moneyz',
+		description: 'Un tracker de portfolios de inversión para controlar tus inversiones de forma sencilla y visual.',
+		stack: ['next', 'supabase', 'tailwind', 'react', 'ts'],
 	},
-		{
-		link: 'https://hotelnogalera.com/',
-		img: '/works/nogalera.webp',
-		title: 'Hotel Nogalera',
-		description: 'La web del Hotel Nogalera, con integración de un sistema de reservas.',
-		stack: ['astro', 'ts', 'css'],
+	{
+		link: 'https://politichance.com',
+		img: '/works/politichance.webp',
+		title: 'Politichance',
+		description:
+			'Una plataforma de predicciones políticas y económicas en tiempo real basada en mercados de predicción.',
+		stack: ['astro', 'tailwind', 'ts'],
+	},
+	{
+		link: 'https://www.zerobil.com',
+		img: '/works/zerobil.webp',
+		title: 'Zerobil',
+		description: 'Una plataforma de facturación, CRM y contabilidad para autónomos y pequeñas empresas.',
+		stack: ['next', 'react', 'mongo', 'ts', 'openai'],
 	},
 	{
 		link: 'https://www.seixis.es/',
@@ -84,20 +93,6 @@ const works = [
 		description: 'La web de la psicóloga María Contreras.',
 		stack: ['astro', 'ts', 'css'],
 	},
-	{
-		link: 'https://trivify.es/cartasqr/bsmash',
-		img: '/works/cartas-qr.webp',
-		title: 'Cartas QR',
-		description: 'La plataforma de cartas digitales de Trivify. Con mantenimiento de productos y categorías.',
-		stack: ['react', 'ts', 'mongo', 'express', 'firebase'],
-	},
-	// {
-	// 	link: 'https://smash-by-dak.pages.dev/',
-	// 	img: '/works/bsmash.webp',
-	// 	title: 'BSmash',
-	// 	description: 'La web de Bsmash, con un menú digital propio e integración de sistema de pedido a domicilio.',
-	// 	stack: ['astro', 'ts', 'css'],
-	// },
 	{
 		link: 'https://dakburger.es/',
 		img: '/works/dak.webp',
@@ -424,7 +419,7 @@ const works = [
 					}
 				})
 			},
-			{ threshold: 0.1 }
+			{ threshold: 0.1 },
 		)
 
 		// Observar solo los visibles inicialmente
