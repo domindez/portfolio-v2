@@ -1,0 +1,126 @@
+---
+import { process } from '../data/content';
+---
+
+<section class='process section' id='process'>
+	<div class='container'>
+		<header class='section-head' data-reveal>
+			<p class='eyebrow'><span class='dot'></span> Proceso</p>
+			<h2 class='section-title'>
+				<em class='serif-italic'>Cómo</em> trabajamos,<br />
+				paso a paso.
+			</h2>
+			<p class='section-lede'>
+				Un proceso claro, sin sorpresas. Así es como convertimos una idea en un producto
+				digital que funciona.
+			</p>
+		</header>
+
+		<ol class='process__list' data-reveal-stagger>
+			{
+				process.map((step, i) => (
+					<li class='process__item'>
+						<div class='process__num'>{step.number}</div>
+						<div class='process__content'>
+							<h3 class='process__step-title'>{step.title}</h3>
+							<p class='process__step-desc'>{step.description}</p>
+						</div>
+						<div class='process__line' aria-hidden='true' />
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>
+
+<style>
+	.process {
+		background: var(--bg);
+		border-top: 1px solid var(--border);
+	}
+
+	.serif-italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--accent);
+	}
+
+	.process__list {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		position: relative;
+	}
+
+	.process__item {
+		display: grid;
+		grid-template-columns: 120px 1fr;
+		gap: 3rem;
+		padding-block: 2.5rem;
+		border-top: 1px solid var(--border);
+		position: relative;
+		transition: padding 0.4s var(--ease-out);
+	}
+
+	.process__item:hover {
+		padding-left: 1rem;
+	}
+
+	.process__item:hover .process__num {
+		color: var(--accent);
+	}
+
+	.process__item:last-child {
+		border-bottom: 1px solid var(--border);
+	}
+
+	.process__num {
+		font-family: var(--font-mono);
+		font-size: var(--fs-700);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+		color: var(--fg-faint);
+		transition: color 0.4s var(--ease-out);
+	}
+
+	.process__content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.process__step-title {
+		font-size: var(--fs-600);
+		font-weight: 500;
+		letter-spacing: -0.025em;
+	}
+
+	.process__step-desc {
+		font-size: var(--fs-400);
+		color: var(--fg-dim);
+		line-height: 1.5;
+		max-width: 60ch;
+	}
+
+	.process__line {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 1px;
+		width: 0;
+		background: var(--accent);
+		transition: width 0.6s var(--ease-out);
+	}
+
+	.process__item:hover .process__line {
+		width: 100%;
+	}
+
+	@media (max-width: 700px) {
+		.process__item {
+			grid-template-columns: 60px 1fr;
+			gap: 1.5rem;
+		}
+	}
+</style>

@@ -1,219 +1,142 @@
 ---
-import Layout from '../layouts/Layout.astro'
+import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout>
-	<section class='error-section'>
-		<div class='error-container'>
-			<div class='error-number'>404</div>
-			<h1 class='error-title'>Página no encontrada</h1>
-			<p class='error-description'>Lo siento, la página que buscas no existe o ha sido movida.</p>
-			<div class='error-actions'>
-				<a href='/' class='btn-home'>Volver al inicio</a>
-				<a href='/#contact' class='btn-contact'>Contactar</a>
+<Layout title='404 — Domindez Studio' description='Esta página no existe o ha sido movida.'>
+	<section class='error'>
+		<div class='container error__inner'>
+			<div class='error__code' data-reveal>
+				<span>4</span>
+				<span class='error__zero'>0</span>
+				<span>4</span>
 			</div>
-		</div>
-		<div class='error-animation'>
-			<div class='floating-element'></div>
-			<div class='floating-element'></div>
-			<div class='floating-element'></div>
+
+			<div class='error__content' data-reveal>
+				<p class='eyebrow'><span class='dot'></span> Error 404</p>
+				<h1 class='error__title'>
+					Página<br />
+					<em class='serif-italic'>no encontrada</em>
+				</h1>
+				<p class='error__desc'>
+					Lo sentimos, la página que buscas no existe o ha sido movida. Mientras tanto,
+					puedes volver al inicio o iniciar un proyecto con nosotros.
+				</p>
+
+				<div class='error__actions'>
+					<a href='/' class='btn magnetic' data-magnetic='0.3'>
+						<span>Volver al inicio</span>
+						<svg
+							class='arrow'
+							width='14'
+							height='14'
+							viewBox='0 0 24 24'
+							fill='none'
+							stroke='currentColor'
+							stroke-width='2'
+							stroke-linecap='square'
+							aria-hidden='true'
+						>
+							<path d='M7 17L17 7M17 7H8M17 7V16'></path>
+						</svg>
+					</a>
+					<a href='/#contact' class='btn btn--ghost magnetic' data-magnetic='0.3'>
+						<span>Iniciar proyecto</span>
+					</a>
+				</div>
+			</div>
 		</div>
 	</section>
 </Layout>
 
 <style>
-	.error-section {
-		min-height: 100vh;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 0 10%;
+	.error {
+		min-height: 100dvh;
+		display: grid;
+		place-items: center;
+		padding-block: 8rem 4rem;
 		position: relative;
 		overflow: hidden;
 	}
 
-	.error-container {
-		text-align: center;
-		z-index: 2;
-		position: relative;
+	.error__inner {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+		align-items: center;
 	}
 
-	.error-number {
-		font-size: clamp(8rem, 20vw, 12rem);
-		font-weight: bold;
-		color: var(--main);
-		line-height: 1;
-		margin-bottom: 20px;
-		text-shadow: 2px 2px 4px rgba(43, 43, 43, 0.1);
-		animation: pulse 2s infinite;
-	}
-
-	.error-title {
-		font-size: clamp(2rem, 5vw, 3rem);
-		color: var(--dark);
-		margin-bottom: 20px;
-		font-weight: 600;
-	}
-
-	.error-description {
-		font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-		color: var(--dark);
-		margin-bottom: 40px;
-		line-height: 1.6;
-		max-width: 500px;
-		margin-left: auto;
-		margin-right: auto;
-		opacity: 0.8;
-	}
-
-	.error-actions {
+	.error__code {
 		display: flex;
-		gap: 20px;
+		align-items: center;
 		justify-content: center;
-		flex-wrap: wrap;
+		gap: 0.5rem;
+		font-family: var(--font-mono);
+		font-size: clamp(8rem, 22vw, 18rem);
+		font-weight: 500;
+		letter-spacing: -0.05em;
+		line-height: 1;
+		color: var(--fg);
 	}
 
-	.btn-home,
-	.btn-contact {
-		padding: 12px 30px;
-		text-decoration: none;
-		border-radius: 25px;
-		font-weight: 600;
-		font-size: 1.1rem;
-		transition: all 0.3s ease;
-		border: 2px solid var(--main);
+	.error__zero {
 		display: inline-block;
+		color: var(--accent);
+		animation: rotate 8s linear infinite;
 	}
 
-	.btn-home {
-		background-color: var(--main);
-		color: white;
-	}
-
-	.btn-home:hover {
-		background-color: transparent;
-		color: var(--main);
-		transform: translateY(-2px);
-		box-shadow: 0 5px 15px rgba(96, 163, 157, 0.3);
-	}
-
-	.btn-contact {
-		background-color: transparent;
-		color: var(--main);
-	}
-
-	.btn-contact:hover {
-		background-color: var(--main);
-		color: white;
-		transform: translateY(-2px);
-		box-shadow: 0 5px 15px rgba(96, 163, 157, 0.3);
-	}
-
-	.error-animation {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-		pointer-events: none;
-	}
-
-	.floating-element {
-		position: absolute;
-		width: 60px;
-		height: 60px;
-		border: 2px solid var(--main);
-		border-radius: 50%;
-		opacity: 0.1;
-		animation: float 6s ease-in-out infinite;
-	}
-
-	.floating-element:nth-child(1) {
-		top: 20%;
-		left: 10%;
-		animation-delay: 0s;
-	}
-
-	.floating-element:nth-child(2) {
-		top: 60%;
-		right: 15%;
-		animation-delay: 2s;
-		width: 40px;
-		height: 40px;
-	}
-
-	.floating-element:nth-child(3) {
-		bottom: 20%;
-		left: 20%;
-		animation-delay: 4s;
-		width: 80px;
-		height: 80px;
-	}
-
-	@keyframes pulse {
-		0%,
-		100% {
-			transform: scale(1);
-		}
-		50% {
-			transform: scale(1.05);
+	@keyframes rotate {
+		to {
+			transform: rotate(360deg);
 		}
 	}
 
-	@keyframes float {
-		0%,
-		100% {
-			transform: translateY(0px) rotate(0deg);
-		}
-		33% {
-			transform: translateY(-20px) rotate(120deg);
-		}
-		66% {
-			transform: translateY(20px) rotate(240deg);
-		}
+	.error__content {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
 	}
 
-	/* Responsive */
-	@media (max-width: 768px) {
-		.error-section {
-			padding: 20px;
-		}
+	.error__title {
+		font-size: var(--fs-700);
+		font-weight: 500;
+		letter-spacing: -0.03em;
+		line-height: 0.95;
+	}
 
-		.error-actions {
-			flex-direction: column;
-			align-items: center;
-		}
+	.serif-italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--accent);
+	}
 
-		.btn-home,
-		.btn-contact {
-			width: 200px;
+	.error__desc {
+		font-size: var(--fs-400);
+		color: var(--fg-dim);
+		line-height: 1.5;
+		max-width: 50ch;
+	}
+
+	.error__actions {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+		margin-top: 1rem;
+	}
+
+	@media (max-width: 800px) {
+		.error__inner {
+			grid-template-columns: 1fr;
+			gap: 2rem;
 			text-align: center;
 		}
 
-		.floating-element {
-			width: 40px;
-			height: 40px;
+		.error__actions {
+			justify-content: center;
 		}
 
-		.floating-element:nth-child(3) {
-			width: 60px;
-			height: 60px;
-		}
-	}
-
-	@media (max-width: 480px) {
-		.error-number {
-			font-size: 6rem;
-		}
-
-		.error-title {
-			font-size: 1.8rem;
-		}
-
-		.error-description {
-			font-size: 1rem;
+		.error__desc {
+			margin-inline: auto;
 		}
 	}
 </style>

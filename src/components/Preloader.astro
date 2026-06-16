@@ -1,0 +1,49 @@
+---
+// Preloader
+---
+
+<div class='preloader' data-preloader>
+	<div class='preloader__inner'>
+		<div class='preloader__count' data-preloader-count>0</div>
+		<div class='preloader__bar'>
+			<div class='preloader__bar-fill' data-preloader-bar></div>
+		</div>
+		<p class='preloader__label'>Cargando estudio</p>
+	</div>
+</div>
+
+<style>
+	.preloader__bar {
+		background: var(--border);
+	}
+</style>
+
+<script>
+	const preloader = document.querySelector('[data-preloader]') as HTMLElement | null;
+	const countEl = document.querySelector('[data-preloader-count]') as HTMLElement | null;
+	const barEl = document.querySelector('[data-preloader-bar]') as HTMLElement | null;
+
+	if (preloader && countEl && barEl) {
+		const start = performance.now();
+		const duration = 1400;
+
+		function update(now: number) {
+			const t = Math.min((now - start) / duration, 1);
+			const eased = 1 - Math.pow(1 - t, 3);
+			const value = Math.round(eased * 100);
+			countEl.textContent = String(value);
+			barEl.style.width = `${value}%`;
+			if (t < 1) requestAnimationFrame(update);
+			else {
+				setTimeout(() => {
+					preloader.classList.add('is-done');
+					document.body.classList.remove('is-loading');
+					setTimeout(() => preloader.remove(), 1100);
+				}, 200);
+			}
+		}
+
+		document.body.classList.add('is-loading');
+		requestAnimationFrame(update);
+	}
+</script>

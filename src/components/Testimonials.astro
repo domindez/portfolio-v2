@@ -1,0 +1,132 @@
+---
+import { testimonials } from '../data/content';
+---
+
+<section class='testimonials section'>
+	<div class='container'>
+		<header class='section-head' data-reveal>
+			<p class='eyebrow'><span class='dot'></span> Voces</p>
+			<h2 class='section-title'>
+				Lo que dicen<br />
+				<em class='serif-italic'>quienes ya trabajan</em><br />
+				con nosotros.
+			</h2>
+			<p class='section-lede'>
+				Las mejores pruebas de un trabajo no son las palabras del estudio, sino las de los
+				clientes que ya han confiado.
+			</p>
+		</header>
+
+		<div class='testimonials__grid' data-reveal-stagger>
+			{
+				testimonials.map((t) => (
+					<figure class='testimonial'>
+						<svg
+							class='testimonial__quote'
+							width='40'
+							height='32'
+							viewBox='0 0 40 32'
+							fill='none'
+							aria-hidden='true'
+						>
+							<path
+								d='M0 32V20.5C0 13.6 1.2 8.5 3.6 5.2C6 1.8 9.4 0 13.8 0L15 5.4C12.6 5.8 10.8 6.8 9.6 8.4C8.4 10 7.8 12.2 7.8 15H13.8V32H0ZM24 32V20.5C24 13.6 25.2 8.5 27.6 5.2C30 1.8 33.4 0 37.8 0L39 5.4C36.6 5.8 34.8 6.8 33.6 8.4C32.4 10 31.8 12.2 31.8 15H37.8V32H24Z'
+								fill='currentColor'
+							/>
+						</svg>
+						<blockquote class='testimonial__text'>{t.quote}</blockquote>
+						<figcaption class='testimonial__author'>
+							<div>
+								<p class='testimonial__name'>{t.author}</p>
+								<p class='testimonial__role'>
+									{t.role} · {t.company}
+								</p>
+							</div>
+						</figcaption>
+					</figure>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.testimonials {
+		background: var(--bg-2);
+		border-block: 1px solid var(--border);
+	}
+
+	.serif-italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--accent);
+	}
+
+	.testimonials__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5rem;
+	}
+
+	.testimonial {
+		padding: 2rem;
+		background: var(--bg-3);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		transition:
+			border-color 0.4s var(--ease-out),
+			transform 0.4s var(--ease-out);
+	}
+
+	.testimonial:hover {
+		border-color: var(--border-accent);
+		transform: translateY(-4px);
+	}
+
+	.testimonial__quote {
+		color: var(--accent);
+		opacity: 0.6;
+	}
+
+	.testimonial__text {
+		font-size: var(--fs-400);
+		line-height: 1.5;
+		color: var(--fg);
+		flex: 1;
+		font-weight: 400;
+		letter-spacing: -0.01em;
+	}
+
+	.testimonial__author {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.testimonial__name {
+		font-size: var(--fs-200);
+		font-weight: 500;
+		color: var(--fg);
+	}
+
+	.testimonial__role {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+		margin-top: 0.2rem;
+	}
+
+	@media (max-width: 1000px) {
+		.testimonials__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

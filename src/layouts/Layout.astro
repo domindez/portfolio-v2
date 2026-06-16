@@ -1,75 +1,74 @@
 ---
-import '@fontsource/quattrocento'
-import Header from '../components/Header.astro'
-import Footer from '../components/Footer.astro'
+import '@fontsource-variable/space-grotesk/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Preloader from '../components/Preloader.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Domindez Studio — Diseño y desarrollo web a medida',
+	description = 'Estudio de diseño y desarrollo web. Creamos webs a medida, rápidas y con identidad para marcas que quieren destacar.',
+} = Astro.props as Props;
 ---
 
 <!doctype html>
 <html lang='es'>
 	<head>
 		<meta charset='UTF-8' />
-		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+		<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover' />
+		<meta name='theme-color' content='#0a0a0a' />
 		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
 		<meta name='generator' content={Astro.generator} />
 
-		<!-- Título y descripción -->
-		<title>Daniel Domínguez - Desarrollador Web Fullstack</title>
-		<meta
-			name='description'
-			content='Soy Daniel Domínguez, desarrollador web y fullstack. En mi portafolio encontrarás mis proyectos y las vías de contacto para contratarme.'
-		/>
+		<title>{title}</title>
+		<meta name='description' content={description} />
 		<meta
 			name='keywords'
-			content='Daniel Domínguez, desarrollador web, fullstack, portafolio, proyectos, contacto, contratar'
+			content='diseño web, desarrollo web, agencia web, portfolio, freelancer, astro, react, next, domindez'
 		/>
 		<meta name='robots' content='index, follow' />
+		<link rel='canonical' href='https://domindez.com' />
 
-		<script is:inline>
-			window.dataLayer = window.dataLayer || []
-			function gtag() {
-				dataLayer.push(arguments)
-			}
-		</script>
-
-		<!-- GTM: Head -->
-		<script is:inline>
-			;(function (w, d, s, l, i) {
-				console.log('GTM')
-				w[l] = w[l] || []
-				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
-				var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s),
-					dl = l != 'dataLayer' ? '&l=' + l : ''
-				j.async = true
-				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
-				f.parentNode.insertBefore(j, f)
-			})(window, document, 'script', 'dataLayer', 'GTM-TSJPBNVN')
-		</script>
-
-		<!-- Open Graph (para Facebook y otros) -->
-		<meta property='og:title' content='Daniel Domínguez - Desarrollador Web Fullstack' />
-		<meta
-			property='og:description'
-			content='Descubre mis proyectos y contáctame para colaborar en tu próximo proyecto.'
-		/>
+		<!-- Open Graph -->
+		<meta property='og:title' content={title} />
+		<meta property='og:description' content={description} />
 		<meta property='og:type' content='website' />
 		<meta property='og:url' content='https://domindez.com' />
 		<meta property='og:image' content='https://domindez.com/og-image.jpg' />
 
-		<!-- Twitter Cards -->
+		<!-- Twitter -->
 		<meta name='twitter:card' content='summary_large_image' />
-		<meta name='twitter:title' content='Daniel Domínguez - Desarrollador Web y Fullstack' />
-		<meta
-			name='twitter:description'
-			content='Soy Daniel Domínguez, desarrollador web y fullstack. Explora mi portafolio y contáctame.'
-		/>
+		<meta name='twitter:title' content={title} />
+		<meta name='twitter:description' content={description} />
 		<meta name='twitter:image' content='https://domindez.com/og-image.jpg' />
 
-		<!-- Canonical -->
-		<link rel='canonical' href='https://domindez.com' />
+		<!-- GTM head -->
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+		</script>
+		<script is:inline>
+			;(function (w, d, s, l, i) {
+				w[l] = w[l] || [];
+				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+				var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s),
+					dl = l != 'dataLayer' ? '&l=' + l : '';
+				j.async = true;
+				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+				f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-TSJPBNVN');
+		</script>
 	</head>
 	<body>
-		<!-- GTM: Body -->
+		<!-- GTM body -->
 		<noscript
 			><iframe
 				src='https://www.googletagmanager.com/ns.html?id=GTM-5LF986KH'
@@ -78,29 +77,31 @@ import Footer from '../components/Footer.astro'
 				style='display:none;visibility:hidden'></iframe></noscript
 		>
 
+		<Preloader />
+
+		<div class='grain' aria-hidden='true'></div>
+
 		<Header />
-		<slot />
+
+		<main id='main'>
+			<slot />
+		</main>
+
 		<Footer />
+
+		<script>
+			import { initLenis } from '../scripts/lenis';
+			import { initCursor, initMagnetic } from '../scripts/cursor';
+			import { initReveal, initCounters, initMarquee } from '../scripts/reveal';
+
+			document.addEventListener('DOMContentLoaded', () => {
+				initLenis();
+				initCursor();
+				initReveal();
+				initCounters();
+				initMarquee();
+				initMagnetic();
+			});
+		</script>
 	</body>
 </html>
-
-<style is:global>
-	* {
-		margin: 0;
-		padding: 0;
-		font-family: 'Quattrocento', serif;
-		scroll-behavior: smooth;
-
-		--dark: #2b2b2b;
-		--main: #60a39d;
-	}
-
-	html {
-		background: url('/body_bg.jpg');
-		background-size: 10px;
-	}
-
-	img {
-		max-width: 100%;
-	}
-</style>

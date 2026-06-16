@@ -1,220 +1,350 @@
 ---
-import CloseIcon from './CloseIcon.astro'
-import Mail from './icons/Mail.astro'
-import Phone from './icons/Phone.astro'
-import WhatsAppBlack from './icons/WhatsAppBlack.astro'
-import ToggleIcon from './ToggleIcon.astro'
+const navItems = [
+	{ href: '#services', label: 'Servicios' },
+	{ href: '#work', label: 'Trabajo' },
+	{ href: '#process', label: 'Proceso' },
+	{ href: '#stack', label: 'Stack' },
+	{ href: '#contact', label: 'Contacto' },
+];
 ---
 
-<header>
-	<h1>Daniel Domínguez</h1>
-	<div class='right-area'>
-		<nav>
+<header class='site-header' data-header>
+	<div class='container header-inner'>
+		<a href='/#top' class='logo' aria-label='Domindez Studio'>
+			<svg
+				width='28'
+				height='28'
+				viewBox='0 0 32 32'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'
+				aria-hidden='true'
+			>
+				<rect width='32' height='32' rx='6' fill='currentColor' />
+				<path
+					d='M9 8L9 24M9 8L17 24M9 16L17 8'
+					stroke='#0a0a0a'
+					stroke-width='2.4'
+					stroke-linecap='square'
+					fill='none'></path>
+				<circle cx='23' cy='20' r='2' fill='#0a0a0a' />
+			</svg>
+			<span>Domindez<span class='logo__dot'>.studio</span></span>
+		</a>
+
+		<nav class='nav-desktop' aria-label='Navegación principal'>
 			<ul>
-				<li><a href='#works'>Trabajos</a></li>
-				<li><a href='#stack'>Mi Stack</a></li>
-				<li><a href='#customers'>Clientes</a></li>
-				<li><a class='contact' href='#contact'>¿Hablamos?</a></li>
-				<li class='icons'>
-					<a aria-label='phone' href='tel:+34660882876'><Phone /></a>
-					<a aria-label='email' href='mailto:hola@domindez.com'><Mail /></a>
-					<a aria-label='whatsapp' href='https://wa.me/34660882876'><WhatsAppBlack /></a>
-				</li>
+				{
+					navItems.map((item) => (
+						<li>
+							<a href={item.href}>{item.label}</a>
+						</li>
+					))
+				}
 			</ul>
 		</nav>
-	</div>
-	<div class='toggle'>
-		<ToggleIcon />
-	</div>
-	<div class='close'>
-		<CloseIcon />
+
+		<div class='header-actions'>
+			<a href='#contact' class='btn btn--sm magnetic header-cta' data-magnetic='0.3'>
+				<span class='header-cta__text'>Iniciar proyecto</span>
+				<svg
+					class='header-cta__arrow'
+					width='12'
+					height='12'
+					viewBox='0 0 24 24'
+					fill='none'
+					stroke='currentColor'
+					stroke-width='2.5'
+					stroke-linecap='square'
+					aria-hidden='true'
+				>
+					<path d='M7 17L17 7M17 7H8M17 7V16'></path>
+				</svg>
+			</a>
+
+			<button class='menu-toggle' aria-label='Abrir menú' data-menu-toggle>
+				<span></span>
+				<span></span>
+			</button>
+		</div>
 	</div>
 </header>
 
+<div class='mobile-menu' data-mobile-menu aria-hidden='true'>
+	<div class='mobile-menu__inner container'>
+		<nav aria-label='Navegación móvil'>
+			<ul>
+				{
+					navItems.map((item, i) => (
+						<li style={`--i: ${i}`}>
+							<a href={item.href}>{item.label}</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+		<div class='mobile-menu__footer'>
+			<a href='mailto:hola@domindez.com' class='tag'>hola@domindez.com</a>
+			<a href='https://wa.me/34660882876' class='tag'>+34 660 88 28 76</a>
+		</div>
+	</div>
+</div>
+
 <style>
-	header {
+	.site-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 50;
+		padding-block: 1.25rem;
+		transition:
+			background-color 0.4s var(--ease-out),
+			backdrop-filter 0.4s var(--ease-out),
+			padding 0.4s var(--ease-out),
+			border-color 0.4s var(--ease-out);
+		border-bottom: 1px solid transparent;
+	}
+
+	.site-header.is-scrolled {
+		background: rgba(10, 10, 10, 0.7);
+		backdrop-filter: blur(20px) saturate(140%);
+		-webkit-backdrop-filter: blur(20px) saturate(140%);
+		padding-block: 0.75rem;
+		border-bottom-color: var(--border);
+	}
+
+	.header-inner {
 		display: flex;
 		align-items: center;
-		margin: 0px 10%;
 		justify-content: space-between;
-		padding: 30px 0px;
+		gap: 2rem;
 	}
 
-	.close {
-		display: none;
+	.logo {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+		font-family: var(--font-sans);
+		font-weight: 500;
+		font-size: 1.05rem;
+		letter-spacing: -0.02em;
+		color: var(--fg);
+		transition: color 0.3s var(--ease-out);
 	}
 
-	.right-area {
+	.logo:hover {
+		color: var(--accent);
+	}
+
+	.logo svg {
+		flex-shrink: 0;
+		transition: transform 0.5s var(--ease-spring);
+	}
+
+	.logo:hover svg {
+		transform: rotate(-8deg);
+	}
+
+	.logo__dot {
+		color: var(--accent);
+	}
+
+	.nav-desktop ul {
+		display: flex;
+		gap: 0.25rem;
+	}
+
+	.nav-desktop a {
+		position: relative;
+		display: inline-block;
+		padding: 0.5rem 1rem;
+		font-size: var(--fs-200);
+		color: var(--fg-dim);
+		font-weight: 500;
+		border-radius: var(--radius-pill);
+		transition: color 0.3s var(--ease-out);
+	}
+
+	.nav-desktop a:hover {
+		color: var(--fg);
+	}
+
+	.header-actions {
 		display: flex;
 		align-items: center;
-		gap: 30px;
+		gap: 1rem;
 	}
 
-	nav ul {
+	.header-cta {
+		white-space: nowrap;
+		flex-shrink: 0;
+		padding: 0.7rem 1.1rem;
+	}
+
+	.header-cta__text {
+		display: inline-block;
+		white-space: nowrap;
+	}
+
+	.menu-toggle {
+		display: none;
+		width: 44px;
+		height: 44px;
+		position: relative;
+		border-radius: 50%;
+		border: 1px solid var(--border-strong);
+		background: transparent;
+	}
+
+	.menu-toggle span {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 18px;
+		height: 1.5px;
+		background: var(--fg);
+		transform-origin: center;
+		transition: transform 0.4s var(--ease-out);
+	}
+
+	.menu-toggle span:nth-child(1) {
+		transform: translate(-50%, -4px);
+	}
+
+	.menu-toggle span:nth-child(2) {
+		transform: translate(-50%, 4px);
+	}
+
+	.is-menu-open .menu-toggle span:nth-child(1) {
+		transform: translate(-50%, 0) rotate(45deg);
+	}
+
+	.is-menu-open .menu-toggle span:nth-child(2) {
+		transform: translate(-50%, 0) rotate(-45deg);
+	}
+
+	/* Mobile menu */
+	.mobile-menu {
+		position: fixed;
+		inset: 0;
+		z-index: 49;
+		background: var(--bg);
+		display: grid;
+		place-items: center;
+		opacity: 0;
+		visibility: hidden;
+		clip-path: inset(0 0 100% 0);
+		transition:
+			clip-path 0.6s var(--ease-in-out),
+			opacity 0.3s;
+	}
+
+	.mobile-menu.is-open {
+		opacity: 1;
+		visibility: visible;
+		clip-path: inset(0 0 0 0);
+	}
+
+	.mobile-menu__inner {
 		display: flex;
-		list-style: none;
-		gap: 30px;
+		flex-direction: column;
+		gap: 4rem;
+		padding-block: 8rem 2rem;
 	}
 
-	a {
-		color: black;
-		text-decoration: none;
-		transition: all 0.3s ease;
+	.mobile-menu nav ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 	}
 
-	nav ul li a:hover {
-		transform: translateY(-2px);
+	.mobile-menu nav a {
+		display: inline-block;
+		font-family: var(--font-sans);
+		font-size: clamp(2rem, 8vw, 3rem);
+		font-weight: 500;
+		letter-spacing: -0.03em;
+		color: var(--fg);
+		opacity: 0;
+		transform: translateY(40px);
+		transition:
+			opacity 0.6s var(--ease-out),
+			transform 0.6s var(--ease-out),
+			color 0.3s var(--ease-out);
+		transition-delay: calc(var(--i) * 0.07s);
 	}
 
-	.contact {
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		color: white;
-		padding: 10px 20px;
-		border-radius: 25px;
-		transition: all 0.3s ease;
-		box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-		font-weight: 600;
+	.mobile-menu.is-open nav a {
+		opacity: 1;
+		transform: none;
 	}
 
-	.contact:hover {
-		background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-		transform: translateY(-2px);
-		box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+	.mobile-menu nav a:hover {
+		color: var(--accent);
 	}
 
-	.toggle {
-		display: none;
+	.mobile-menu__footer {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		opacity: 0;
+		transform: translateY(20px);
+		transition: all 0.6s var(--ease-out) 0.4s;
 	}
 
-	.icons {
-		display: none;
+	.mobile-menu.is-open .mobile-menu__footer {
+		opacity: 1;
+		transform: none;
 	}
 
-	@media (max-width: 1000px) {
-		nav {
+	@media (max-width: 900px) {
+		.nav-desktop {
 			display: none;
 		}
 
-		.icons {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-top: 70px;
-			gap: 30px;
+		.menu-toggle {
+			display: block;
 		}
 
-		.icons a {
-			background: rgba(102, 126, 234, 0.1);
-			padding: 10px;
-			display: flex;
-			border-radius: 50%;
-			transform: scale(1.2);
-			transition: all 0.3s ease;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-		}
-
-		.icons a:hover {
-			background: rgba(102, 126, 234, 0.2);
-			transform: scale(1.3);
-			box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-		}
-
-		nav.visible {
-			display: flex;
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100dvh;
-			background: url('/body_bg.jpg');
-			background-size: 10px;
-			align-items: center;
-			justify-content: center;
-			z-index: 10;
-			backdrop-filter: blur(10px);
-		}
-
-		.close.visible {
-			display: flex;
-			z-index: 11;
-			position: fixed;
-			top: 30px;
-			right: 10%;
-		}
-
-		nav ul {
-			flex-direction: column;
-			text-align: center;
-		}
-
-		nav ul li {
-			font-size: 2.5em;
-			opacity: 0;
-			transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-		}
-
-		.toggle {
-			display: flex;
-		}
-
-		h1 {
-			font-size: 1.5em;
-		}
-
-		@keyframes fadeInUp {
-			from {
-				opacity: 0;
-				transform: translateY(30px) scale(0.95);
-			}
-			to {
-				opacity: 1;
-				transform: translateY(0) scale(1);
-			}
-		}
-
-		/* Cuando el menú es visible, cada li se anima con un delay escalonado */
-		nav.visible ul li {
-			animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-		}
-
-		nav.visible ul li:nth-child(1) {
-			animation-delay: 0.1s;
-		}
-		nav.visible ul li:nth-child(2) {
-			animation-delay: 0.2s;
-		}
-		nav.visible ul li:nth-child(3) {
-			animation-delay: 0.3s;
-		}
-		nav.visible ul li:nth-child(4) {
-			animation-delay: 0.4s;
-		}
-		nav.visible ul li:nth-child(5) {
-			animation-delay: 0.5s;
+		.header-actions .btn {
+			display: none;
 		}
 	}
 </style>
 
 <script>
-	const toggleBtn = document.querySelector('.toggle')
-	const navElement = document.querySelector('nav')
-	const closeBtn = document.querySelector('.close')
+	const header = document.querySelector('[data-header]') as HTMLElement | null;
+	const toggle = document.querySelector('[data-menu-toggle]') as HTMLButtonElement | null;
+	const menu = document.querySelector('[data-mobile-menu]') as HTMLElement | null;
 
-	toggleBtn?.addEventListener('click', () => {
-		navElement?.classList.add('visible')
-		closeBtn?.classList.add('visible')
-		document.body.style.overflow = 'hidden'
-	})
+	if (header) {
+		const onScroll = () => {
+			if (window.scrollY > 40) header.classList.add('is-scrolled');
+			else header.classList.remove('is-scrolled');
+		};
+		onScroll();
+		window.addEventListener('scroll', onScroll, { passive: true });
+	}
 
-	navElement?.addEventListener('click', () => {
-		navElement?.classList.remove('visible')
-		closeBtn?.classList.remove('visible')
-		document.body.style.overflow = ''
-	})
+	if (toggle && menu) {
+		const open = () => {
+			document.body.classList.add('is-menu-open');
+			menu.classList.add('is-open');
+			menu.setAttribute('aria-hidden', 'false');
+		};
+		const close = () => {
+			document.body.classList.remove('is-menu-open');
+			menu.classList.remove('is-open');
+			menu.setAttribute('aria-hidden', 'true');
+		};
 
-	closeBtn?.addEventListener('click', () => {
-		navElement?.classList.remove('visible')
-		closeBtn?.classList.remove('visible')
-		document.body.style.overflow = ''
-	})
+		toggle.addEventListener('click', () => {
+			if (menu.classList.contains('is-open')) close();
+			else open();
+		});
+
+		menu.querySelectorAll('a').forEach((link) => {
+			link.addEventListener('click', close);
+		});
+	}
 </script>

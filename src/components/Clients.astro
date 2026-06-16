@@ -1,0 +1,145 @@
+---
+import { Image } from 'astro:assets';
+
+const clients = [
+	'gottan',
+	'bsmash',
+	'dak',
+	'nogalera',
+	'nch',
+	'seixis',
+	'ovidio',
+	'masai',
+	'lucky',
+	'unter',
+	'iturrialde',
+	'vermu',
+	'amar',
+	'arancaes',
+	'cafe-plaza',
+	'casita-abuela',
+	'dorado',
+	'la-emperatriz',
+	'la-mexicana',
+	'mediterraneo',
+	'meson-santiso',
+	'premier2',
+	'shanao',
+	'Tabanco',
+	'the-corner',
+	'victoria',
+	'can-boleta',
+];
+---
+
+<section class='clients'>
+	<div class='container'>
+		<header class='section-head' data-reveal>
+			<p class='eyebrow'><span class='dot'></span> Confían en nosotros</p>
+			<h2 class='section-title'>
+				Más de <em class='serif-italic'>40 clientes</em><br />
+				que vuelven.
+			</h2>
+			<p class='section-lede'>
+				Restaurantes, hoteles, startups, freelancers, profesionales. Trabajamos con quien
+				valora el detalle.
+			</p>
+		</header>
+	</div>
+
+	<div class='clients__marquee' data-marquee data-direction='left' data-speed='45'>
+		<div class='clients__track' data-marquee-track>
+			{
+				clients.concat(clients).map((client) => (
+					<div class='clients__item'>
+						<Image
+							loading='lazy'
+							width={200}
+							height={200}
+							src={`/customers-logos/${client}.webp`}
+							alt={client}
+						/>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.clients {
+		padding-block: 5rem 4rem;
+		background: var(--bg);
+		overflow: hidden;
+	}
+
+	.serif-italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--accent);
+	}
+
+	.clients__marquee {
+		position: relative;
+		overflow: hidden;
+		margin-top: 3rem;
+		mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			black 5%,
+			black 95%,
+			transparent 100%
+		);
+	}
+
+	.clients__track {
+		display: inline-flex;
+		gap: 1rem;
+		align-items: center;
+		padding-left: 1rem;
+		will-change: transform;
+	}
+
+	.clients__item {
+		flex-shrink: 0;
+		width: 180px;
+		height: 100px;
+		display: grid;
+		place-items: center;
+		padding: 1.25rem;
+		background: var(--bg-2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		transition:
+			border-color 0.3s var(--ease-out),
+			background 0.3s var(--ease-out);
+	}
+
+	.clients__item:hover {
+		border-color: var(--border-strong);
+		background: var(--bg-3);
+	}
+
+	.clients__item img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		filter: grayscale(1) brightness(1.4);
+		opacity: 0.6;
+		transition: all 0.3s var(--ease-out);
+	}
+
+	.clients__item:hover img {
+		filter: grayscale(0) brightness(1);
+		opacity: 1;
+	}
+
+	@media (max-width: 600px) {
+		.clients__item {
+			width: 130px;
+			height: 80px;
+			padding: 1rem;
+		}
+	}
+</style>

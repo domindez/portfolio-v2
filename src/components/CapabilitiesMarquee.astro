@@ -1,0 +1,93 @@
+---
+const items = [
+	'Diseño Web',
+	'Desarrollo a Medida',
+	'E-commerce',
+	'SEO',
+	'Performance',
+	'Branding Digital',
+	'Landing Pages',
+	'Web Apps',
+	'CMS',
+	'Mantenimiento',
+];
+
+const itemsSecondary = [
+	'Diseño UI/UX',
+	'WordPress',
+	'Shopify',
+	'Headless CMS',
+	'Animaciones',
+	'Accesibilidad',
+	'Optimización',
+	'Integraciones',
+	'Analítica',
+	'Soporte Continuo',
+];
+---
+
+<section class='cap-strip' aria-label='Capacidades'>
+	<div class='marquee-row' data-marquee data-direction='left' data-speed='40'>
+		<div class='marquee-row__track' data-marquee-track>
+			{
+				items.concat(items).map((item) => (
+					<div class='cap-item'>
+						<span>{item}</span>
+						<span class='cap-item__star'>✦</span>
+					</div>
+				))
+			}
+		</div>
+	</div>
+	<!-- <div class='marquee-row reverse' data-marquee data-direction='right' data-speed='30'>
+		<div class='marquee-row__track' data-marquee-track>
+			{
+				itemsSecondary.concat(itemsSecondary).map((item) => (
+					<div class='cap-item'>
+						<span>{item}</span>
+						<span class='cap-item__star'>✦</span>
+					</div>
+				))
+			}
+		</div>
+	</div> -->
+</section>
+
+<style>
+	.cap-strip {
+		padding-block: 2rem;
+		border-block: 1px solid var(--border);
+		background: var(--bg-2);
+		overflow: hidden;
+	}
+
+	.marquee-row {
+		position: relative;
+		overflow: hidden;
+		white-space: nowrap;
+		padding-block: 0.5rem;
+	}
+
+	.marquee-row__track {
+		display: inline-flex;
+		gap: 1rem;
+		align-items: center;
+		will-change: transform;
+	}
+
+	.cap-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 1rem;
+		font-size: clamp(1.5rem, 3.5vw, 3rem);
+		font-weight: 500;
+		letter-spacing: -0.025em;
+		color: var(--fg);
+		padding-inline: 0.5rem;
+	}
+
+	.cap-item__star {
+		color: var(--accent);
+		font-size: 0.6em;
+	}
+</style>

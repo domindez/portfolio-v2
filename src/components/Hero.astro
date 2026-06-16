@@ -1,0 +1,284 @@
+---
+const stats = [
+	{ value: '10+', label: 'Años' },
+	{ value: '350+', label: 'Proyectos' },
+	{ value: '200+', label: 'Clientes' },
+];
+---
+
+<section class='hero' id='top'>
+	<div class='container'>
+		<div class='hero__top' data-reveal>
+			<p class='eyebrow'>
+				<span class='dot'></span> Estudio independiente
+			</p>
+			<p class='hero__location'>Málaga, España</p>
+		</div>
+
+		<h1 class='hero__title' data-reveal-stagger>
+			<span class='hero__line'>
+				<span class='hero__word'>Diseño</span>
+				<span class='hero__word italic'>y</span>
+				<span class='hero__word'>desarrollo</span>
+			</span>
+			<span class='hero__line'>
+				<span class='hero__word'>web</span>
+				<span class='hero__word hero__word--accent'>a medida.</span>
+			</span>
+		</h1>
+
+		<div class='hero__bottom'>
+			<p class='hero__sub' data-reveal>
+				Construimos experiencias digitales que convierten.
+				<span class='hero__sub-dim'>Código a medida, sin plantillas. Estrategia, diseño y desarrollo bajo un mismo techo.</span>
+			</p>
+
+			<div class='hero__actions' data-reveal>
+				<a href='#contact' class='btn magnetic' data-magnetic='0.3'>
+					<span>Iniciar un proyecto</span>
+					<svg
+						class='arrow'
+						width='14'
+						height='14'
+						viewBox='0 0 24 24'
+						fill='none'
+						stroke='currentColor'
+						stroke-width='2'
+						stroke-linecap='square'
+						aria-hidden='true'
+					>
+						<path d='M7 17L17 7M17 7H8M17 7V16'></path>
+					</svg>
+				</a>
+				<a href='#work' class='btn btn--ghost magnetic' data-magnetic='0.3'>
+					<span>Ver trabajo</span>
+				</a>
+			</div>
+		</div>
+
+		<div class='hero__stats' data-reveal>
+			{
+				stats.map((stat) => (
+					<div class='hero__stat'>
+						<span class='hero__stat-value'>{stat.value}</span>
+						<span class='hero__stat-label'>{stat.label}</span>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		min-height: 100dvh;
+		padding-block: 5rem 1.5rem;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+	}
+
+	.hero::before {
+		content: '';
+		position: absolute;
+		top: -10%;
+		right: -15%;
+		width: clamp(400px, 60vw, 800px);
+		height: clamp(400px, 60vw, 800px);
+		background: radial-gradient(circle at 30% 30%, var(--accent-dim) 0%, transparent 60%);
+		filter: blur(60px);
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.hero .container {
+		display: flex;
+		flex-direction: column;
+		gap: 1.75rem;
+		position: relative;
+		z-index: 2;
+	}
+
+	.hero__top {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.hero__location {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.hero__title {
+		font-size: clamp(3rem, 1.5rem + 6.5vw, 7.5rem);
+		font-weight: 500;
+		letter-spacing: -0.05em;
+		line-height: 0.9;
+		text-wrap: balance;
+	}
+
+	.hero__line {
+		display: block;
+		overflow: hidden;
+		padding-bottom: 0.18em;
+		margin-bottom: -0.18em;
+	}
+
+	.hero__word {
+		display: inline-block;
+		margin-right: 0.25em;
+	}
+
+	.hero__word.italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--fg-dim);
+	}
+
+	.hero__word--accent {
+		color: var(--accent);
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+	}
+
+	.hero__bottom {
+		display: grid;
+		grid-template-columns: 1.2fr 1fr;
+		gap: 2rem;
+		align-items: end;
+	}
+
+	.hero__sub {
+		font-size: var(--fs-400);
+		line-height: 1.4;
+		max-width: 36ch;
+		color: var(--fg);
+	}
+
+	.hero__sub-dim {
+		color: var(--fg-dim);
+	}
+
+	.hero__actions {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+		justify-self: end;
+	}
+
+	/* Stats bar */
+	.hero__stats {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.hero__stat {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding: 0 1.5rem;
+		border-left: 1px solid var(--border);
+	}
+
+	.hero__stat:first-child {
+		padding-left: 0;
+		border-left: 0;
+	}
+
+	.hero__stat-value {
+		font-family: var(--font-mono);
+		font-size: clamp(1.8rem, 3vw, 2.5rem);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+		color: var(--fg);
+	}
+
+	.hero__stat-label {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	/* Tablet */
+	@media (max-width: 1100px) {
+		.hero::before {
+			width: 400px;
+			height: 400px;
+			opacity: 0.7;
+		}
+	}
+
+	/* Mobile */
+	@media (max-width: 768px) {
+		.hero {
+			padding-block: 6rem 1.5rem;
+			min-height: auto;
+		}
+
+		.hero__top {
+			gap: 0.75rem;
+		}
+
+		.hero__title {
+			font-size: clamp(2.5rem, 10vw, 4rem);
+		}
+
+		.hero__bottom {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+
+		.hero__actions {
+			justify-self: start;
+		}
+
+		.hero__sub {
+			font-size: var(--fs-300);
+			max-width: 100%;
+		}
+
+		.hero__stats {
+			grid-template-columns: 1fr;
+			gap: 0.75rem;
+			padding-top: 1.25rem;
+		}
+
+		.hero__stat {
+			flex-direction: row;
+			align-items: baseline;
+			justify-content: space-between;
+			padding: 0.5rem 0;
+			border-left: 0;
+			border-top: 1px solid var(--border);
+		}
+
+		.hero__stat:first-child {
+			padding-left: 0;
+		}
+
+		.hero__stat-value {
+			font-size: 1.5rem;
+		}
+
+		.hero::before {
+			width: 300px;
+			height: 300px;
+			top: -10%;
+			right: -30%;
+		}
+	}
+</style>

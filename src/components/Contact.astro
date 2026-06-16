@@ -1,167 +1,357 @@
 ---
-import SectionTitle from './SectionTitle.astro'
+const perks = [
+	'Respuesta en 24h',
+	'Presupuesto sin compromiso',
+	'Pago por hitos',
+];
 ---
 
-<section id='contact'>
-	<SectionTitle title='Contacto' />
-	<h4>¿Hablamos sobre tu web?</h4>
+<section class='contact section' id='contact'>
+	<div class='container'>
+		<header class='section-head' data-reveal>
+			<p class='eyebrow'><span class='dot'></span> Contacto</p>
+			<h2 class='section-title'>
+				¿Listo para<br />
+				<em class='serif-italic'>empezar</em>?
+			</h2>
+			<p class='section-lede'>
+				Cuéntanos tu proyecto. Respondemos siempre en menos de 24h, con ideas reales y un
+				presupuesto claro. Sin compromiso, sin sorpresas.
+			</p>
+		</header>
 
-	<form id='contact-form'>
-		<input type='text' name='user_name' placeholder='Nombre' required />
-		<input type='email' name='user_email' placeholder='Email' required />
-		<input type='tel' name='user_phone' placeholder='Teléfono' required />
-		<textarea name='message' placeholder='Tu mensaje' rows='5' required></textarea>
-		<button type='submit' id='submit-btn'>
-			<span class='btn-text'>Enviar</span>
-			<span class='spinner hidden'></span>
-		</button>
-		<!-- Mensaje de respuesta -->
-		<p id='form-message'></p>
-	</form>
+		<div class='contact__grid'>
+			<div class='contact__left' data-reveal>
+
+				<ul class='contact__perks'>
+					{
+						perks.map((perk) => (
+							<li>
+								<span class='contact__check'>
+									<svg
+										width='14'
+										height='14'
+										viewBox='0 0 24 24'
+										fill='none'
+										stroke='currentColor'
+										stroke-width='3'
+										stroke-linecap='square'
+										aria-hidden='true'
+									>
+										<path d='M5 12l5 5L20 7' />
+									</svg>
+								</span>
+								{perk}
+							</li>
+						))
+					}
+				</ul>
+
+				<div class='contact__direct'>
+					<a href='mailto:hola@domindez.com' class='contact__direct-link'>
+						<span class='contact__direct-label'>Email</span>
+						<span class='contact__direct-value'>hola@domindez.com</span>
+					</a>
+					<a href='https://wa.me/34660882876' target='_blank' rel='noopener' class='contact__direct-link'>
+						<span class='contact__direct-label'>WhatsApp</span>
+						<span class='contact__direct-value'>+34 660 88 28 76</span>
+					</a>
+				</div>
+			</div>
+
+			<form class='contact__form' data-reveal data-contact-form>
+				<label class='contact__field'>
+					<span>Nombre</span>
+					<input type='text' name='name' placeholder='Tu nombre' required />
+				</label>
+
+				<label class='contact__field'>
+					<span>Email</span>
+					<input type='email' name='email' placeholder='tu@email.com' required />
+				</label>
+
+				<label class='contact__field'>
+					<span>Tipo de proyecto</span>
+					<select name='project' required>
+						<option value='' disabled selected>Elige una opción</option>
+						<option value='web-corporativa'>Web corporativa</option>
+						<option value='ecommerce'>E-commerce</option>
+						<option value='landing'>Landing page</option>
+						<option value='webapp'>Web app / SaaS</option>
+						<option value='otro'>Otro</option>
+					</select>
+				</label>
+
+				<label class='contact__field'>
+					<span>Presupuesto aproximado</span>
+					<select name='budget'>
+						<option value='' disabled selected>Elige un rango</option>
+						<option value='1-2k'>1.000 € — 2.000 €</option>
+						<option value='2-5k'>2.000 € — 5.000 €</option>
+						<option value='5-10k'>5.000 € — 10.000 €</option>
+						<option value='10k+'>10.000 € o más</option>
+					</select>
+				</label>
+
+				<label class='contact__field contact__field--full'>
+					<span>Mensaje</span>
+					<textarea name='message' rows='4' placeholder='Cuéntanos sobre tu proyecto...' required></textarea>
+				</label>
+
+				<button type='submit' class='btn magnetic' data-magnetic='0.3'>
+					<span>Enviar mensaje</span>
+					<svg
+						class='arrow'
+						width='14'
+						height='14'
+						viewBox='0 0 24 24'
+						fill='none'
+						stroke='currentColor'
+						stroke-width='2'
+						stroke-linecap='square'
+						aria-hidden='true'
+					>
+						<path d='M7 17L17 7M17 7H8M17 7V16'></path>
+					</svg>
+				</button>
+
+				<p class='contact__note'>
+					Al enviar abriremos tu cliente de correo. Nada de formularios fantasma.
+				</p>
+			</form>
+		</div>
+	</div>
 </section>
 
 <style>
-	section {
-		margin: 50px 10%;
+	.contact {
+		background: var(--bg);
+		border-top: 1px solid var(--border);
+		position: relative;
 	}
 
-	h4 {
-		margin-top: -30px;
-		margin-bottom: 50px;
-		text-align: center;
-		font-weight: 400;
+	.contact__grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+		align-items: start;
 	}
 
-	form {
+	.contact__left {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
-		max-width: 500px;
-		margin: auto;
-		position: relative;
+		gap: 1.5rem;
 	}
 
-	input,
-	textarea {
-		padding: 0.5rem;
-		font-size: 1rem;
-		border: 1px solid lightgray;
-		border-radius: 5px;
+	.contact__title {
+		font-size: var(--fs-800);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 0.9;
 	}
 
-	button {
-		padding: 15px 30px;
-		font-size: 1.1em;
-		cursor: pointer;
-		border: none;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	.serif-italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--accent);
+	}
+
+	.contact__lede {
+		font-size: var(--fs-400);
+		color: var(--fg-dim);
+		line-height: 1.5;
+		max-width: 45ch;
+	}
+
+	.contact__perks {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-block: 1rem;
+	}
+
+	.contact__perks li {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		position: relative;
-		border-radius: 30px;
-		color: white;
-		transition: all 0.3s ease;
-		box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-		font-weight: 600;
+		gap: 0.75rem;
+		font-size: var(--fs-300);
+		color: var(--fg);
 	}
 
-	button:hover {
-		background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-		transform: translateY(-3px);
-		box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
-	}
-
-	.spinner {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: 1rem;
-		height: 1rem;
-		border: 2px solid rgba(0, 0, 0, 0.2);
-		border-top-color: rgba(0, 0, 0, 0.6);
+	.contact__check {
+		display: grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
 		border-radius: 50%;
-		animation: spin 0.6s linear infinite;
-		vertical-align: middle;
+		background: var(--accent);
+		color: var(--accent-ink);
 	}
 
-	@keyframes spin {
-		to {
-			transform: translate(-50%, -50%) rotate(360deg);
+	.contact__direct {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.contact__direct-link {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		transition: color 0.3s var(--ease-out);
+	}
+
+	.contact__direct-link:hover {
+		color: var(--accent);
+	}
+
+	.contact__direct-label {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.contact__direct-value {
+		font-size: var(--fs-500);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+	}
+
+	/* Form */
+	.contact__form {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.25rem;
+		padding: 2.5rem;
+		background: var(--bg-2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-xl);
+	}
+
+	.contact__field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.contact__field--full {
+		grid-column: 1 / -1;
+	}
+
+	.contact__field span {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.contact__field input,
+	.contact__field select,
+	.contact__field textarea {
+		padding: 0.85rem 1rem;
+		background: var(--bg-3);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		color: var(--fg);
+		font-size: var(--fs-300);
+		font-family: var(--font-sans);
+		transition: all 0.3s var(--ease-out);
+	}
+
+	.contact__field input::placeholder,
+	.contact__field textarea::placeholder {
+		color: var(--fg-mute);
+	}
+
+	.contact__field input:focus,
+	.contact__field select:focus,
+	.contact__field textarea:focus {
+		outline: 0;
+		border-color: var(--accent);
+		background: var(--bg-elev);
+	}
+
+	.contact__field textarea {
+		resize: vertical;
+		min-height: 120px;
+		font-family: var(--font-sans);
+	}
+
+	.contact__field select {
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1a1' stroke-width='2' stroke-linecap='square'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 1rem center;
+		padding-right: 2.5rem;
+	}
+
+	.contact__form .btn {
+		grid-column: 1 / -1;
+		justify-content: center;
+		padding: 1.1rem 1.5rem;
+		font-size: var(--fs-300);
+	}
+
+	.contact__note {
+		grid-column: 1 / -1;
+		font-size: var(--fs-100);
+		color: var(--fg-mute);
+		text-align: center;
+		font-family: var(--font-mono);
+	}
+
+	@media (max-width: 1000px) {
+		.contact__grid {
+			grid-template-columns: 1fr;
+			gap: 3rem;
+		}
+
+		.contact__left {
+			position: static;
 		}
 	}
 
-	.hidden {
-		display: none;
-	}
-
-	.text-transparent {
-		color: transparent;
-	}
-
-	/* Estilos para el mensaje debajo del botón */
-	#form-message {
-		font-size: 0.9rem;
-		text-align: center;
-		margin-top: 0.5rem;
-	}
-	#form-message.success {
-		color: green;
-	}
-	#form-message.error {
-		color: red;
+	@media (max-width: 600px) {
+		.contact__form {
+			grid-template-columns: 1fr;
+			padding: 1.5rem;
+		}
 	}
 </style>
 
 <script>
-	import emailjs from 'emailjs-com'
+	const form = document.querySelector('[data-contact-form]') as HTMLFormElement | null;
 
-	declare global {
-		interface Window {
-			dataLayer: any[]
+	form?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const fd = new FormData(form);
+		const data = Object.fromEntries(fd.entries());
+
+		const subject = `Nuevo proyecto: ${data.project || 'Sin especificar'} — ${data.name || 'Anónimo'}`;
+		const body = `Hola Daniel,
+
+Me llamo ${data.name} y me pongo en contacto desde tu portfolio.
+
+Tipo de proyecto: ${data.project}
+Presupuesto aproximado: ${data.budget}
+
+${data.message}
+
+---
+Email de contacto: ${data.email}
+`;
+
+		const mailto = `mailto:hola@domindez.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		window.location.href = mailto;
+
+		if (typeof window !== 'undefined' && (window as any).dataLayer) {
+			(window as any).dataLayer.push({ event: 'formulario_enviado' });
 		}
-	}
-
-	const form = document.getElementById('contact-form') as HTMLFormElement
-	const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement
-	const btnText = submitBtn.querySelector('.btn-text') as HTMLSpanElement
-	const spinner = submitBtn.querySelector('.spinner') as HTMLSpanElement
-	const formMessage = document.getElementById('form-message') as HTMLParagraphElement
-
-	form?.addEventListener('submit', async function (e) {
-		e.preventDefault()
-
-		// Limpiar mensaje previo
-		formMessage.textContent = ''
-		formMessage.classList.remove('success', 'error')
-
-		// Mostrar spinner y ocultar texto
-		btnText.classList.add('text-transparent')
-		spinner.classList.remove('hidden')
-		submitBtn.disabled = true
-
-		const serviceID = 'service_g5v1uj4'
-		const templateID = 'template_3xmufai'
-		const userID = '5oguhkuB2Q-TsHoRK'
-
-		try {
-			await emailjs.sendForm(serviceID, templateID, e.target as HTMLFormElement, userID)
-			formMessage.textContent = '¡Mensaje enviado!'
-			window.dataLayer = window.dataLayer || []
-			window.dataLayer.push({
-				event: 'formulario_enviado',
-			})
-			formMessage.classList.add('success')
-			form.reset()
-		} catch (error) {
-			console.error('Error al enviar el mensaje:', error)
-			formMessage.textContent = 'Hubo un error al enviar el mensaje. Inténtalo de nuevo.'
-			formMessage.classList.add('error')
-		} finally {
-			btnText.classList.remove('text-transparent')
-			spinner.classList.add('hidden')
-			submitBtn.disabled = false
-		}
-	})
+	});
 </script>

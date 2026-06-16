@@ -1,0 +1,103 @@
+---
+const stats = [
+	{ value: 5, suffix: '+', label: 'Años de experiencia' },
+	{ value: 18, suffix: '', label: 'Proyectos entregados' },
+	{ value: 40, suffix: '+', label: 'Clientes felices' },
+	{ value: 100, suffix: '%', label: 'Código a medida' },
+];
+---
+
+<section class='stats'>
+	<div class='container'>
+		<header class='section-head section-head--inline' data-reveal>
+			<p class='eyebrow'><span class='dot'></span> Números</p>
+			<h2 class='section-title'>
+				Algunos <em class='serif-italic'>datos</em><br />
+				que hablan por sí solos.
+			</h2>
+		</header>
+
+		<div class='stats__grid' data-reveal-stagger>
+			{
+				stats.map((stat) => (
+					<div class='stat'>
+						<div class='stat__num'>
+							<span data-count={stat.value} data-suffix={stat.suffix}>
+								0{stat.suffix}
+							</span>
+						</div>
+						<p class='stat__label'>{stat.label}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.stats {
+		padding-block: var(--section-y);
+		background: var(--bg);
+		border-block: 1px solid var(--border);
+	}
+
+	.section-head--inline {
+		max-width: 600px;
+	}
+
+	.serif-italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--accent);
+	}
+
+	.stats__grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1rem;
+	}
+
+	.stat {
+		padding: 2rem 1.5rem;
+		border-left: 1px solid var(--border);
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		transition: border-color 0.3s var(--ease-out);
+	}
+
+	.stat:first-child {
+		border-left: 1px solid var(--border);
+	}
+
+	.stat:hover {
+		border-left-color: var(--accent);
+	}
+
+	.stat__num {
+		font-family: var(--font-mono);
+		font-size: clamp(3rem, 7vw, 6rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 1;
+		color: var(--fg);
+	}
+
+	.stat__label {
+		font-size: var(--fs-200);
+		color: var(--fg-dim);
+	}
+
+	@media (max-width: 800px) {
+		.stats__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.stat {
+			border-left: 0;
+			border-top: 1px solid var(--border);
+			padding: 1.5rem 0;
+		}
+	}
+</style>
