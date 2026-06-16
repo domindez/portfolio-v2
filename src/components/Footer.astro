@@ -31,14 +31,13 @@ const socials = [
 
 		<div class='wordmark' aria-hidden='true'>
 			<span>DOMINDEZ</span>
-			<span class='wordmark__dot'>·</span>
-			<span>STUDIO</span>
+			<span class='wordmark__line'>STUDIO</span>
 		</div>
 
 		<div class='footer-grid'>
 			<div class='footer-col'>
 				<p class='footer-label'>Estudio</p>
-				<p>Diseño y desarrollo web a medida desde Andalucía, España.</p>
+				<p>Diseño y desarrollo web a medida desde Málaga, España.</p>
 			</div>
 			<div class='footer-col'>
 				<p class='footer-label'>Contacto</p>
@@ -121,11 +120,9 @@ const socials = [
 	}
 
 	.wordmark {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
+		display: block;
 		font-family: var(--font-sans);
-		font-size: clamp(4rem, 18vw, 22rem);
+		font-size: clamp(3.5rem, 21vw, 17rem);
 		font-weight: 500;
 		letter-spacing: -0.05em;
 		line-height: 0.85;
@@ -133,9 +130,14 @@ const socials = [
 		margin-block: 2rem 4rem;
 		pointer-events: none;
 		user-select: none;
+		white-space: nowrap;
 	}
 
-	.wordmark__dot {
+	.wordmark__line {
+		display: block;
+	}
+
+	.wordmark span:last-child {
 		color: var(--accent);
 	}
 

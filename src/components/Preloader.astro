@@ -3,47 +3,81 @@
 ---
 
 <div class='preloader' data-preloader>
-	<div class='preloader__inner'>
-		<div class='preloader__count' data-preloader-count>0</div>
-		<div class='preloader__bar'>
-			<div class='preloader__bar-fill' data-preloader-bar></div>
-		</div>
-		<p class='preloader__label'>Cargando estudio</p>
+	<div class='preloader__inner' data-preloader-inner>
+		<svg
+			class='preloader__mark'
+			width='48'
+			height='48'
+			viewBox='0 0 32 32'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			aria-hidden='true'
+		>
+			<rect width='32' height='32' rx='7' fill='#c3ff00' />
+			<path d='M10 7 V25 H16 a7 7 0 0 0 0 -18 Z' fill='#0a0a0a' />
+			<circle cx='26' cy='25' r='2.5' fill='#0a0a0a' />
+		</svg>
+		<div class='preloader__line' data-preloader-line></div>
 	</div>
 </div>
 
 <style>
-	.preloader__bar {
-		background: var(--border);
+	.preloader__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.preloader__mark {
+		opacity: 0;
+		transform: scale(0.85);
+		animation: preloader-mark-in 0.8s var(--ease-out) 0.1s forwards;
+	}
+
+	.preloader__line {
+		width: 0;
+		height: 2px;
+		background: var(--accent);
+		animation: preloader-line-in 0.7s var(--ease-out) 0.3s forwards;
+	}
+
+	@keyframes preloader-mark-in {
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes preloader-line-in {
+		to {
+			width: 120px;
+		}
 	}
 </style>
 
 <script>
 	const preloader = document.querySelector('[data-preloader]') as HTMLElement | null;
-	const countEl = document.querySelector('[data-preloader-count]') as HTMLElement | null;
-	const barEl = document.querySelector('[data-preloader-bar]') as HTMLElement | null;
 
-	if (preloader && countEl && barEl) {
-		const start = performance.now();
-		const duration = 1400;
-
-		function update(now: number) {
-			const t = Math.min((now - start) / duration, 1);
-			const eased = 1 - Math.pow(1 - t, 3);
-			const value = Math.round(eased * 100);
-			countEl.textContent = String(value);
-			barEl.style.width = `${value}%`;
-			if (t < 1) requestAnimationFrame(update);
-			else {
-				setTimeout(() => {
-					preloader.classList.add('is-done');
-					document.body.classList.remove('is-loading');
-					setTimeout(() => preloader.remove(), 1100);
-				}, 200);
-			}
-		}
-
+	if (preloader) {
 		document.body.classList.add('is-loading');
-		requestAnimationFrame(update);
+
+		const finish = () => {
+			preloader.classList.add('is-done');
+			document.body.classList.remove('is-loading');
+			setTimeout(() => preloader.remove(), 1100);
+		};
+
+		if (document.readyState === 'complete') {
+			setTimeout(finish, 900);
+		} else {
+			window.addEventListener(
+				'load',
+				() => {
+					setTimeout(finish, 300);
+				},
+				{ once: true },
+			);
+		}
 	}
 </script>

@@ -13,7 +13,7 @@ export const works: Work[] = [
 	{
 		slug: 'gottan',
 		link: 'https://gottangrill.com',
-		img: '/works/gottan.webp',
+		img: '/works/gottan.jpg',
 		title: 'Gottan Grill',
 		category: 'Restauración',
 		description:
@@ -22,50 +22,9 @@ export const works: Work[] = [
 		year: '2024',
 	},
 	{
-		slug: 'hotel-nogalera',
-		link: 'https://hotelnogalera.com/',
-		img: '/works/nogalera.webp',
-		title: 'Hotel Nogalera',
-		category: 'Hostelería',
-		description: 'Web del hotel con motor de reservas integrado y panel de gestión interno.',
-		stack: ['astro', 'ts', 'tailwind'],
-		year: '2024',
-	},
-	{
-		slug: 'zerobil',
-		link: 'https://www.zerobil.com',
-		img: '/works/zerobil.webp',
-		title: 'Zerobil',
-		category: 'SaaS',
-		description:
-			'Plataforma de facturación, CRM y contabilidad con IA para autónomos y pequeñas empresas.',
-		stack: ['next', 'react', 'mongo', 'ts', 'openai'],
-		year: '2024',
-	},
-	{
-		slug: 'bsmash',
-		link: 'https://bsmash.es',
-		img: '/works/bsmash.webp',
-		title: 'BSmash',
-		category: 'Restauración',
-		description: 'Web con menú digital propio, reservas y pedidos a domicilio.',
-		stack: ['astro', 'tailwind', 'ts'],
-		year: '2023',
-	},
-	{
-		slug: 'roadhouse',
-		link: 'https://roadhousegroup.es/es',
-		img: '/works/roadhouse.webp',
-		title: 'Grupo RoadHouse',
-		category: 'Restauración',
-		description: 'Web del grupo con menús digitales, reservas y delivery multi-sede.',
-		stack: ['astro', 'ts', 'css'],
-		year: '2023',
-	},
-	{
 		slug: 'barmanager',
 		link: 'https://barmanager.app',
-		img: '/works/barmanager.webp',
+		img: '/works/barmanager.jpg',
 		title: 'Barmanager.app',
 		category: 'SaaS',
 		description:
@@ -74,9 +33,50 @@ export const works: Work[] = [
 		year: '2024',
 	},
 	{
+		slug: 'zerobil',
+		link: 'https://www.zerobil.com',
+		img: '/works/zerobil.jpg',
+		title: 'Zerobil',
+		category: 'SaaS',
+		description:
+			'Plataforma de facturación, CRM y contabilidad con IA para autónomos y pequeñas empresas.',
+		stack: ['next', 'react', 'mongo', 'ts', 'openai'],
+		year: '2025',
+	},
+	{
+		slug: 'hotel-nogalera',
+		link: 'https://hotelnogalera.com/',
+		img: '/works/nogalera.jpg',
+		title: 'Hotel Nogalera',
+		category: 'Hostelería',
+		description: 'Web del hotel con motor de reservas integrado y panel de gestión interno.',
+		stack: ['astro', 'ts', 'tailwind'],
+		year: '2025',
+	},
+	{
+		slug: 'bsmash',
+		link: 'https://bsmash.es',
+		img: '/works/bsmash.jpg',
+		title: 'BSmash',
+		category: 'Restauración',
+		description: 'Web con menú digital propio, reservas y pedidos a domicilio.',
+		stack: ['astro', 'tailwind', 'ts'],
+		year: '2026',
+	},
+	{
+		slug: 'roadhouse',
+		link: 'https://roadhousegroup.es/es',
+		img: '/works/roadhouse.jpg',
+		title: 'Grupo RoadHouse',
+		category: 'Restauración',
+		description: 'Web del grupo con menús digitales, reservas y delivery multi-sede.',
+		stack: ['astro', 'ts', 'css'],
+		year: '2023',
+	},
+	{
 		slug: 'dak-burger',
 		link: 'https://dakburger.es/',
-		img: '/works/dak.webp',
+		img: '/works/dak.jpg',
 		title: 'Dak Burger',
 		category: 'Restauración',
 		description: 'Web con menú digital, sistema de delivery y reservas.',
@@ -86,7 +86,7 @@ export const works: Work[] = [
 	{
 		slug: 'critical-miss',
 		link: 'https://criticalmiss.app',
-		img: '/works/criticalmiss.webp',
+		img: '/works/criticalmiss.jpg',
 		title: 'Critical Miss',
 		category: 'Web App',
 		description:
@@ -97,7 +97,7 @@ export const works: Work[] = [
 	{
 		slug: 'hotel-nch',
 		link: 'https://www.hotelnch.com/',
-		img: '/works/nch.webp',
+		img: '/works/nch.jpg',
 		title: 'Hotel NCH',
 		category: 'Hostelería',
 		description: 'Web con motor de reservas integrado.',
@@ -107,7 +107,7 @@ export const works: Work[] = [
 	{
 		slug: 'asador-ovidio',
 		link: 'https://www.asadorovidio.es/',
-		img: '/works/ovidio.webp',
+		img: '/works/ovidio.jpg',
 		title: 'Asador Ovidio',
 		category: 'Restauración',
 		description: 'Web del prestigioso asador con menú digital y reservas.',
@@ -117,17 +117,17 @@ export const works: Work[] = [
 	{
 		slug: 'moneyz',
 		link: 'https://www.moneyz.app',
-		img: '/works/moneyz.webp',
+		img: '/works/moneyz.jpg',
 		title: 'Moneyz',
 		category: 'Fintech',
 		description: 'Tracker de portfolios de inversión con visualizaciones claras y directas.',
 		stack: ['next', 'supabase', 'tailwind', 'react', 'ts'],
-		year: '2024',
+		year: '2026',
 	},
 	{
 		slug: 'politichance',
 		link: 'https://politichance.com',
-		img: '/works/politichance.webp',
+		img: '/works/politichance.jpg',
 		title: 'Politichance',
 		category: 'Plataforma',
 		description: 'Mercados de predicción política y económica en tiempo real.',
@@ -137,7 +137,7 @@ export const works: Work[] = [
 	{
 		slug: 'seixis',
 		link: 'https://www.seixis.es/',
-		img: '/works/seixis.webp',
+		img: '/works/seixis.jpg',
 		title: 'Seixis',
 		category: 'E-commerce',
 		description: 'Web de las cheesecakes más virales de España con pedidos a domicilio.',
@@ -147,7 +147,7 @@ export const works: Work[] = [
 	{
 		slug: 'trivify',
 		link: 'https://trivify.es',
-		img: '/works/trivify.webp',
+		img: '/works/trivify.jpg',
 		title: 'Trivify',
 		category: 'Plataforma',
 		description: 'Plataforma de trivials con CRM propio y marketing por email.',
@@ -157,7 +157,7 @@ export const works: Work[] = [
 	{
 		slug: 'maria-contreras',
 		link: 'https://mariacontreraspsicologa.com/',
-		img: '/works/mariacontreras.webp',
+		img: '/works/mariacontreras.jpg',
 		title: 'María Contreras',
 		category: 'Profesional',
 		description: 'Web profesional para consulta de psicología.',
@@ -167,7 +167,7 @@ export const works: Work[] = [
 	{
 		slug: 'pluviometria',
 		link: 'https://domindez.github.io/pluviometria-castillodelocubin/',
-		img: '/works/pluviometria.webp',
+		img: '/works/pluviometria.jpg',
 		title: 'Pluviometría Castillo',
 		category: 'Datos',
 		description: 'Web que automatiza la recolección de datos de una estación meteorológica.',
@@ -177,7 +177,7 @@ export const works: Work[] = [
 	{
 		slug: 'tombolator',
 		link: 'https://tombolator.com',
-		img: '/works/tombolator.webp',
+		img: '/works/tombolator.jpg',
 		title: 'Tombolator',
 		category: 'Plataforma',
 		description: 'Plataforma para crear y jugar tómbolas digitales con gestión de premios.',
@@ -187,33 +187,13 @@ export const works: Work[] = [
 	{
 		slug: 'playabingo',
 		link: 'https://playabingo.com',
-		img: '/works/playabingo.webp',
+		img: '/works/playabingo.jpg',
 		title: 'Playabingo',
 		category: 'Plataforma',
 		description: 'Bingo online multijugador para eventos y reuniones.',
 		stack: ['astro', 'ts', 'react'],
 		year: '2023',
-	},
-	{
-		slug: 'apartamentos',
-		link: '#',
-		img: '/works/apartamentos.webp',
-		title: 'Apartamentos Luz',
-		category: 'Hostelería',
-		description: 'Web de apartamentos turísticos con motor de reservas y galería inmersiva.',
-		stack: ['astro', 'ts', 'tailwind'],
-		year: '2024',
-	},
-	{
-		slug: 'placeholder',
-		link: '#',
-		img: '/works/placeholder.webp',
-		title: 'Estudio Marca',
-		category: 'Branding',
-		description: 'Identidad digital completa para estudio de arquitectura boutique.',
-		stack: ['astro', 'css', 'ts'],
-		year: '2023',
-	},
+	}
 ];
 
 export interface Service {
@@ -312,7 +292,7 @@ export interface Testimonial {
 export const testimonials: Testimonial[] = [
 	{
 		quote:
-			'Daniel transformó nuestra presencia online. La web no solo se ve increíble, sino que hemos triplicado las reservas online en tres meses.',
+			'Dani transformó nuestra presencia online. La web no solo se ve increíble, sino que hemos aumentado mucho las reservas online en tres meses.',
 		author: 'Cliente',
 		role: 'Propietario',
 		company: 'Gottan Grill',
@@ -330,6 +310,27 @@ export const testimonials: Testimonial[] = [
 		author: 'Cliente',
 		role: 'Fundador',
 		company: 'Moneyz',
+	},
+	{
+		quote:
+			'La web que Daniel nos diseñó ha supuesto un antes y un después. Las reservas directas se han duplicado y los clientes nos felicitan constantemente por lo fácil que es navegar.',
+		author: 'Cliente',
+		role: 'Directora',
+		company: 'Hotel Nogalera',
+	},
+	{
+		quote:
+			'Necesitábamos una plataforma que funcionara desde el día uno y escalara sin problemas. Daniel entregó ambas cosas con un código limpio y un soporte post-lanzamiento impecable.',
+		author: 'Cliente',
+		role: 'CTO',
+		company: 'Barmanager',
+	},
+	{
+		quote:
+			'Trabajar con Dani es fácil. Entiende lo que necesitas, propone soluciones mejores de las que habías imaginado y cumple plazos. Ya trabajamos con él en todos los proyectos nuevos.',
+		author: 'Cliente',
+		role: 'Fundadora',
+		company: 'Seixis Cheesecakes',
 	},
 ];
 
@@ -349,10 +350,7 @@ export const stack: StackItem[] = [
 	{ name: 'Next.js', category: 'Frameworks' },
 	{ name: 'Astro', category: 'Frameworks' },
 	{ name: 'Remix', category: 'Frameworks' },
-	{ name: 'Vue', category: 'Frameworks' },
-	{ name: 'Svelte', category: 'Frameworks' },
 	{ name: 'Express', category: 'Frameworks' },
-	{ name: 'Hono', category: 'Frameworks' },
 
 	{ name: 'Tailwind CSS', category: 'Estilos' },
 	{ name: 'CSS Modules', category: 'Estilos' },
@@ -382,18 +380,24 @@ export const stack: StackItem[] = [
 
 	{ name: 'OpenAI', category: 'IA & APIs' },
 	{ name: 'Anthropic Claude', category: 'IA & APIs' },
+	{ name: 'OpenCode', category: 'IA & APIs' },
 	{ name: 'Stripe', category: 'IA & APIs' },
 	{ name: 'Resend', category: 'IA & APIs' },
 	{ name: 'Twilio', category: 'IA & APIs' },
 	{ name: 'SendGrid', category: 'IA & APIs' },
 
+	{ name: 'CrewAI', category: 'Agentes & Automatización' },
+	{ name: 'LangChain', category: 'Agentes & Automatización' },
+	{ name: 'n8n', category: 'Agentes & Automatización' },
+	{ name: 'Make', category: 'Agentes & Automatización' },
+	{ name: 'Zapier', category: 'Agentes & Automatización' },
+	{ name: 'Automatización de proyectos', category: 'Agentes & Automatización' },
+
 	{ name: 'Git', category: 'Herramientas' },
 	{ name: 'VS Code', category: 'Herramientas' },
 	{ name: 'Figma', category: 'Herramientas' },
-	{ name: 'Linear', category: 'Herramientas' },
 	{ name: 'Notion', category: 'Herramientas' },
 	{ name: 'Vite', category: 'Herramientas' },
-	{ name: 'Turborepo', category: 'Herramientas' },
 	{ name: 'pnpm', category: 'Herramientas' },
 
 	{ name: 'WordPress', category: 'CMS' },

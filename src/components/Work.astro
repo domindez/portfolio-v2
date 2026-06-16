@@ -4,7 +4,7 @@ import { works } from '../data/content';
 
 const featured = works.slice(0, 3);
 const rest = works.slice(3);
-const totalProjects = works.length + 24; // Some are confidential / private
+const totalProjects = 320; // Some are confidential / private
 ---
 
 <section class='work section' id='work'>
@@ -61,10 +61,10 @@ const totalProjects = works.length + 24; // Some are confidential / private
 			}
 		</div>
 
-		<div class='work__rest' data-reveal-stagger>
+		<div class='work__rest'>
 			{
 				rest.map((work, i) => (
-					<article class='work-card'>
+					<article class='work-card' data-reveal>
 						<a href={work.link} target='_blank' rel='noopener' class='work-card__link'>
 							<div class='work-card__media'>
 								<Image
@@ -139,12 +139,11 @@ const totalProjects = works.length + 24; // Some are confidential / private
 
 	.case__media {
 		position: relative;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 3 / 2;
 		border-radius: var(--radius-lg);
 		overflow: hidden;
 		background: var(--bg-2);
 		border: 1px solid var(--border);
-		padding: 1.5rem;
 	}
 
 	.case__media-inner {
@@ -152,8 +151,6 @@ const totalProjects = works.length + 24; // Some are confidential / private
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
-		border-radius: var(--radius);
-		background: var(--bg-3);
 		transition: transform 0.8s var(--ease-out);
 	}
 
@@ -272,17 +269,15 @@ const totalProjects = works.length + 24; // Some are confidential / private
 
 	.work-card__media {
 		position: relative;
-		aspect-ratio: 4 / 3;
+		aspect-ratio: 3 / 2;
 		overflow: hidden;
 		background: var(--bg-3);
-		padding: 0.75rem;
 	}
 
 	.work-card__media img {
 		width: 100%;
 		height: 100%;
-		object-fit: contain;
-		border-radius: var(--radius-sm);
+		object-fit: cover;
 		transition: transform 0.6s var(--ease-out);
 	}
 
