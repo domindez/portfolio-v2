@@ -1,0 +1,898 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { works, type Work } from '../../data/content';
+
+export function getStaticPaths() {
+	const sorted = [...works].sort((a, b) => Number(b.year) - Number(a.year));
+	return sorted.map((work, i) => {
+		const prev = sorted[(i - 1 + sorted.length) % sorted.length];
+		const next = sorted[(i + 1) % sorted.length];
+		return {
+			params: { slug: work.slug },
+			props: { work, prev, next },
+		};
+	});
+}
+
+interface Props {
+	work: Work;
+	prev: Work;
+	next: Work;
+}
+
+const { work, prev, next } = Astro.props as Props;
+
+const pageTitle = `${work.title} — Caso de estudio | Domindez Studio`;
+const pageDescription = `Cómo diseñamos y desarrollamos ${work.title} para ${work.client}. ${work.description} Servicios: ${work.services.join(', ')}.`;
+const pageUrl = `https://domindez.com/works/${work.slug}`;
+const pageImage = `https://domindez.com${work.img}`;
+
+const breadcrumbJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{
+			'@type': 'ListItem',
+			position: 1,
+			name: 'Inicio',
+			item: 'https://domindez.com',
+		},
+		{
+			'@type': 'ListItem',
+			position: 2,
+			name: 'Trabajo',
+			item: 'https://domindez.com/#work',
+		},
+		{
+			'@type': 'ListItem',
+			position: 3,
+			name: work.title,
+			item: pageUrl,
+		},
+	],
+};
+
+const creativeWorkJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'CreativeWork',
+	'@id': pageUrl,
+	name: work.title,
+	description: pageDescription,
+	author: { '@id': 'https://domindez.com/#organization' },
+	creator: { '@id': 'https://domindez.com/#organization' },
+	dateCreated: work.year,
+	datePublished: `${work.year}-01-01`,
+	dateModified: new Date().toISOString().split('T')[0],
+	keywords: [
+		work.category,
+		work.industry,
+		...work.stack,
+		...work.services,
+		'diseño web',
+		'desarrollo web',
+		'caso de estudio',
+	].join(', '),
+	url: pageUrl,
+	mainEntityOfPage: pageUrl,
+	image: {
+		'@type': 'ImageObject',
+		url: pageImage,
+		width: 1200,
+		height: 750,
+		alt: `Captura del proyecto ${work.title} diseñado por Domindez Studio`,
+	},
+	about: {
+		'@type': 'Service',
+		name: work.services.join(', '),
+		provider: { '@id': 'https://domindez.com/#organization' },
+	},
+	client: { '@type': 'Organization', name: work.client },
+	provider: { '@id': 'https://domindez.com/#organization' },
+	workExample: {
+		'@type': 'WebSite',
+		name: work.title,
+		url: work.link,
+		creator: { '@id': 'https://domindez.com/#organization' },
+	},
+	inLanguage: 'es-ES',
+	isPartOf: {
+		'@type': 'CollectionPage',
+		name: 'Portfolio de Domindez Studio',
+		url: 'https://domindez.com/#work',
+	},
+};
+
+const pageJsonLd = [breadcrumbJsonLd, creativeWorkJsonLd];
+---
+
+<Layout
+	title={pageTitle}
+	description={pageDescription}
+	image={pageImage}
+	canonical={pageUrl}
+	type='article'
+	publishedTime={`${work.year}-01-01`}
+	modifiedTime={new Date().toISOString()}
+>
+	<script type='application/ld+json' set:html={JSON.stringify(pageJsonLd)} is:inline />
+
+	<article class='case-study' itemscope itemtype='https://schema.org/CreativeWork'>
+		<meta itemprop='url' content={pageUrl} />
+		<meta itemprop='dateCreated' content={work.year} />
+		<meta itemprop='inLanguage' content='es-ES' />
+
+		<section class='cs-hero'>
+			<div class='container'>
+				<nav class='cs-breadcrumb' aria-label='Migas de pan'>
+					<ol>
+						<li><a href='/'>Inicio</a></li>
+						<li aria-hidden='true'>·</li>
+						<li><a href='/#work'>Trabajo</a></li>
+						<li aria-hidden='true'>·</li>
+						<li aria-current='page'>{work.title}</li>
+					</ol>
+				</nav>
+
+				<header class='cs-hero__head'>
+					<p class='eyebrow'>
+						<span class='dot'></span> {work.category} · {work.year}
+					</p>
+					<h1 class='cs-hero__title' itemprop='name'>
+						{work.title}
+					</h1>
+					<p class='cs-hero__lede' itemprop='description'>
+						{work.description}
+					</p>
+
+					<div class='cs-hero__actions'>
+						<a
+							href={work.link}
+							target='_blank'
+							rel='noopener'
+							class='btn magnetic'
+							data-magnetic='0.3'
+						>
+							<span>Ver proyecto en vivo</span>
+							<svg
+								class='arrow'
+								width='14'
+								height='14'
+								viewBox='0 0 24 24'
+								fill='none'
+								stroke='currentColor'
+								stroke-width='2'
+								stroke-linecap='square'
+								aria-hidden='true'
+							>
+								<path d='M7 17L17 7M17 7H8M17 7V16'></path>
+							</svg>
+						</a>
+						<a href='/#contact' class='btn btn--ghost magnetic' data-magnetic='0.3'>
+							<span>Iniciar un proyecto similar</span>
+						</a>
+					</div>
+				</header>
+
+				<figure class='cs-hero__media' itemprop='image' itemtype='https://schema.org/ImageObject'>
+					<Image
+						src={work.img}
+						alt={`${work.title} — proyecto de ${work.category} diseñado y desarrollado por Domindez Studio`}
+						width={1600}
+						height={1000}
+						loading='eager'
+						decoding='async'
+						fetchpriority='high'
+					/>
+				</figure>
+			</div>
+		</section>
+
+		<section class='cs-facts' aria-label='Datos del proyecto'>
+			<div class='container'>
+				<dl class='cs-facts__grid'>
+					<div class='cs-fact'>
+						<dt>Cliente</dt>
+						<dd>{work.client}</dd>
+					</div>
+					<div class='cs-fact'>
+						<dt>Industria</dt>
+						<dd>{work.industry}</dd>
+					</div>
+					<div class='cs-fact'>
+						<dt>Año</dt>
+						<dd>{work.year}</dd>
+					</div>
+					<div class='cs-fact'>
+						<dt>Duración</dt>
+						<dd>{work.duration}</dd>
+					</div>
+					<div class='cs-fact'>
+						<dt>Servicios</dt>
+						<dd>{work.services.join(', ')}</dd>
+					</div>
+					<div class='cs-fact'>
+						<dt>Rol</dt>
+						<dd>{work.role}</dd>
+					</div>
+				</dl>
+			</div>
+		</section>
+
+		<section class='cs-section cs-challenge' aria-labelledby='challenge-title'>
+			<div class='container cs-section__grid'>
+				<header class='cs-section__head'>
+					<p class='eyebrow'><span class='dot'></span> El reto</p>
+					<h2 id='challenge-title' class='cs-section__title'>
+						El <em class='serif-italic'>reto</em>
+					</h2>
+				</header>
+				<div class='cs-section__body'>
+					{work.challenge.split('\n\n').map((p) => <p>{p}</p>)}
+				</div>
+			</div>
+		</section>
+
+		<section class='cs-section cs-solution' aria-labelledby='solution-title'>
+			<div class='container cs-section__grid'>
+				<header class='cs-section__head'>
+					<p class='eyebrow'><span class='dot'></span> La solución</p>
+					<h2 id='solution-title' class='cs-section__title'>
+						Nuestra <em class='serif-italic'>solución</em>
+					</h2>
+				</header>
+				<div class='cs-section__body'>
+					{work.solution.split('\n\n').map((p) => <p>{p}</p>)}
+				</div>
+			</div>
+		</section>
+
+		<section class='cs-highlights' aria-label='Características clave'>
+			<div class='container'>
+				<header class='cs-highlights__head'>
+					<p class='eyebrow'><span class='dot'></span> Qué construimos</p>
+					<h2 class='cs-section__title'>
+						Highlights del <em class='serif-italic'>proyecto</em>
+					</h2>
+				</header>
+				<div class='cs-highlights__grid'>
+					{
+						work.highlights.map((h, i) => (
+							<article class='highlight'>
+								<div class='highlight__num'>{String(i + 1).padStart(2, '0')}</div>
+								<h3 class='highlight__title'>{h.title}</h3>
+								<p class='highlight__desc'>{h.description}</p>
+							</article>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class='cs-stack' aria-label='Stack tecnológico'>
+			<div class='container'>
+				<header class='cs-stack__head'>
+					<p class='eyebrow'><span class='dot'></span> Stack</p>
+					<h2 class='cs-section__title'>
+						<em class='serif-italic'>Tecnología</em> utilizada
+					</h2>
+				</header>
+				<ul class='cs-stack__list'>
+					{
+						work.stack.map((tech) => (
+							<li class='cs-stack__chip'>{tech}</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section class='cs-results' aria-labelledby='results-title'>
+			<div class='container'>
+				<header class='cs-results__head'>
+					<p class='eyebrow'><span class='dot'></span> Resultados</p>
+					<h2 id='results-title' class='cs-section__title'>
+						Lo que <em class='serif-italic'>conseguimos</em>
+					</h2>
+				</header>
+				<div class='cs-results__grid'>
+					{
+						work.results.map((r) => (
+							<div class='result'>
+								<div class='result__value'>{r.value}</div>
+								<div class='result__label'>{r.label}</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		{
+			work.testimonial && (
+				<section class='cs-quote' aria-label='Testimonio del cliente'>
+					<div class='container'>
+						<figure class='cs-quote__inner' itemscope itemtype='https://schema.org/Review'>
+							<svg
+								class='cs-quote__mark'
+								width='56'
+								height='44'
+								viewBox='0 0 40 32'
+								fill='none'
+								aria-hidden='true'
+							>
+								<path
+									d='M0 32V20.5C0 13.6 1.2 8.5 3.6 5.2C6 1.8 9.4 0 13.8 0L15 5.4C12.6 5.8 10.8 6.8 9.6 8.4C8.4 10 7.8 12.2 7.8 15H13.8V32H0ZM24 32V20.5C24 13.6 25.2 8.5 27.6 5.2C30 1.8 33.4 0 37.8 0L39 5.4C36.6 5.8 34.8 6.8 33.6 8.4C32.4 10 31.8 12.2 31.8 15H37.8V32H24Z'
+									fill='currentColor'
+								/>
+							</svg>
+							<blockquote class='cs-quote__text' itemprop='reviewBody'>
+								{work.testimonial.quote}
+							</blockquote>
+							<figcaption
+								class='cs-quote__author'
+								itemprop='author'
+								itemscope
+								itemtype='https://schema.org/Person'
+							>
+								<div>
+									<p class='cs-quote__name' itemprop='name'>
+										{work.testimonial.author}
+									</p>
+									<p class='cs-quote__role'>
+										<span itemprop='jobTitle'>{work.testimonial.role}</span>
+										{' · '}
+										<span
+											itemprop='worksFor'
+											itemscope
+											itemtype='https://schema.org/Organization'
+										>
+											<span itemprop='name'>{work.client}</span>
+										</span>
+									</p>
+								</div>
+							</figcaption>
+						</figure>
+					</div>
+				</section>
+			)
+		}
+
+		<section class='cs-cta' aria-label='Llamada a la acción'>
+			<div class='container cs-cta__inner'>
+				<p class='eyebrow'><span class='dot'></span> ¿Te inspira este proyecto?</p>
+				<h2 class='cs-cta__title'>
+					Hagamos algo <em class='serif-italic'>igual de bueno</em><br /> para tu marca.
+				</h2>
+				<a href='/#contact' class='btn magnetic' data-magnetic='0.3'>
+					<span>Iniciar un proyecto</span>
+					<svg
+						class='arrow'
+						width='14'
+						height='14'
+						viewBox='0 0 24 24'
+						fill='none'
+						stroke='currentColor'
+						stroke-width='2'
+						stroke-linecap='square'
+						aria-hidden='true'
+					>
+						<path d='M7 17L17 7M17 7H8M17 7V16'></path>
+					</svg>
+				</a>
+			</div>
+		</section>
+
+		<nav class='cs-next' aria-label='Navegación entre proyectos'>
+			<a href={`/works/${prev.slug}`} class='cs-next__link cs-next__link--prev'>
+				<span class='cs-next__label'>← Proyecto anterior</span>
+				<span class='cs-next__title'>{prev.title}</span>
+				<span class='cs-next__meta'>{prev.category} · {prev.year}</span>
+			</a>
+			<a href={`/works/${next.slug}`} class='cs-next__link cs-next__link--next'>
+				<span class='cs-next__label'>Siguiente proyecto →</span>
+				<span class='cs-next__title'>{next.title}</span>
+				<span class='cs-next__meta'>{next.category} · {next.year}</span>
+			</a>
+		</nav>
+	</article>
+</Layout>
+
+<style>
+	.case-study {
+		padding-top: 7rem;
+	}
+
+	.cs-hero {
+		padding-block: 2rem 4rem;
+	}
+
+	.cs-breadcrumb {
+		margin-bottom: 2.5rem;
+	}
+
+	.cs-breadcrumb ol {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.6rem;
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.cs-breadcrumb a {
+		color: var(--fg-dim);
+		transition: color 0.2s var(--ease-out);
+	}
+
+	.cs-breadcrumb a:hover {
+		color: var(--accent);
+	}
+
+	.cs-breadcrumb [aria-current='page'] {
+		color: var(--fg);
+	}
+
+	.cs-hero__head {
+		max-width: 900px;
+		margin-bottom: 4rem;
+	}
+
+	.cs-hero__title {
+		font-size: clamp(2.5rem, 5vw + 1rem, 6rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 0.95;
+		margin-block: 1.5rem 1.5rem;
+		text-wrap: balance;
+	}
+
+	.cs-hero__lede {
+		font-size: var(--fs-500);
+		color: var(--fg-dim);
+		line-height: 1.4;
+		max-width: 60ch;
+		margin-bottom: 2.5rem;
+	}
+
+	.cs-hero__actions {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.cs-hero__media {
+		position: relative;
+		aspect-ratio: 16 / 10;
+		border-radius: var(--radius-xl);
+		overflow: hidden;
+		background: var(--bg-2);
+		border: 1px solid var(--border);
+		box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.5);
+	}
+
+	.cs-hero__media img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.cs-facts {
+		padding-block: 3rem;
+		background: var(--bg-2);
+		border-block: 1px solid var(--border);
+	}
+
+	.cs-facts__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0;
+	}
+
+	.cs-fact {
+		padding: 1rem 1.5rem;
+		border-left: 1px solid var(--border);
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+
+	.cs-fact:first-child {
+		border-left: 0;
+		padding-left: 0;
+	}
+
+	.cs-fact dt {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.cs-fact dd {
+		font-size: var(--fs-300);
+		color: var(--fg);
+		font-weight: 500;
+		letter-spacing: -0.01em;
+	}
+
+	.cs-section {
+		padding-block: var(--section-y);
+	}
+
+	.cs-section__grid {
+		display: grid;
+		grid-template-columns: 320px 1fr;
+		gap: 4rem;
+		align-items: start;
+	}
+
+	.cs-section__head {
+		position: sticky;
+		top: 8rem;
+	}
+
+	.cs-section__title {
+		font-size: clamp(2rem, 4vw, 3.5rem);
+		font-weight: 500;
+		letter-spacing: -0.035em;
+		line-height: 1;
+		margin-top: 1rem;
+		text-wrap: balance;
+	}
+
+	.serif-italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--accent);
+	}
+
+	.cs-section__body {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		max-width: 65ch;
+	}
+
+	.cs-section__body p {
+		font-size: var(--fs-400);
+		color: var(--fg-dim);
+		line-height: 1.65;
+	}
+
+	.cs-highlights {
+		padding-block: var(--section-y);
+		background: var(--bg-2);
+		border-top: 1px solid var(--border);
+	}
+
+	.cs-highlights__head {
+		margin-bottom: 4rem;
+	}
+
+	.cs-highlights__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
+
+	.highlight {
+		position: relative;
+		padding: 2rem;
+		background: var(--bg-3);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		transition: border-color 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+	}
+
+	.highlight:hover {
+		border-color: var(--border-accent);
+		transform: translateY(-4px);
+	}
+
+	.highlight__num {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		color: var(--accent);
+	}
+
+	.highlight__title {
+		font-size: var(--fs-500);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+	}
+
+	.highlight__desc {
+		font-size: var(--fs-300);
+		color: var(--fg-dim);
+		line-height: 1.5;
+	}
+
+	.cs-stack {
+		padding-block: var(--section-y);
+	}
+
+	.cs-stack__head {
+		margin-bottom: 3rem;
+	}
+
+	.cs-stack__list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+	}
+
+	.cs-stack__chip {
+		padding: 0.75rem 1.4rem;
+		background: var(--bg-2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-pill);
+		font-family: var(--font-mono);
+		font-size: var(--fs-300);
+		color: var(--fg);
+		letter-spacing: 0.05em;
+		transition: all 0.3s var(--ease-out);
+	}
+
+	.cs-stack__chip:hover {
+		border-color: var(--accent);
+		background: var(--accent-dim);
+		color: var(--accent);
+	}
+
+	.cs-results {
+		padding-block: var(--section-y);
+		background: var(--bg-2);
+		border-block: 1px solid var(--border);
+	}
+
+	.cs-results__head {
+		margin-bottom: 4rem;
+	}
+
+	.cs-results__grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 0;
+		border-top: 1px solid var(--border);
+	}
+
+	.result {
+		padding: 2.5rem 1.5rem;
+		border-left: 1px solid var(--border);
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.result:first-child {
+		border-left: 0;
+	}
+
+	.result__value {
+		font-family: var(--font-mono);
+		font-size: clamp(2.5rem, 5vw, 4.5rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 1;
+		color: var(--fg);
+	}
+
+	.result__label {
+		font-size: var(--fs-200);
+		color: var(--fg-dim);
+		line-height: 1.4;
+	}
+
+	.cs-quote {
+		padding-block: var(--section-y);
+	}
+
+	.cs-quote__inner {
+		max-width: 900px;
+		margin-inline: auto;
+		padding: 3rem;
+		background: var(--bg-2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-xl);
+		position: relative;
+	}
+
+	.cs-quote__mark {
+		color: var(--accent);
+		opacity: 0.4;
+		margin-bottom: 1.5rem;
+	}
+
+	.cs-quote__text {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: clamp(1.4rem, 2.5vw, 2rem);
+		line-height: 1.4;
+		color: var(--fg);
+		letter-spacing: -0.01em;
+		text-wrap: balance;
+	}
+
+	.cs-quote__author {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.cs-quote__name {
+		font-size: var(--fs-300);
+		font-weight: 500;
+		color: var(--fg);
+	}
+
+	.cs-quote__role {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+		margin-top: 0.3rem;
+	}
+
+	.cs-cta {
+		padding-block: var(--section-y);
+		text-align: center;
+		border-top: 1px solid var(--border);
+	}
+
+	.cs-cta__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.cs-cta__title {
+		font-size: clamp(2rem, 5vw, 4rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 1;
+		max-width: 22ch;
+		text-wrap: balance;
+	}
+
+	.cs-next {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		border-top: 1px solid var(--border);
+	}
+
+	.cs-next__link {
+		padding: 3rem 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		transition: background 0.3s var(--ease-out);
+	}
+
+	.cs-next__link:hover {
+		background: var(--bg-2);
+	}
+
+	.cs-next__link--next {
+		text-align: right;
+		align-items: flex-end;
+		border-left: 1px solid var(--border);
+	}
+
+	.cs-next__label {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.cs-next__title {
+		font-size: clamp(1.5rem, 3vw, 2.5rem);
+		font-weight: 500;
+		letter-spacing: -0.03em;
+		line-height: 1;
+		color: var(--fg);
+	}
+
+	.cs-next__link:hover .cs-next__title {
+		color: var(--accent);
+	}
+
+	.cs-next__meta {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.12em;
+		color: var(--fg-mute);
+	}
+
+	@media (max-width: 1100px) {
+		.cs-section__grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.cs-section__head {
+			position: static;
+		}
+
+		.cs-facts__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.cs-facts__grid .cs-fact:nth-child(odd) {
+			border-left: 0;
+			padding-left: 0;
+		}
+
+		.cs-highlights__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.cs-results__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.cs-results__grid .result {
+			border-left: 0;
+			border-top: 1px solid var(--border);
+		}
+	}
+
+	@media (max-width: 700px) {
+		.case-study {
+			padding-top: 6rem;
+		}
+
+		.cs-hero {
+			padding-block: 1.5rem 2.5rem;
+		}
+
+		.cs-facts__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.cs-facts__grid .cs-fact {
+			border-left: 0;
+			border-top: 1px solid var(--border);
+			padding: 1rem 0;
+		}
+
+		.cs-facts__grid .cs-fact:first-child {
+			border-top: 0;
+		}
+
+		.cs-results__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.cs-next {
+			grid-template-columns: 1fr;
+		}
+
+		.cs-next__link--next {
+			text-align: left;
+			align-items: flex-start;
+			border-left: 0;
+			border-top: 1px solid var(--border);
+		}
+
+		.cs-quote__inner {
+			padding: 2rem 1.5rem;
+		}
+	}
+</style>

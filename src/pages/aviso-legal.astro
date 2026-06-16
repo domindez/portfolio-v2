@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title='Aviso legal — Domindez Studio'
+	description='Aviso legal de Domindez Studio. Información sobre el titular del sitio web, condiciones de uso, propiedad intelectual y régimen de responsabilidad.'
+	canonical='https://domindez.com/aviso-legal'
+>
+	<section class='legal'>
+		<div class='container legal__inner'>
+			<header class='legal__head'>
+				<p class='eyebrow'><span class='dot'></span> Legal</p>
+				<h1>Aviso legal</h1>
+				<p class='legal__updated'>Última actualización: enero 2026</p>
+			</header>
+
+			<article class='legal__body'>
+				<h2>1. Datos identificativos del titular</h2>
+				<p>
+					En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la
+					Sociedad de la Información y Comercio Electrónico, se informa al usuario que el
+					titular del sitio web <strong>domindez.com</strong> es:
+				</p>
+				<ul>
+					<li><strong>Titular:</strong> Daniel Domínguez (Domindez Studio)</li>
+					<li><strong>Domicilio:</strong> Málaga, España</li>
+					<li><strong>Email de contacto:</strong> hola@domindez.com</li>
+					<li><strong>Teléfono:</strong> +34 660 88 28 76</li>
+					<li><strong>Actividad:</strong> Diseño y desarrollo web a medida</li>
+				</ul>
+
+				<h2>2. Objeto y ámbito de aplicación</h2>
+				<p>
+					El presente aviso legal regula el uso del sitio web domindez.com, del que es titular
+					Daniel Domínguez (en adelante, Domindez Studio). La navegación por el sitio web
+					atribuye la condición de usuario del mismo y comporta la aceptación plena de todas
+					las disposiciones incluidas en este aviso legal.
+				</p>
+
+				<h2>3. Propiedad intelectual e industrial</h2>
+				<p>
+					Todos los contenidos del sitio web —incluyendo, a título enunciativo pero no
+					limitativo, textos, fotografías, gráficos, imágenes, vídeos, marcos sonoros, así
+					como su estructura, diseño, combinación de colores y el código fuente— son
+					propiedad de Domindez Studio o de los terceros que han licenciado o cedido sus
+					derechos, y están protegidos por la normativa nacional e internacional en materia
+					de propiedad intelectual e industrial.
+				</p>
+
+				<h2>4. Régimen de responsabilidad</h2>
+				<p>
+					Domindez Studio no se hace responsable de los daños y perjuicios derivados de
+					interrupciones del servicio, virus informáticos, intrusiones ilegítimas o causas
+					de fuerza mayor. Asimismo, no se responsabiliza del contenido de los sitios
+					externos a los que se pudiera enlazar desde este sitio web.
+				</p>
+
+				<h2>5. Legislación aplicable y jurisdicción</h2>
+				<p>
+					Las presentes condiciones se rigen por la legislación española. Para la resolución
+					de las controversias que pudieran derivarse de las mismas, las partes se someten
+					a los Juzgados y Tribunales de la ciudad de Málaga, salvo en los supuestos en los
+					que la normativa procesal o de consumo aplicable fije otro fuero distinto.
+				</p>
+			</article>
+
+			<nav class='legal__back' aria-label='Volver'>
+				<a href='/' class='btn btn--ghost magnetic' data-magnetic='0.3'>
+					<span>← Volver al inicio</span>
+				</a>
+			</nav>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.legal {
+		padding-block: 8rem 5rem;
+		min-height: 100dvh;
+	}
+
+	.legal__inner {
+		max-width: 760px;
+	}
+
+	.legal__head {
+		margin-bottom: 3rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.legal__head h1 {
+		font-size: clamp(2.5rem, 6vw, 4.5rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 0.95;
+	}
+
+	.legal__updated {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.legal__body {
+		display: flex;
+		flex-direction: column;
+		gap: 2.25rem;
+		color: var(--fg-dim);
+		line-height: 1.7;
+		font-size: var(--fs-300);
+	}
+
+	.legal__body h2 {
+		color: var(--fg);
+		font-size: var(--fs-500);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+		margin-top: 1rem;
+	}
+
+	.legal__body p,
+	.legal__body ul {
+		max-width: 65ch;
+	}
+
+	.legal__body ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding-left: 1.25rem;
+		list-style: disc;
+	}
+
+	.legal__body strong {
+		color: var(--fg);
+		font-weight: 500;
+	}
+
+	.legal__back {
+		margin-top: 3rem;
+	}
+</style>

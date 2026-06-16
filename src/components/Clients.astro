@@ -1,30 +1,30 @@
 ---
 import { Image } from 'astro:assets';
 
-const clients = [
-	'gottan',
-	'bsmash',
-	'dak',
-	'masai',
-	'lucky',
-	'unter',
-	'iturrialde',
-	'vermu',
-	'amar',
-	'arancaes',
-	'cafe-plaza',
-	'casita-abuela',
-	'dorado',
-	'la-emperatriz',
-	'la-mexicana',
-	'mediterraneo',
-	'meson-santiso',
-	'premier2',
-	'shanao',
-	'Tabanco',
-	'the-corner',
-	'victoria',
-	'can-boleta',
+const clients: { slug: string; name: string }[] = [
+	{ slug: 'gottan', name: 'Gottan Grill' },
+	{ slug: 'bsmash', name: 'BSmash' },
+	{ slug: 'dak', name: 'Dak Burger' },
+	{ slug: 'masai', name: 'Masai' },
+	{ slug: 'lucky', name: 'Lucky' },
+	{ slug: 'unter', name: 'Unter' },
+	{ slug: 'iturrialde', name: 'Iturrialde' },
+	{ slug: 'vermu', name: 'Vermú' },
+	{ slug: 'amar', name: 'Amar' },
+	{ slug: 'arancaes', name: 'Arancaes' },
+	{ slug: 'cafe-plaza', name: 'Café Plaza' },
+	{ slug: 'casita-abuela', name: 'Casita de la Abuela' },
+	{ slug: 'dorado', name: 'Dorado' },
+	{ slug: 'la-emperatriz', name: 'La Emperatriz' },
+	{ slug: 'la-mexicana', name: 'La Mexicana' },
+	{ slug: 'mediterraneo', name: 'Mediterráneo' },
+	{ slug: 'meson-santiso', name: 'Mesón Santiso' },
+	{ slug: 'premier2', name: 'Premier' },
+	{ slug: 'shanao', name: 'Shanao' },
+	{ slug: 'Tabanco', name: 'Tabanco' },
+	{ slug: 'the-corner', name: 'The Corner' },
+	{ slug: 'victoria', name: 'Victoria' },
+	{ slug: 'can-boleta', name: 'Can Boleta' },
 ];
 ---
 
@@ -43,17 +43,18 @@ const clients = [
 		</header>
 	</div>
 
-	<div class='clients__marquee' data-marquee data-direction='left' data-speed='45'>
+	<div class='clients__marquee' data-marquee data-direction='left' data-speed='45' aria-label='Logos de clientes de Domindez Studio'>
 		<div class='clients__track' data-marquee-track>
 			{
 				clients.concat(clients).map((client) => (
-					<div class='clients__item'>
+					<div class='clients__item' title={`${client.name} — cliente de Domindez Studio`}>
 						<Image
 							loading='lazy'
+							decoding='async'
 							width={200}
 							height={200}
-							src={`/customers-logos/${client}.webp`}
-							alt={client}
+							src={`/customers-logos/${client.slug}.webp`}
+							alt={`Logo de ${client.name}, cliente de Domindez Studio`}
 						/>
 					</div>
 				))

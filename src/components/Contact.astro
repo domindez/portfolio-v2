@@ -1,16 +1,15 @@
 ---
 const perks = [
 	'Respuesta en 24h',
-	'Presupuesto sin compromiso',
-	'Pago por hitos',
+	'Presupuesto sin compromiso'
 ];
 ---
 
-<section class='contact section' id='contact'>
+<section class='contact section' id='contact' aria-labelledby='contact-title'>
 	<div class='container'>
 		<header class='section-head' data-reveal>
 			<p class='eyebrow'><span class='dot'></span> Contacto</p>
-			<h2 class='section-title'>
+			<h2 class='section-title' id='contact-title'>
 				¿Listo para<br />
 				<em class='serif-italic'>empezar</em>?
 			</h2>
@@ -115,8 +114,8 @@ const perks = [
 					</svg>
 				</button>
 
-				<p class='contact__note'>
-					Al enviar abriremos tu cliente de correo. Nada de formularios fantasma.
+				<p class='contact__note' data-contact-note>
+					Te respondemos en menos de 24h. Sin formularios fantasma.
 				</p>
 			</form>
 		</div>
@@ -304,6 +303,16 @@ const perks = [
 		color: var(--fg-mute);
 		text-align: center;
 		font-family: var(--font-mono);
+		min-height: 1.4em;
+		transition: color 0.3s var(--ease-out);
+	}
+
+	.contact__note.is-success {
+		color: var(--accent);
+	}
+
+	.contact__note.is-error {
+		color: #ff6b6b;
 	}
 
 	@media (max-width: 1000px) {
@@ -326,32 +335,70 @@ const perks = [
 </style>
 
 <script>
+	import emailjs from '@emailjs/browser';
+
+	const SERVICE_ID = 'service_g5v1uj4';
+	const TEMPLATE_ID = 'template_3xmufai';
+	const PUBLIC_KEY = '5oguhkuB2Q-TsHoRK';
+
 	const form = document.querySelector('[data-contact-form]') as HTMLFormElement | null;
+	const note = document.querySelector('[data-contact-note]') as HTMLElement | null;
+	const submitBtn = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
 
-	form?.addEventListener('submit', (e) => {
-		e.preventDefault();
-		const fd = new FormData(form);
-		const data = Object.fromEntries(fd.entries());
+	const setNote = (text: string, state: '' | 'is-success' | 'is-error' = '') => {
+		if (!note) return;
+		note.textContent = text;
+		note.classList.remove('is-success', 'is-error');
+		if (state) note.classList.add(state);
+	};
 
-		const subject = `Nuevo proyecto: ${data.project || 'Sin especificar'} — ${data.name || 'Anónimo'}`;
-		const body = `Hola Daniel,
+	if (form) {
+		emailjs.init({ publicKey: PUBLIC_KEY });
 
-Me llamo ${data.name} y me pongo en contacto desde tu portfolio.
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			if (!submitBtn) return;
 
-Tipo de proyecto: ${data.project}
-Presupuesto aproximado: ${data.budget}
+			const originalText = submitBtn.innerHTML;
+			submitBtn.disabled = true;
+			submitBtn.style.opacity = '0.6';
+			setNote('Enviando...');
 
-${data.message}
+			const fd = new FormData(form);
+			const data = Object.fromEntries(fd.entries()) as Record<string, string>;
 
----
-Email de contacto: ${data.email}
-`;
+			const projectLabel = data.project || 'Sin especificar';
+			const budgetLabel = data.budget || 'Sin especificar';
 
-		const mailto = `mailto:hola@domindez.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-		window.location.href = mailto;
+			const params = {
+				user_name: data.name || 'Anónimo',
+				user_email: data.email,
+				user_phone: '',
+				message: [
+					`Tipo de proyecto: ${projectLabel}`,
+					`Presupuesto aproximado: ${budgetLabel}`,
+					'',
+					data.message || '',
+				].join('\n'),
+			};
 
-		if (typeof window !== 'undefined' && (window as any).dataLayer) {
-			(window as any).dataLayer.push({ event: 'formulario_enviado' });
-		}
-	});
+			try {
+				await emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
+
+				setNote('¡Mensaje enviado! Te respondemos en menos de 24h.', 'is-success');
+				form.reset();
+
+				if (typeof window !== 'undefined' && (window as any).dataLayer) {
+					(window as any).dataLayer.push({ event: 'formulario_enviado' });
+				}
+			} catch (err) {
+				console.error('EmailJS error:', err);
+				setNote('No se pudo enviar. Escríbenos a hola@domindez.com.', 'is-error');
+			} finally {
+				submitBtn.disabled = false;
+				submitBtn.style.opacity = '';
+				submitBtn.innerHTML = originalText;
+			}
+		});
+	}
 </script>

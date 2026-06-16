@@ -1,0 +1,21 @@
+{
+  "name": "Domindez Studio — Diseño y desarrollo web a medida",
+  "short_name": "Domindez Studio",
+  "description": "Estudio de diseño y desarrollo web en Málaga. Creamos webs a medida, e-commerce, SaaS y landing pages optimizadas para SEO y rendimiento.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "lang": "es-ES",
+  "categories": ["business", "productivity", "design"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

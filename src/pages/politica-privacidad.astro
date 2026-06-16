@@ -1,0 +1,169 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title='Política de privacidad — Domindez Studio'
+	description='Política de privacidad de Domindez Studio. Cómo recopilamos, tratamos y protegemos tus datos personales según el RGPD y la LOPDGDD.'
+	canonical='https://domindez.com/politica-privacidad'
+>
+	<section class='legal'>
+		<div class='container legal__inner'>
+			<header class='legal__head'>
+				<p class='eyebrow'><span class='dot'></span> Legal</p>
+				<h1>Política de privacidad</h1>
+				<p class='legal__updated'>Última actualización: enero 2026</p>
+			</header>
+
+			<article class='legal__body'>
+				<h2>1. Responsable del tratamiento</h2>
+				<p>
+					<strong>Identidad:</strong> Daniel Domínguez — Domindez Studio<br />
+					<strong>Email:</strong> hola@domindez.com<br />
+					<strong>Domicilio:</strong> Málaga, España
+				</p>
+
+				<h2>2. ¿Qué datos personales tratamos?</h2>
+				<p>
+					En Domindez Studio tratamos los datos personales que nos facilitas a través del
+					formulario de contacto de este sitio web o por correo electrónico, en concreto:
+				</p>
+				<ul>
+					<li>Nombre y apellidos</li>
+					<li>Dirección de correo electrónico</li>
+					<li>Teléfono (si lo facilitas)</li>
+					<li>Información sobre tu proyecto (tipo, presupuesto, descripción)</li>
+				</ul>
+
+				<h2>3. ¿Con qué finalidad tratamos tus datos?</h2>
+				<p>
+					Tratamos los datos personales con las siguientes finalidades:
+				</p>
+				<ul>
+					<li>Gestionar las consultas y solicitudes de presupuesto que nos envías.</li>
+					<li>Prestar los servicios contratados.</li>
+					<li>Enviarte comunicaciones comerciales si has dado tu consentimiento.</li>
+					<li>Analizar la navegación en el sitio web con fines de mejora (Google Analytics).</li>
+				</ul>
+
+				<h2>4. Legitimación</h2>
+				<p>
+					La base legal para el tratamiento de tus datos es el consentimiento que nos
+					prestas al enviar el formulario o al contactarnos por email, así como la ejecución
+					de un contrato en el caso de servicios contratados.
+				</p>
+
+				<h2>5. Conservación de los datos</h2>
+				<p>
+					Los datos personales proporcionados se conservarán mientras se mantenga la
+					relación contractual o no solicites su supresión, y durante el plazo legalmente
+					exigido para atender eventuales responsabilidades.
+				</p>
+
+				<h2>6. Destinatarios</h2>
+				<p>
+					No se cederán datos a terceros, salvo en los casos previstos por la ley.
+					Para prestarte nuestros servicios podemos apoyarnos en los siguientes encargados
+					de tratamiento:
+				</p>
+				<ul>
+					<li>Google (Google Analytics, Google Tag Manager)</li>
+					<li>EmailJS (envío de emails de contacto)</li>
+					<li>Hosting y CDN del sitio web</li>
+				</ul>
+
+				<h2>7. Derechos</h2>
+				<p>
+					Tienes derecho a acceder, rectificar y suprimir tus datos, así como a oponerte a
+					su tratamiento o solicitar la portabilidad de los mismos. Puedes ejercer estos
+					derechos escribiendo a <strong>hola@domindez.com</strong>.
+				</p>
+
+				<h2>8. Seguridad</h2>
+				<p>
+					Domindez Studio trata los datos de forma confidencial y adopta las medidas
+					técnicas y organizativas necesarias para evitar su alteración, pérdida, tratamiento
+					o acceso no autorizado, habida cuenta del estado de la tecnología.
+				</p>
+			</article>
+
+			<nav class='legal__back' aria-label='Volver'>
+				<a href='/' class='btn btn--ghost magnetic' data-magnetic='0.3'>
+					<span>← Volver al inicio</span>
+				</a>
+			</nav>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.legal {
+		padding-block: 8rem 5rem;
+		min-height: 100dvh;
+	}
+
+	.legal__inner {
+		max-width: 760px;
+	}
+
+	.legal__head {
+		margin-bottom: 3rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.legal__head h1 {
+		font-size: clamp(2.5rem, 6vw, 4.5rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 0.95;
+	}
+
+	.legal__updated {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.legal__body {
+		display: flex;
+		flex-direction: column;
+		gap: 2.25rem;
+		color: var(--fg-dim);
+		line-height: 1.7;
+		font-size: var(--fs-300);
+	}
+
+	.legal__body h2 {
+		color: var(--fg);
+		font-size: var(--fs-500);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+		margin-top: 1rem;
+	}
+
+	.legal__body p,
+	.legal__body ul {
+		max-width: 65ch;
+	}
+
+	.legal__body ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding-left: 1.25rem;
+		list-style: disc;
+	}
+
+	.legal__body strong {
+		color: var(--fg);
+		font-weight: 500;
+	}
+
+	.legal__back {
+		margin-top: 3rem;
+	}
+</style>

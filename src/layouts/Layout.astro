@@ -7,48 +7,348 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Preloader from '../components/Preloader.astro';
+import { works, services, testimonials } from '../data/content';
 
 interface Props {
 	title?: string;
 	description?: string;
+	image?: string;
+	noindex?: boolean;
+	canonical?: string;
+	type?: 'website' | 'article' | 'profile';
+	publishedTime?: string;
+	modifiedTime?: string;
 }
 
 const {
-	title = 'Domindez Studio — Diseño y desarrollo web a medida',
-	description = 'Estudio de diseño y desarrollo web. Creamos webs a medida, rápidas y con identidad para marcas que quieren destacar.',
+	title = 'Domindez Studio — Diseño y desarrollo web a medida en Málaga',
+	description = 'Estudio de diseño y desarrollo web en Málaga, España. Creamos webs a medida, e-commerce, SaaS y landing pages rápidas, optimizadas para SEO y Core Web Vitals. +320 proyectos, +250 clientes, 7+ años de experiencia.',
+	image = 'https://domindez.com/og-image.jpg',
+	noindex = false,
+	canonical,
+	type = 'website',
+	publishedTime,
+	modifiedTime,
 } = Astro.props as Props;
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? 'https://domindez.com').toString();
+const ogImage = image.startsWith('http') ? image : new URL(image, Astro.site ?? 'https://domindez.com').toString();
+
+const orgJsonLd = {
+	'@type': 'Organization',
+	'@id': 'https://domindez.com/#organization',
+	name: 'Domindez Studio',
+	alternateName: 'Domindez',
+	url: 'https://domindez.com',
+	logo: {
+		'@type': 'ImageObject',
+		url: 'https://domindez.com/favicon.svg',
+		width: '512',
+		height: '512',
+	},
+	image: ogImage,
+	description,
+	founder: {
+		'@type': 'Person',
+		'@id': 'https://domindez.com/#founder',
+		name: 'Daniel Domínguez',
+		jobTitle: 'Diseñador y desarrollador web senior',
+		url: 'https://domindez.com',
+		sameAs: ['https://github.com/domindez'],
+	},
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: 'Málaga',
+		addressLocality: 'Málaga',
+		addressRegion: 'Málaga',
+		postalCode: '29001',
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: '36.7213',
+		longitude: '-4.4214',
+	},
+	contactPoint: [
+		{
+			'@type': 'ContactPoint',
+			telephone: '+34-660-88-28-76',
+			contactType: 'customer service',
+			email: 'hola@domindez.com',
+			areaServed: ['ES', 'EU', 'LATAM'],
+			availableLanguage: ['Spanish', 'English'],
+		},
+		{
+			'@type': 'ContactPoint',
+			contactType: 'sales',
+			email: 'hola@domindez.com',
+			areaServed: 'Worldwide',
+			availableLanguage: ['Spanish', 'English'],
+		},
+	],
+	sameAs: ['https://github.com/domindez'],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '19:00',
+		},
+	],
+	priceRange: '€€',
+};
+
+const websiteJsonLd = {
+	'@type': 'WebSite',
+	'@id': 'https://domindez.com/#website',
+	url: 'https://domindez.com',
+	name: 'Domindez Studio',
+	description,
+	inLanguage: 'es-ES',
+	publisher: { '@id': 'https://domindez.com/#organization' },
+	author: { '@id': 'https://domindez.com/#founder' },
+	copyrightHolder: { '@id': 'https://domindez.com/#organization' },
+	copyrightYear: new Date().getFullYear(),
+	potentialAction: {
+		'@type': 'SearchAction',
+		target: {
+			'@type': 'EntryPoint',
+			urlTemplate: 'https://domindez.com/?s={search_term_string}',
+		},
+		'query-input': 'required name=search_term_string',
+	},
+};
+
+const localBusinessJsonLd = {
+	'@type': ['ProfessionalService', 'LocalBusiness'],
+	'@id': 'https://domindez.com/#localbusiness',
+	name: 'Domindez Studio',
+	image: ogImage,
+	url: 'https://domindez.com',
+	telephone: '+34-660-88-28-76',
+	email: 'hola@domindez.com',
+	priceRange: '€€',
+	description,
+	address: {
+		'@type': 'PostalAddress',
+		addressLocality: 'Málaga',
+		addressRegion: 'Málaga',
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: '36.7213',
+		longitude: '-4.4214',
+	},
+	areaServed: [
+		{ '@type': 'Country', name: 'España' },
+		{ '@type': 'Country', name: 'Mundial' },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: '5.0',
+		reviewCount: testimonials.length,
+		bestRating: '5',
+		worstRating: '1',
+	},
+	parentOrganization: { '@id': 'https://domindez.com/#organization' },
+};
+
+const servicesJsonLd = {
+	'@type': 'ItemList',
+	'@id': 'https://domindez.com/#services',
+	name: 'Servicios de Domindez Studio',
+	itemListElement: services.map((s, i) => ({
+		'@type': 'ListItem',
+		position: i + 1,
+		item: {
+			'@type': 'Service',
+			name: s.title,
+			description: s.description,
+			provider: { '@id': 'https://domindez.com/#organization' },
+			areaServed: { '@type': 'Country', name: 'España' },
+			serviceType: s.title,
+		},
+	})),
+};
+
+const worksJsonLd = {
+	'@type': 'ItemList',
+	'@id': 'https://domindez.com/#portfolio',
+	name: 'Proyectos destacados de Domindez Studio',
+	itemListElement: works.map((w, i) => ({
+		'@type': 'ListItem',
+		position: i + 1,
+		url: w.link,
+		name: w.title,
+	})),
+};
+
+const reviewsJsonLd = testimonials.map((t, i) => ({
+	'@type': 'Review',
+	'@id': `https://domindez.com/#review-${t.company.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${i}`,
+	author: {
+		'@type': 'Person',
+		name: t.author,
+		jobTitle: t.role,
+		worksFor: { '@type': 'Organization', name: t.company },
+	},
+	reviewRating: {
+		'@type': 'Rating',
+		ratingValue: '5',
+		bestRating: '5',
+	},
+	reviewBody: t.quote,
+	itemReviewed: { '@id': 'https://domindez.com/#organization' },
+	datePublished: '2024-01-01',
+}));
+
+const faqJsonLd = {
+	'@type': 'FAQPage',
+	'@id': 'https://domindez.com/#faq',
+	mainEntity: [
+		{
+			'@type': 'Question',
+			name: '¿Cuánto cuesta una web a medida?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'El precio de una web a medida depende del alcance del proyecto. Una landing page parte desde 1.000 €, un sitio corporativo medio ronda los 2.000–5.000 €, y un e-commerce o SaaS completo puede ir de 5.000 € en adelante. Siempre ofrezco presupuesto cerrado y sin sorpresas.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: '¿Cuánto tarda en estar lista una web?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Una landing page suele estar lista en 1–2 semanas, una web corporativa en 3–5 semanas y un proyecto más complejo (e-commerce, SaaS, web app) entre 6 y 12 semanas. Trabajo con plazos cerrados y entregas semanales para que veas avances reales.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: '¿Las webs que haces están optimizadas para SEO?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Sí. Cada web la construyo con SEO técnico desde el día uno: estructura semántica, datos estructurados JSON-LD, meta tags completos, sitemap, Core Web Vitals verdes, y rendimiento inferior a 1 segundo de carga. Además entrego Google Search Console y Analytics configurados.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: '¿Trabajas solo o con un equipo?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Soy un estudio boutique: yo diseño, desarrollo y entrego cada proyecto. Para trabajos que requieren equipo multidisciplinar (motion, branding, marketing) colaboro con una red de profesionales senior de confianza. Siempre tendrás un único punto de contacto.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: '¿Dónde estás ubicado?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Estoy basado en Málaga, España, y trabajo con clientes de toda España, Europa y LATAM. Todo el trabajo se realiza de forma remota, con reuniones semanales por videollamada y comunicación constante por Slack, email o WhatsApp.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: '¿Ofreces mantenimiento después del lanzamiento?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Sí. Ofrezco planes de mantenimiento mensual que incluyen actualizaciones de seguridad, backups, soporte técnico, pequeñas mejoras y monitorización de rendimiento. Tu web estará siempre actualizada, segura y funcionando sin que tengas que preocuparte.',
+			},
+		},
+	],
+};
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		orgJsonLd,
+		websiteJsonLd,
+		localBusinessJsonLd,
+		servicesJsonLd,
+		worksJsonLd,
+		...reviewsJsonLd,
+		faqJsonLd,
+	],
+};
 ---
 
 <!doctype html>
-<html lang='es'>
+<html lang='es-ES'>
 	<head>
 		<meta charset='UTF-8' />
 		<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover' />
 		<meta name='theme-color' content='#0a0a0a' />
-		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+		<meta name='color-scheme' content='dark' />
+		<meta name='format-detection' content='telephone=no' />
 		<meta name='generator' content={Astro.generator} />
+		<meta name='rating' content='general' />
+		<meta name='distribution' content='global' />
+		<meta name='revisit-after' content='7 days' />
+
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+		<link rel='icon' type='image/png' sizes='32x32' href='/favicon.svg' />
+		<link rel='apple-touch-icon' sizes='180x180' href='/favicon.svg' />
+		<link rel='manifest' href='/manifest.webmanifest' />
+		<link rel='mask-icon' href='/favicon.svg' color='#c3ff00' />
+
+		<link rel='preconnect' href='https://fonts.googleapis.com' crossorigin />
+		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+		<link rel='preconnect' href='https://www.googletagmanager.com' />
+		<link rel='dns-prefetch' href='https://www.google-analytics.com' />
+		<link rel='dns-prefetch' href='https://i.ytimg.com' />
+		<link rel='dns-prefetch' href='https://vimeo.com' />
 
 		<title>{title}</title>
 		<meta name='description' content={description} />
 		<meta
 			name='keywords'
-			content='diseño web, desarrollo web, agencia web, portfolio, freelancer, astro, react, next, domindez'
+			content='diseño web, desarrollo web, agencia web, estudio diseño web málaga, freelance diseño web, programador web málaga, ecommerce, saas, landing page, web corporativa, seo, astro, react, next, domindez'
 		/>
-		<meta name='robots' content='index, follow' />
-		<link rel='canonical' href='https://domindez.com' />
+		<meta name='author' content='Daniel Domínguez' />
+		<meta name='copyright' content={`© ${new Date().getFullYear()} Domindez Studio`} />
+		<meta name='robots' content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+		<meta name='googlebot' content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+		<meta name='bingbot' content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+		<link rel='canonical' href={canonicalUrl} />
+		<link rel='alternate' hreflang='es-ES' href='https://domindez.com' />
+		<link rel='alternate' hreflang='x-default' href='https://domindez.com' />
 
-		<!-- Open Graph -->
+		<meta name='geo.region' content='ES-AN' />
+		<meta name='geo.placename' content='Málaga' />
+		<meta name='geo.position' content='36.7213;-4.4214' />
+		<meta name='ICBM' content='36.7213, -4.4214' />
+
 		<meta property='og:title' content={title} />
 		<meta property='og:description' content={description} />
-		<meta property='og:type' content='website' />
-		<meta property='og:url' content='https://domindez.com' />
-		<meta property='og:image' content='https://domindez.com/og-image.jpg' />
+		<meta property='og:type' content={type} />
+		<meta property='og:url' content={canonicalUrl} />
+		<meta property='og:image' content={ogImage} />
+		<meta property='og:image:alt' content='Domindez Studio — Diseño y desarrollo web a medida' />
+		<meta property='og:image:width' content='1200' />
+		<meta property='og:image:height' content='630' />
+		<meta property='og:site_name' content='Domindez Studio' />
+		<meta property='og:locale' content='es_ES' />
+		<meta property='og:locale:alternate' content='en_US' />
+		<meta property='og:country-name' content='España' />
+		{modifiedTime && <meta property='article:modified_time' content={modifiedTime} />}
+		{publishedTime && <meta property='article:published_time' content={publishedTime} />}
 
-		<!-- Twitter -->
 		<meta name='twitter:card' content='summary_large_image' />
 		<meta name='twitter:title' content={title} />
 		<meta name='twitter:description' content={description} />
-		<meta name='twitter:image' content='https://domindez.com/og-image.jpg' />
+		<meta name='twitter:image' content={ogImage} />
+		<meta name='twitter:image:alt' content='Domindez Studio — Diseño y desarrollo web a medida' />
+		<meta name='twitter:creator' content='@domindez' />
+		<meta name='twitter:site' content='@domindez' />
+		<meta name='twitter:domain' content='domindez.com' />
+
+		<meta name='apple-mobile-web-app-capable' content='yes' />
+		<meta name='apple-mobile-web-app-title' content='Domindez Studio' />
+		<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
+		<meta name='mobile-web-app-capable' content='yes' />
+		<meta name='application-name' content='Domindez Studio' />
+
+		<script type='application/ld+json' set:html={JSON.stringify(jsonLd)} is:inline />
 
 		<!-- GTM head -->
 		<script is:inline>
@@ -71,15 +371,24 @@ const {
 		<!-- GTM body -->
 		<noscript
 			><iframe
-				src='https://www.googletagmanager.com/ns.html?id=GTM-5LF986KH'
+				src='https://www.googletagmanager.com/ns.html?id=GTM-TSJPBNVN'
 				height='0'
 				width='0'
 				style='display:none;visibility:hidden'></iframe></noscript
 		>
 
+		<noscript>
+			<style>
+				.preloader { display: none !important; }
+				body { overflow: auto !important; }
+			</style>
+		</noscript>
+
 		<Preloader />
 
 		<div class='grain' aria-hidden='true'></div>
+
+		<a href='#main' class='skip-link'>Saltar al contenido principal</a>
 
 		<Header />
 
@@ -105,3 +414,28 @@ const {
 		</script>
 	</body>
 </html>
+
+<style is:global>
+	.skip-link {
+		position: absolute;
+		top: -100px;
+		left: 1rem;
+		z-index: 9999;
+		padding: 0.75rem 1.25rem;
+		background: var(--accent);
+		color: var(--accent-ink);
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		border-radius: var(--radius);
+		text-decoration: none;
+		transition: top 0.3s var(--ease-out);
+	}
+	.skip-link:focus {
+		top: 1rem;
+		outline: 3px solid var(--fg);
+		outline-offset: 3px;
+	}
+</style>

@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /*.json$
+
+Sitemap: https://domindez.com/sitemap-index.xml
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+Host: https://domindez.com

@@ -1,0 +1,149 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title='Política de cookies — Domindez Studio'
+	description='Política de cookies de Domindez Studio. Información detallada sobre las cookies que utilizamos, su finalidad y cómo gestionarlas.'
+	canonical='https://domindez.com/politica-cookies'
+>
+	<section class='legal'>
+		<div class='container legal__inner'>
+			<header class='legal__head'>
+				<p class='eyebrow'><span class='dot'></span> Legal</p>
+				<h1>Política de cookies</h1>
+				<p class='legal__updated'>Última actualización: enero 2026</p>
+			</header>
+
+			<article class='legal__body'>
+				<h2>¿Qué son las cookies?</h2>
+				<p>
+					Las cookies son pequeños archivos de texto que un sitio web almacena en tu
+					dispositivo cuando lo visitas. Sirven para que el sitio web pueda recordar tus
+					acciones y preferencias durante un tiempo determinado.
+				</p>
+
+				<h2>¿Qué cookies utilizamos?</h2>
+				<p>En domindez.com utilizamos las siguientes cookies:</p>
+				<ul>
+					<li>
+						<strong>Cookies técnicas (necesarias):</strong> imprescindibles para el
+						funcionamiento del sitio web (por ejemplo, recordar tus preferencias de
+						navegación). No requieren consentimiento.
+					</li>
+					<li>
+						<strong>Cookies de análisis (Google Analytics):</strong> nos permiten medir y
+						analizar la navegación de los usuarios en el sitio web con el objetivo de
+						mejorarlo. Requieren tu consentimiento.
+					</li>
+					<li>
+						<strong>Cookies de marketing (Google Tag Manager):</strong> nos ayudan a
+						medir el rendimiento de nuestras campañas. Requieren tu consentimiento.
+					</li>
+				</ul>
+
+				<h2>¿Cómo gestionar las cookies?</h2>
+				<p>
+					Puedes permitir, bloquear o eliminar las cookies instaladas en tu dispositivo
+					mediante la configuración de las opciones del navegador en tu dispositivo. Si no
+					permites la instalación de cookies, es posible que no puedas acceder a algunas
+					funcionalidades del sitio web.
+				</p>
+
+				<h2>Cookies de terceros</h2>
+				<p>
+					Este sitio web utiliza Google Analytics, un servicio analítico de web prestado
+					por Google, Inc. Google Analytics utiliza cookies para ayudar al sitio web a
+					analizar el uso que hacen los usuarios. La información que genera la cookie
+					acerca de tu uso del sitio web será directamente transmitida y archivada por
+					Google en sus servidores.
+				</p>
+
+				<h2>Actualizaciones</h2>
+				<p>
+					Domindez Studio puede modificar esta política de cookies para adaptarla a
+					novedades legislativas o jurisprudenciales. En ese caso, se anunciará el cambio
+					en la página principal durante un periodo razonable.
+				</p>
+			</article>
+
+			<nav class='legal__back' aria-label='Volver'>
+				<a href='/' class='btn btn--ghost magnetic' data-magnetic='0.3'>
+					<span>← Volver al inicio</span>
+				</a>
+			</nav>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.legal {
+		padding-block: 8rem 5rem;
+		min-height: 100dvh;
+	}
+
+	.legal__inner {
+		max-width: 760px;
+	}
+
+	.legal__head {
+		margin-bottom: 3rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.legal__head h1 {
+		font-size: clamp(2.5rem, 6vw, 4.5rem);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 0.95;
+	}
+
+	.legal__updated {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.legal__body {
+		display: flex;
+		flex-direction: column;
+		gap: 2.25rem;
+		color: var(--fg-dim);
+		line-height: 1.7;
+		font-size: var(--fs-300);
+	}
+
+	.legal__body h2 {
+		color: var(--fg);
+		font-size: var(--fs-500);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+		margin-top: 1rem;
+	}
+
+	.legal__body p,
+	.legal__body ul {
+		max-width: 65ch;
+	}
+
+	.legal__body ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding-left: 1.25rem;
+		list-style: disc;
+	}
+
+	.legal__body strong {
+		color: var(--fg);
+		font-weight: 500;
+	}
+
+	.legal__back {
+		margin-top: 3rem;
+	}
+</style>

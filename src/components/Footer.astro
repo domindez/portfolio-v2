@@ -8,7 +8,23 @@ const socials = [
 ];
 ---
 
-<footer class='site-footer'>
+<footer class='site-footer' itemscope itemtype='https://schema.org/Organization' aria-label='Información del estudio'>
+	<meta itemprop='name' content='Domindez Studio' />
+	<meta itemprop='url' content='https://domindez.com' />
+	<meta itemprop='logo' content='https://domindez.com/favicon.svg' />
+	<meta itemprop='email' content='hola@domindez.com' />
+	<meta itemprop='telephone' content='+34-660-88-28-76' />
+	<meta itemprop='description' content='Estudio de diseño y desarrollo web a medida desde Málaga, España.' />
+	<link itemprop='sameAs' href='https://github.com/domindez' />
+
+	<div itemprop='address' itemscope itemtype='https://schema.org/PostalAddress' style='display:none'>
+		<meta itemprop='streetAddress' content='Málaga' />
+		<meta itemprop='addressLocality' content='Málaga' />
+		<meta itemprop='addressRegion' content='Málaga' />
+		<meta itemprop='postalCode' content='29001' />
+		<meta itemprop='addressCountry' content='ES' />
+	</div>
+
 	<div class='container'>
 		<div class='footer-cta' data-reveal>
 			<p class='eyebrow'><span class='dot'></span> ¿Listo para empezar?</p>
@@ -35,39 +51,51 @@ const socials = [
 		</div>
 
 		<div class='footer-grid'>
-			<div class='footer-col'>
+			<div class='footer-col' itemprop='address' itemscope itemtype='https://schema.org/PostalAddress'>
 				<p class='footer-label'>Estudio</p>
-				<p>Diseño y desarrollo web a medida desde Málaga, España.</p>
+				<p>
+					<span itemprop='streetAddress'>Málaga</span>,
+					<span itemprop='addressCountry'>España</span>
+				</p>
+				<p>
+					Diseño y desarrollo web a medida.<br />
+					Atendemos clientes en toda España, Europa y LATAM.
+				</p>
 			</div>
 			<div class='footer-col'>
 				<p class='footer-label'>Contacto</p>
-				<a href='mailto:hola@domindez.com' class='footer-link'>hola@domindez.com</a>
-				<a href='tel:+34660882876' class='footer-link'>+34 660 88 28 76</a>
+				<a href='mailto:hola@domindez.com' class='footer-link' itemprop='email'>hola@domindez.com</a>
+				<a href='tel:+34660882876' class='footer-link' itemprop='telephone'>+34 660 88 28 76</a>
 			</div>
 			<div class='footer-col'>
 				<p class='footer-label'>Sígueme</p>
 				<div class='footer-socials'>
 					{
 						socials.map((social) => (
-							<a href={social.href} class='footer-link' target='_blank' rel='noopener'>
+							<a href={social.href} class='footer-link' target='_blank' rel='noopener nofollow'>
 								{social.label} ↗
 							</a>
 						))
 					}
 				</div>
 			</div>
-			<div class='footer-col'>
+			<nav class='footer-col' aria-label='Navegación del sitio'>
 				<p class='footer-label'>Navegación</p>
 				<a href='#services' class='footer-link'>Servicios</a>
 				<a href='#work' class='footer-link'>Trabajo</a>
 				<a href='#process' class='footer-link'>Proceso</a>
 				<a href='#contact' class='footer-link'>Contacto</a>
-			</div>
+			</nav>
 		</div>
 
 		<div class='footer-bottom'>
 			<p>© {year} Domindez Studio. Todos los derechos reservados.</p>
-			<p class='mono'>Hecho con código, café y cariño</p>
+			<nav class='footer-legal' aria-label='Enlaces legales'>
+				<a href='/aviso-legal' class='footer-link footer-link--small'>Aviso legal</a>
+				<a href='/politica-privacidad' class='footer-link footer-link--small'>Privacidad</a>
+				<a href='/politica-cookies' class='footer-link footer-link--small'>Cookies</a>
+			</nav>
+			<p class='mono'>Hecho con código, café y cariño · Málaga, ES</p>
 		</div>
 	</div>
 </footer>
@@ -177,6 +205,10 @@ const socials = [
 		transform: translateX(4px);
 	}
 
+	.footer-link--small {
+		font-size: var(--fs-100);
+	}
+
 	.footer-socials {
 		display: flex;
 		flex-direction: column;
@@ -187,10 +219,18 @@ const socials = [
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		flex-wrap: wrap;
+		gap: 1rem;
 		padding-top: 2rem;
 		border-top: 1px solid var(--border);
 		font-size: var(--fs-100);
 		color: var(--fg-mute);
+	}
+
+	.footer-legal {
+		display: flex;
+		gap: 1.25rem;
+		flex-wrap: wrap;
 	}
 
 	.mono {
@@ -211,7 +251,7 @@ const socials = [
 
 		.footer-bottom {
 			flex-direction: column;
-			gap: 0.5rem;
+			gap: 0.75rem;
 			text-align: center;
 		}
 	}

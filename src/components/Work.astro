@@ -4,7 +4,7 @@ import { works } from '../data/content';
 
 const featured = works.slice(0, 3);
 const rest = works.slice(3);
-const totalProjects = 320; // Some are confidential / private
+const totalProjects = 320;
 ---
 
 <section class='work section' id='work'>
@@ -25,37 +25,56 @@ const totalProjects = 320; // Some are confidential / private
 		<div class='work__featured'>
 			{
 				featured.map((work, i) => (
-					<article class='case' data-reveal>
-						<a href={work.link} target='_blank' rel='noopener' class='case__link'>
-							<div class='case__media'>
-								<div class='case__media-inner'>
-									<Image
-										src={work.img}
-										alt={work.title}
-										width={1200}
-										height={750}
-										loading={i === 0 ? 'eager' : 'lazy'}
-									/>
+					<article class='case' data-reveal itemscope itemtype='https://schema.org/CreativeWork'>
+						<div class='case__link-wrap'>
+							<a
+								href={`/works/${work.slug}`}
+								class='case__link'
+								aria-label={`Ver caso de estudio de ${work.title}`}
+							>
+								<div class='case__media'>
+									<div class='case__media-inner'>
+										<Image
+											src={work.img}
+											alt={`${work.title} — proyecto de ${work.category} diseñado y desarrollado por Domindez Studio`}
+											width={1200}
+											height={750}
+											loading={i === 0 ? 'eager' : 'lazy'}
+											decoding='async'
+											itemprop='image'
+										/>
+									</div>
+									<div class='case__overlay'>
+										<span class='case__visit'>Ver caso de estudio ↗</span>
+									</div>
 								</div>
-								<div class='case__overlay'>
-									<span class='case__visit'>Visitar proyecto ↗</span>
+								<div class='case__body'>
+									<div class='case__meta'>
+										<span class='case__num'>{String(i + 1).padStart(2, '0')}</span>
+										<span class='case__cat'>{work.category}</span>
+										<span class='case__year'>{work.year}</span>
+									</div>
+									<h3 class='case__title' itemprop='name'>{work.title}</h3>
+									<p class='case__desc' itemprop='description'>{work.description}</p>
+									<meta itemprop='creator' content='Domindez Studio' />
+									<meta itemprop='dateCreated' content={work.year} />
+									<ul class='case__stack' aria-label={`Tecnologías usadas en ${work.title}`}>
+										{work.stack.map((tech) => (
+											<li class='tag'>{tech}</li>
+										))}
+									</ul>
 								</div>
-							</div>
-							<div class='case__body'>
-								<div class='case__meta'>
-									<span class='case__num'>{String(i + 1).padStart(2, '0')}</span>
-									<span class='case__cat'>{work.category}</span>
-									<span class='case__year'>{work.year}</span>
-								</div>
-								<h3 class='case__title'>{work.title}</h3>
-								<p class='case__desc'>{work.description}</p>
-								<ul class='case__stack'>
-									{work.stack.map((tech) => (
-										<li class='tag'>{tech}</li>
-									))}
-								</ul>
-							</div>
-						</a>
+							</a>
+							<a
+								href={work.link}
+								target='_blank'
+								rel='noopener'
+								class='case__live'
+								aria-label={`Ver ${work.title} en vivo (se abre en nueva pestaña)`}
+							>
+								Visitar en vivo ↗
+							</a>
+						</div>
 					</article>
 				))
 			}
@@ -64,24 +83,32 @@ const totalProjects = 320; // Some are confidential / private
 		<div class='work__rest'>
 			{
 				rest.map((work, i) => (
-					<article class='work-card' data-reveal>
-						<a href={work.link} target='_blank' rel='noopener' class='work-card__link'>
+					<article class='work-card' data-reveal itemscope itemtype='https://schema.org/CreativeWork'>
+						<a
+							href={`/works/${work.slug}`}
+							class='work-card__link'
+							aria-label={`Ver caso de estudio de ${work.title}`}
+						>
 							<div class='work-card__media'>
 								<Image
 									src={work.img}
-									alt={work.title}
+									alt={`${work.title} — proyecto de ${work.category} diseñado y desarrollado por Domindez Studio`}
 									width={600}
 									height={400}
 									loading='lazy'
+									decoding='async'
+									itemprop='image'
 								/>
 								<span class='work-card__num'>{String(i + 4).padStart(2, '0')}</span>
 							</div>
 							<div class='work-card__body'>
 								<div class='work-card__head'>
-									<h3 class='work-card__title'>{work.title}</h3>
+									<h3 class='work-card__title' itemprop='name'>{work.title}</h3>
 									<span class='work-card__cat'>{work.category}</span>
 								</div>
-								<p class='work-card__desc'>{work.description}</p>
+								<p class='work-card__desc' itemprop='description'>{work.description}</p>
+								<meta itemprop='creator' content='Domindez Studio' />
+								<meta itemprop='dateCreated' content={work.year} />
 							</div>
 						</a>
 					</article>
@@ -110,7 +137,6 @@ const totalProjects = 320; // Some are confidential / private
 		color: var(--accent);
 	}
 
-	/* Featured cases */
 	.work__featured {
 		display: flex;
 		flex-direction: column;
@@ -119,6 +145,10 @@ const totalProjects = 320; // Some are confidential / private
 	}
 
 	.case {
+		position: relative;
+	}
+
+	.case__link-wrap {
 		position: relative;
 	}
 
@@ -176,7 +206,8 @@ const totalProjects = 320; // Some are confidential / private
 		border-radius: var(--radius);
 	}
 
-	.case__link:hover .case__overlay {
+	.case__link:hover .case__overlay,
+	.case__link:focus-visible .case__overlay {
 		opacity: 1;
 	}
 
@@ -193,8 +224,38 @@ const totalProjects = 320; // Some are confidential / private
 		transition: transform 0.4s var(--ease-out);
 	}
 
-	.case__link:hover .case__visit {
+	.case__link:hover .case__visit,
+	.case__link:focus-visible .case__visit {
 		transform: translateY(0);
+	}
+
+	.case__live {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--fg);
+		background: rgba(10, 10, 10, 0.7);
+		backdrop-filter: blur(10px);
+		padding: 0.5rem 0.9rem;
+		border-radius: var(--radius-pill);
+		border: 1px solid var(--border);
+		opacity: 0;
+		transition: opacity 0.3s var(--ease-out), color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+		z-index: 2;
+	}
+
+	.case__link-wrap:hover .case__live,
+	.case__live:focus-visible {
+		opacity: 1;
+	}
+
+	.case__live:hover {
+		color: var(--accent);
+		border-color: var(--accent);
 	}
 
 	.case__body {
@@ -224,6 +285,12 @@ const totalProjects = 320; // Some are confidential / private
 		font-weight: 500;
 		letter-spacing: -0.03em;
 		line-height: 0.95;
+		transition: color 0.3s var(--ease-out);
+	}
+
+	.case__link:hover .case__title,
+	.case__link:focus-visible .case__title {
+		color: var(--accent);
 	}
 
 	.case__desc {
@@ -239,7 +306,6 @@ const totalProjects = 320; // Some are confidential / private
 		gap: 0.4rem;
 	}
 
-	/* Rest grid */
 	.work__rest {
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
@@ -317,6 +383,11 @@ const totalProjects = 320; // Some are confidential / private
 		font-size: var(--fs-400);
 		font-weight: 500;
 		letter-spacing: -0.02em;
+		transition: color 0.3s var(--ease-out);
+	}
+
+	.work-card:hover .work-card__title {
+		color: var(--accent);
 	}
 
 	.work-card__cat {

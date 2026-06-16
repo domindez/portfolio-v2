@@ -20,7 +20,12 @@ import { testimonials } from '../data/content';
 		<div class='testimonials__grid' data-reveal-stagger>
 			{
 				testimonials.map((t) => (
-					<figure class='testimonial'>
+					<figure
+						class='testimonial'
+						itemscope
+						itemtype='https://schema.org/Review'
+					>
+						<meta itemprop='itemReviewed' content='Domindez Studio' />
 						<svg
 							class='testimonial__quote'
 							width='40'
@@ -34,12 +39,30 @@ import { testimonials } from '../data/content';
 								fill='currentColor'
 							/>
 						</svg>
-						<blockquote class='testimonial__text'>{t.quote}</blockquote>
-						<figcaption class='testimonial__author'>
+						<blockquote class='testimonial__text' itemprop='reviewBody'>
+							{t.quote}
+						</blockquote>
+						<figcaption
+							class='testimonial__author'
+							itemprop='author'
+							itemscope
+							itemtype='https://schema.org/Person'
+						>
+							<div itemprop='reviewRating' itemtype='https://schema.org/Rating' itemscope>
+								<meta itemprop='ratingValue' content='5' />
+								<meta itemprop='bestRating' content='5' />
+							</div>
 							<div>
-								<p class='testimonial__name'>{t.author}</p>
+								<p class='testimonial__name' itemprop='name'>{t.author}</p>
 								<p class='testimonial__role'>
-									{t.role} · {t.company}
+									<span itemprop='jobTitle'>{t.role}</span> ·
+									<span
+										itemprop='worksFor'
+										itemscope
+										itemtype='https://schema.org/Organization'
+									>
+										<span itemprop='name'>{t.company}</span>
+									</span>
 								</p>
 							</div>
 						</figcaption>

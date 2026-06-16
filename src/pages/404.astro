@@ -2,7 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title='404 — Domindez Studio' description='Esta página no existe o ha sido movida.'>
+<Layout
+	title='Página no encontrada — Domindez Studio'
+	description='La página que buscas no existe o ha sido movida. Vuelve al inicio o inicia un proyecto con Domindez Studio, estudio de diseño y desarrollo web en Málaga.'
+	noindex={true}
+	canonical='https://domindez.com/404'
+>
 	<section class='error'>
 		<div class='container error__inner'>
 			<div class='error__code' data-reveal>
@@ -21,6 +26,20 @@ import Layout from '../layouts/Layout.astro';
 					Lo sentimos, la página que buscas no existe o ha sido movida. Mientras tanto,
 					puedes volver al inicio o iniciar un proyecto con nosotros.
 				</p>
+
+				<nav class='error__suggestions' aria-label='Páginas recomendadas'>
+					<p class='error__suggestions-label'>También te puede interesar:</p>
+					<ul>
+						<li><a href='/'>Inicio</a></li>
+						<li><a href='/#services'>Servicios de diseño y desarrollo web</a></li>
+						<li><a href='/#work'>Portfolio de proyectos</a></li>
+						<li><a href='/works/gottan'>Caso de estudio: Gottan Grill</a></li>
+						<li><a href='/works/barmanager'>Caso de estudio: Barmanager</a></li>
+						<li><a href='/works/zerobil'>Caso de estudio: Zerobil</a></li>
+						<li><a href='/#process'>Cómo trabajamos</a></li>
+						<li><a href='/#contact'>Contactar con el estudio</a></li>
+					</ul>
+				</nav>
 
 				<div class='error__actions'>
 					<a href='/' class='btn magnetic' data-magnetic='0.3'>
@@ -115,6 +134,43 @@ import Layout from '../layouts/Layout.astro';
 		color: var(--fg-dim);
 		line-height: 1.5;
 		max-width: 50ch;
+	}
+
+	.error__suggestions {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		padding: 1.25rem 1.5rem;
+		background: var(--bg-2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		margin-block: 0.5rem;
+	}
+
+	.error__suggestions-label {
+		font-family: var(--font-mono);
+		font-size: var(--fs-100);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--fg-mute);
+	}
+
+	.error__suggestions ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+
+	.error__suggestions a {
+		color: var(--fg-dim);
+		font-size: var(--fs-300);
+		transition: color 0.2s var(--ease-out);
+		display: inline-block;
+	}
+
+	.error__suggestions a:hover {
+		color: var(--accent);
+		transform: translateX(4px);
 	}
 
 	.error__actions {
