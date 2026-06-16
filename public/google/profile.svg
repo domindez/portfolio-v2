@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720" role="img" aria-label="Domindez Studio">
+	<defs>
+		<radialGradient id="glow" cx="50%" cy="40%" r="60%">
+			<stop offset="0%" stop-color="#c3ff00" stop-opacity="0.18"/>
+			<stop offset="60%" stop-color="#c3ff00" stop-opacity="0.04"/>
+			<stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+		</radialGradient>
+		<style>
+			.bg { fill: #0a0a0a; }
+			.mark { fill: #f5f5f0; }
+			.dot { fill: #c3ff00; }
+			.word {
+				font-family: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+				font-weight: 500;
+				fill: #f5f5f0;
+				letter-spacing: 0.32em;
+			}
+			.mute {
+				font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+				fill: #6b6b6b;
+				letter-spacing: 0.18em;
+			}
+		</style>
+	</defs>
+
+	<rect class="bg" width="720" height="720" rx="96"/>
+	<rect width="720" height="720" rx="96" fill="url(#glow)"/>
+
+	<g transform="translate(360 320)">
+		<g transform="translate(-104 -140)">
+			<rect class="mark" x="0" y="0" width="48" height="280" rx="8"/>
+			<path class="mark" d="M48 0 H120 a140 140 0 0 1 0 280 H48 V232 H112 a92 92 0 0 0 0 -184 H48 Z"/>
+		</g>
+		<circle class="dot" cx="188" cy="118" r="22"/>
+	</g>
+
+	<g text-anchor="middle">
+		<text class="word" x="360" y="568" font-size="34">DOMINDEZ</text>
+		<text class="mute" x="360" y="608" font-size="18">M A L A G A &#183; E S P A &#209; A</text>
+	</g>
+</svg>
