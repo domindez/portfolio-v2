@@ -7,55 +7,163 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Preloader from '../components/Preloader.astro';
-import { works, services, testimonials } from '../data/content';
+import { works, services, testimonials, process } from '../data/content';
 
 interface Props {
 	title?: string;
 	description?: string;
 	image?: string;
+	imageAlt?: string;
+	imageWidth?: number;
+	imageHeight?: number;
 	noindex?: boolean;
 	canonical?: string;
 	type?: 'website' | 'article' | 'profile';
 	publishedTime?: string;
 	modifiedTime?: string;
+	schemaType?: 'WebPage' | 'AboutPage' | 'ContactPage' | 'ProfilePage' | 'CollectionPage';
+	schemaName?: string;
+	schemaDescription?: string;
+	googleVerification?: string;
+	bingVerification?: string;
 }
 
 const {
 	title = 'Domindez Studio — Diseño y desarrollo web a medida en Málaga',
 	description = 'Estudio de diseño y desarrollo web en Málaga, España. Creamos webs a medida, e-commerce, SaaS y landing pages rápidas, optimizadas para SEO y Core Web Vitals. +150 proyectos, +100 clientes, 7+ años de experiencia.',
 	image = 'https://domindez.com/og-image.png',
+	imageAlt = 'Domindez Studio — Diseño y desarrollo web a medida en Málaga',
+	imageWidth = 1200,
+	imageHeight = 675,
 	noindex = false,
 	canonical,
 	type = 'website',
 	publishedTime,
 	modifiedTime,
+	schemaType = 'WebPage',
+	schemaName,
+	schemaDescription,
+	googleVerification,
+	bingVerification,
 } = Astro.props as Props;
 
-const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? 'https://domindez.com').toString();
-const ogImage = image.startsWith('http') ? image : new URL(image, Astro.site ?? 'https://domindez.com').toString();
+const SITE = Astro.site ?? new URL('https://domindez.com');
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, SITE).toString();
+const ogImage = image.startsWith('http') ? image : new URL(image, SITE).toString();
+const ogImageSecure = ogImage.startsWith('http://')
+	? ogImage.replace('http://', 'https://')
+	: ogImage;
+
+const personJsonLd = {
+	'@type': 'Person',
+	'@id': 'https://domindez.com/#founder',
+	name: 'Daniel Domínguez',
+	alternateName: 'Dani Domínguez',
+	jobTitle: 'Diseñador y desarrollador web senior',
+	description:
+		'Diseñador y desarrollador web senior con más de 7 años de experiencia creando productos digitales a medida para startups, restaurantes, hoteles y profesionales en España, Europa y LATAM.',
+	url: 'https://domindez.com',
+	image: 'https://domindez.com/daniel-dominguez.webp',
+	telephone: '+34-660-88-28-76',
+	email: 'mailto:info@domindez.com',
+	worksFor: { '@id': 'https://domindez.com/#organization' },
+	founderOf: { '@id': 'https://domindez.com/#organization' },
+	knowsAbout: [
+		'Diseño web',
+		'Desarrollo web',
+		'SEO técnico',
+		'Performance web',
+		'UI/UX',
+		'React',
+		'Astro',
+		'Next.js',
+		'TypeScript',
+		'Node.js',
+		'Edge computing',
+		'Core Web Vitals',
+		'E-commerce',
+		'SaaS',
+	],
+	knowsLanguage: ['es-ES', 'en-US'],
+	address: {
+		'@type': 'PostalAddress',
+		addressLocality: 'Málaga',
+		addressRegion: 'Málaga',
+		addressCountry: 'ES',
+	},
+	nationality: { '@type': 'Country', name: 'España' },
+	sameAs: ['https://github.com/domindez'],
+};
 
 const orgJsonLd = {
-	'@type': 'Organization',
+	'@type': ['Organization', 'ProfessionalService'],
 	'@id': 'https://domindez.com/#organization',
 	name: 'Domindez Studio',
-	alternateName: 'Domindez',
+	alternateName: ['Domindez', 'Domindez.com', 'Domindez Web Studio'],
+	legalName: 'Daniel Domínguez (Domindez Studio)',
 	url: 'https://domindez.com',
 	logo: {
 		'@type': 'ImageObject',
-		url: 'https://domindez.com/favicon.svg',
-		width: '512',
-		height: '512',
+		'@id': 'https://domindez.com/#logo',
+		url: 'https://domindez.com/logo-square.png',
+		contentUrl: 'https://domindez.com/logo-square.png',
+		thumbnailUrl: 'https://domindez.com/favicon.svg',
+		width: 512,
+		height: 512,
+		caption: 'Domindez Studio',
+		inLanguage: 'es-ES',
 	},
-	image: ogImage,
+	image: {
+		'@type': 'ImageObject',
+		url: ogImageSecure,
+		width: imageWidth,
+		height: imageHeight,
+	},
 	description,
-	founder: {
-		'@type': 'Person',
-		'@id': 'https://domindez.com/#founder',
-		name: 'Daniel Domínguez',
-		jobTitle: 'Diseñador y desarrollador web senior',
-		url: 'https://domindez.com',
-		sameAs: ['https://github.com/domindez'],
-	},
+	slogan: 'Diseño y desarrollo web a medida',
+	disambiguatingDescription:
+		'Estudio boutique de diseño y desarrollo web en Málaga, España. No somos una agencia: cada proyecto lo lidera y entrega el fundador.',
+	founder: { '@id': 'https://domindez.com/#founder' },
+	employee: { '@id': 'https://domindez.com/#founder' },
+	owns: { '@id': 'https://domindez.com/#organization' },
+	member: { '@id': 'https://domindez.com/#founder' },
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Andalucía' },
+		{ '@type': 'Country', name: 'España' },
+		{ '@type': 'Country', name: 'México' },
+		{ '@type': 'Country', name: 'Argentina' },
+		{ '@type': 'Country', name: 'Colombia' },
+		{ '@type': 'Country', name: 'Chile' },
+		{ '@type': 'AdministrativeArea', name: 'Unión Europea' },
+		{ '@type': 'AdministrativeArea', name: 'LATAM' },
+	],
+	knowsLanguage: ['es-ES', 'en-US'],
+	contactPoint: [
+		{
+			'@type': 'ContactPoint',
+			telephone: '+34-660-88-28-76',
+			contactType: 'customer service',
+			email: 'info@domindez.com',
+			url: 'https://domindez.com/#contact',
+			areaServed: ['ES', 'EU', 'LATAM'],
+			availableLanguage: ['Spanish', 'English'],
+			hoursAvailable: {
+				'@type': 'OpeningHoursSpecification',
+				dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+				opens: '09:00',
+				closes: '19:00',
+			},
+		},
+		{
+			'@type': 'ContactPoint',
+			contactType: 'sales',
+			email: 'info@domindez.com',
+			url: 'https://domindez.com/#contact',
+			areaServed: 'Worldwide',
+			availableLanguage: ['Spanish', 'English'],
+		},
+	],
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: 'Málaga',
@@ -66,27 +174,9 @@ const orgJsonLd = {
 	},
 	geo: {
 		'@type': 'GeoCoordinates',
-		latitude: '36.7213',
-		longitude: '-4.4214',
+		latitude: 36.7213,
+		longitude: -4.4214,
 	},
-	contactPoint: [
-		{
-			'@type': 'ContactPoint',
-			telephone: '+34-660-88-28-76',
-			contactType: 'customer service',
-			email: 'info@domindez.com',
-			areaServed: ['ES', 'EU', 'LATAM'],
-			availableLanguage: ['Spanish', 'English'],
-		},
-		{
-			'@type': 'ContactPoint',
-			contactType: 'sales',
-			email: 'info@domindez.com',
-			areaServed: 'Worldwide',
-			availableLanguage: ['Spanish', 'English'],
-		},
-	],
-	sameAs: ['https://github.com/domindez'],
 	openingHoursSpecification: [
 		{
 			'@type': 'OpeningHoursSpecification',
@@ -95,7 +185,49 @@ const orgJsonLd = {
 			closes: '19:00',
 		},
 	],
+	sameAs: ['https://github.com/domindez'],
 	priceRange: '€€',
+	paymentAccepted: 'Cash, Credit Card, Bank Transfer, Invoice',
+	currenciesAccepted: 'EUR',
+	hasOfferCatalog: {
+		'@type': 'OfferCatalog',
+		name: 'Servicios de Domindez Studio',
+		itemListElement: services.map((s) => ({
+			'@type': 'Offer',
+			itemOffered: {
+				'@type': 'Service',
+				name: s.title,
+				description: s.description,
+				provider: { '@id': 'https://domindez.com/#organization' },
+				areaServed: { '@type': 'Country', name: 'España' },
+				serviceType: s.title,
+			},
+		})),
+	},
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: 4.9,
+		reviewCount: testimonials.length,
+		bestRating: 5,
+		worstRating: 1,
+		description:
+			'Valoración media de los clientes de Domindez Studio basada en los testimonios publicados en la web.',
+	},
+	review: testimonials.map((t, i) => ({
+		'@type': 'Review',
+		'@id': `https://domindez.com/#review-${t.company.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${i}`,
+		author: {
+			'@type': 'Organization',
+			name: t.company,
+		},
+		reviewRating: {
+			'@type': 'Rating',
+			ratingValue: 5,
+			bestRating: 5,
+		},
+		reviewBody: t.quote,
+		itemReviewed: { '@id': 'https://domindez.com/#organization' },
+	})),
 };
 
 const websiteJsonLd = {
@@ -103,12 +235,16 @@ const websiteJsonLd = {
 	'@id': 'https://domindez.com/#website',
 	url: 'https://domindez.com',
 	name: 'Domindez Studio',
+	alternateName: 'Domindez',
 	description,
 	inLanguage: 'es-ES',
 	publisher: { '@id': 'https://domindez.com/#organization' },
+	creator: { '@id': 'https://domindez.com/#founder' },
 	author: { '@id': 'https://domindez.com/#founder' },
 	copyrightHolder: { '@id': 'https://domindez.com/#organization' },
 	copyrightYear: new Date().getFullYear(),
+	dateCreated: '2017-01-01',
+	dateModified: new Date().toISOString().split('T')[0],
 	potentialAction: {
 		'@type': 'SearchAction',
 		target: {
@@ -117,13 +253,80 @@ const websiteJsonLd = {
 		},
 		'query-input': 'required name=search_term_string',
 	},
+	mainEntity: { '@id': 'https://domindez.com/#organization' },
+	about: { '@id': 'https://domindez.com/#organization' },
+	keywords:
+		'diseño web, desarrollo web, agencia web, estudio diseño web málaga, freelance diseño web, programador web málaga, ecommerce, saas, landing page, web corporativa, seo, astro, react, next, domindez',
+};
+
+const webPageJsonLd = {
+	'@type': schemaType,
+	'@id': `${canonicalUrl}#webpage`,
+	url: canonicalUrl,
+	name: schemaName ?? title,
+	description: schemaDescription ?? description,
+	inLanguage: 'es-ES',
+	isPartOf: { '@id': 'https://domindez.com/#website' },
+	about: { '@id': 'https://domindez.com/#organization' },
+	primaryImageOfPage: {
+		'@type': 'ImageObject',
+		url: ogImageSecure,
+		width: imageWidth,
+		height: imageHeight,
+		alt: imageAlt,
+	},
+	breadcrumb: { '@id': `${canonicalUrl}#breadcrumb` },
+	datePublished: publishedTime,
+	dateModified: modifiedTime ?? new Date().toISOString(),
+	image: ogImageSecure,
+	thumbnailUrl: ogImageSecure,
+	speakable: {
+		'@type': 'SpeakableSpecification',
+		xpath: ['/html/head/title', '/html/head/meta[@name="description"]/@content', '/html/body//h1'],
+	},
+	lastReviewed: new Date().toISOString().split('T')[0],
+	reviewedBy: { '@id': 'https://domindez.com/#organization' },
+};
+
+const breadcrumbJsonLd = {
+	'@type': 'BreadcrumbList',
+	'@id': `${canonicalUrl}#breadcrumb`,
+	itemListElement: (() => {
+		const isHome =
+			canonicalUrl === 'https://domindez.com' || canonicalUrl === 'https://domindez.com/';
+		if (isHome) {
+			return [
+				{
+					'@type': 'ListItem',
+					position: 1,
+					name: 'Inicio',
+					item: 'https://domindez.com',
+				},
+			];
+		}
+		return [
+			{
+				'@type': 'ListItem',
+				position: 1,
+				name: 'Inicio',
+				item: 'https://domindez.com',
+			},
+			{
+				'@type': 'ListItem',
+				position: 2,
+				name: schemaName ?? title,
+				item: canonicalUrl,
+			},
+		];
+	})(),
 };
 
 const localBusinessJsonLd = {
-	'@type': ['ProfessionalService', 'LocalBusiness'],
+	'@type': 'ProfessionalService',
 	'@id': 'https://domindez.com/#localbusiness',
+	'@parent': 'https://domindez.com/#organization',
 	name: 'Domindez Studio',
-	image: ogImage,
+	image: ogImageSecure,
 	url: 'https://domindez.com',
 	telephone: '+34-660-88-28-76',
 	email: 'info@domindez.com',
@@ -137,71 +340,99 @@ const localBusinessJsonLd = {
 	},
 	geo: {
 		'@type': 'GeoCoordinates',
-		latitude: '36.7213',
-		longitude: '-4.4214',
+		latitude: 36.7213,
+		longitude: -4.4214,
 	},
 	areaServed: [
 		{ '@type': 'Country', name: 'España' },
 		{ '@type': 'Country', name: 'Mundial' },
 	],
-	aggregateRating: {
-		'@type': 'AggregateRating',
-		ratingValue: '5.0',
-		reviewCount: testimonials.length,
-		bestRating: '5',
-		worstRating: '1',
-	},
 	parentOrganization: { '@id': 'https://domindez.com/#organization' },
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '19:00',
+		},
+	],
 };
 
 const servicesJsonLd = {
 	'@type': 'ItemList',
 	'@id': 'https://domindez.com/#services',
 	name: 'Servicios de Domindez Studio',
+	description: 'Listado completo de servicios profesionales de diseño y desarrollo web.',
 	itemListElement: services.map((s, i) => ({
 		'@type': 'ListItem',
 		position: i + 1,
+		url: `https://domindez.com/#services`,
+		name: s.title,
 		item: {
 			'@type': 'Service',
+			'@id': `https://domindez.com/#service-${s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
 			name: s.title,
 			description: s.description,
 			provider: { '@id': 'https://domindez.com/#organization' },
 			areaServed: { '@type': 'Country', name: 'España' },
 			serviceType: s.title,
+			category: s.title,
+			offers: {
+				'@type': 'Offer',
+				priceCurrency: 'EUR',
+				priceRange: '€€',
+				availability: 'https://schema.org/InStock',
+				url: 'https://domindez.com/#contact',
+			},
 		},
+	})),
+};
+
+const howToJsonLd = {
+	'@type': 'HowTo',
+	'@id': 'https://domindez.com/#howto',
+	name: 'Cómo trabajamos: proceso de diseño y desarrollo web',
+	description:
+		'Proceso de trabajo paso a paso de Domindez Studio: desde el descubrimiento inicial hasta el crecimiento posterior al lanzamiento.',
+	totalTime: 'P3M',
+	estimatedCost: {
+		'@type': 'MonetaryAmount',
+		currency: 'EUR',
+		minValue: 1000,
+		maxValue: 10000,
+	},
+	step: process.map((p, i) => ({
+		'@type': 'HowToStep',
+		position: i + 1,
+		name: p.title,
+		text: p.description,
+		url: `https://domindez.com/#process`,
 	})),
 };
 
 const worksJsonLd = {
 	'@type': 'ItemList',
 	'@id': 'https://domindez.com/#portfolio',
-	name: 'Proyectos destacados de Domindez Studio',
+	name: 'Portfolio de Domindez Studio',
+	description: 'Proyectos destacados de diseño y desarrollo web realizados por Domindez Studio.',
 	itemListElement: works.map((w, i) => ({
 		'@type': 'ListItem',
 		position: i + 1,
-		url: w.link,
+		url: `https://domindez.com/works/${w.slug}`,
 		name: w.title,
+		item: {
+			'@type': 'CreativeWork',
+			'@id': `https://domindez.com/works/${w.slug}`,
+			name: w.title,
+			url: `https://domindez.com/works/${w.slug}`,
+			image: `https://domindez.com${w.img}`,
+			creator: { '@id': 'https://domindez.com/#organization' },
+			provider: { '@id': 'https://domindez.com/#organization' },
+			dateCreated: w.year,
+			keywords: [w.category, w.industry, ...w.stack].join(', '),
+		},
 	})),
 };
-
-const reviewsJsonLd = testimonials.map((t, i) => ({
-	'@type': 'Review',
-	'@id': `https://domindez.com/#review-${t.company.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${i}`,
-	author: {
-		'@type': 'Person',
-		name: t.author,
-		jobTitle: t.role,
-		worksFor: { '@type': 'Organization', name: t.company },
-	},
-	reviewRating: {
-		'@type': 'Rating',
-		ratingValue: '5',
-		bestRating: '5',
-	},
-	reviewBody: t.quote,
-	itemReviewed: { '@id': 'https://domindez.com/#organization' },
-	datePublished: '2024-01-01',
-}));
 
 const faqJsonLd = {
 	'@type': 'FAQPage',
@@ -262,11 +493,14 @@ const jsonLd = {
 	'@context': 'https://schema.org',
 	'@graph': [
 		orgJsonLd,
+		personJsonLd,
 		websiteJsonLd,
+		webPageJsonLd,
+		breadcrumbJsonLd,
 		localBusinessJsonLd,
 		servicesJsonLd,
+		howToJsonLd,
 		worksJsonLd,
-		...reviewsJsonLd,
 		faqJsonLd,
 	],
 };
@@ -286,8 +520,9 @@ const jsonLd = {
 		<meta name='revisit-after' content='7 days' />
 
 		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-		<link rel='icon' type='image/png' sizes='32x32' href='/favicon.svg' />
-		<link rel='apple-touch-icon' sizes='180x180' href='/favicon.svg' />
+		<link rel='icon' type='image/png' sizes='32x32' href='/favicon-32.png' />
+		<link rel='icon' type='image/png' sizes='192x192' href='/icon-192.png' />
+		<link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
 		<link rel='manifest' href='/manifest.webmanifest' />
 		<link rel='mask-icon' href='/favicon.svg' color='#c3ff00' />
 
@@ -297,19 +532,24 @@ const jsonLd = {
 		<link rel='dns-prefetch' href='https://www.google-analytics.com' />
 		<link rel='dns-prefetch' href='https://i.ytimg.com' />
 		<link rel='dns-prefetch' href='https://vimeo.com' />
+		<link rel='preload' as='image' href={ogImageSecure} fetchpriority='high' />
 
 		<title>{title}</title>
 		<meta name='description' content={description} />
-		<meta
-			name='keywords'
-			content='diseño web, desarrollo web, agencia web, estudio diseño web málaga, freelance diseño web, programador web málaga, ecommerce, saas, landing page, web corporativa, seo, astro, react, next, domindez'
-		/>
 		<meta name='author' content='Daniel Domínguez' />
 		<meta name='copyright' content={`© ${new Date().getFullYear()} Domindez Studio`} />
-		<meta name='robots' content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+		<meta
+			name='robots'
+			content={noindex
+				? 'noindex, nofollow'
+				: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1, max-image-preview:large'}
+		/>
 		<meta name='googlebot' content={noindex ? 'noindex, nofollow' : 'index, follow'} />
 		<meta name='bingbot' content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+		<meta name='referrer' content='strict-origin-when-cross-origin' />
+		<meta http-equiv='x-dns-prefetch-control' content='on' />
 		<link rel='canonical' href={canonicalUrl} />
+		<link rel='sitemap' type='application/xml' title='Sitemap' href='/sitemap-index.xml' />
 		<link rel='alternate' hreflang='es-ES' href='https://domindez.com' />
 		<link rel='alternate' hreflang='x-default' href='https://domindez.com' />
 
@@ -318,28 +558,31 @@ const jsonLd = {
 		<meta name='geo.position' content='36.7213;-4.4214' />
 		<meta name='ICBM' content='36.7213, -4.4214' />
 
+		{googleVerification && <meta name='google-site-verification' content={googleVerification} />}
+		{bingVerification && <meta name='msvalidate.01' content={bingVerification} />}
+
 		<meta property='og:title' content={title} />
 		<meta property='og:description' content={description} />
 		<meta property='og:type' content={type} />
 		<meta property='og:url' content={canonicalUrl} />
-		<meta property='og:image' content={ogImage} />
-		<meta property='og:image:alt' content='Domindez Studio — Diseño y desarrollo web a medida' />
-		<meta property='og:image:width' content='1200' />
-		<meta property='og:image:height' content='675' />
+		<meta property='og:image' content={ogImageSecure} />
+		<meta property='og:image:secure_url' content={ogImageSecure} />
+		<meta property='og:image:alt' content={imageAlt} />
+		<meta property='og:image:width' content={String(imageWidth)} />
+		<meta property='og:image:height' content={String(imageHeight)} />
+		<meta property='og:image:type' content='image/png' />
 		<meta property='og:site_name' content='Domindez Studio' />
 		<meta property='og:locale' content='es_ES' />
-		<meta property='og:locale:alternate' content='en_US' />
 		<meta property='og:country-name' content='España' />
 		{modifiedTime && <meta property='article:modified_time' content={modifiedTime} />}
 		{publishedTime && <meta property='article:published_time' content={publishedTime} />}
+		{publishedTime && <meta property='article:author' content='Daniel Domínguez' />}
 
 		<meta name='twitter:card' content='summary_large_image' />
 		<meta name='twitter:title' content={title} />
 		<meta name='twitter:description' content={description} />
-		<meta name='twitter:image' content={ogImage} />
-		<meta name='twitter:image:alt' content='Domindez Studio — Diseño y desarrollo web a medida' />
-		<meta name='twitter:creator' content='@domindez' />
-		<meta name='twitter:site' content='@domindez' />
+		<meta name='twitter:image' content={ogImageSecure} />
+		<meta name='twitter:image:alt' content={imageAlt} />
 		<meta name='twitter:domain' content='domindez.com' />
 
 		<meta name='apple-mobile-web-app-capable' content='yes' />
@@ -347,6 +590,7 @@ const jsonLd = {
 		<meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
 		<meta name='mobile-web-app-capable' content='yes' />
 		<meta name='application-name' content='Domindez Studio' />
+		<meta name='format-detection' content='telephone=no, date=no, address=no, email=no' />
 
 		<script type='application/ld+json' set:html={JSON.stringify(jsonLd)} is:inline />
 

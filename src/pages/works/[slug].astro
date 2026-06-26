@@ -27,10 +27,23 @@ const pageTitle = `${work.title} — Caso de estudio | Domindez Studio`;
 const pageDescription = `Cómo diseñamos y desarrollamos ${work.title} para ${work.client}. ${work.description} Servicios: ${work.services.join(', ')}.`;
 const pageUrl = `https://domindez.com/works/${work.slug}`;
 const pageImage = `https://domindez.com${work.img}`;
+const pageImageAlt = `Captura del proyecto ${work.title} diseñado y desarrollado por Domindez Studio`;
+const publishedISO = `${work.year}-01-01`;
+const modifiedISO = new Date().toISOString();
+
+const schemaKind =
+	work.schemaType ??
+	(work.category === 'SaaS' ||
+	work.category === 'Web App' ||
+	work.category === 'Plataforma' ||
+	work.category === 'Fintech'
+		? 'WebApplication'
+		: 'CreativeWork');
 
 const breadcrumbJsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'BreadcrumbList',
+	'@id': `${pageUrl}#breadcrumb`,
 	itemListElement: [
 		{
 			'@type': 'ListItem',
@@ -41,7 +54,7 @@ const breadcrumbJsonLd = {
 		{
 			'@type': 'ListItem',
 			position: 2,
-			name: 'Trabajo',
+			name: 'Portfolio',
 			item: 'https://domindez.com/#work',
 		},
 		{
@@ -53,17 +66,53 @@ const breadcrumbJsonLd = {
 	],
 };
 
-const creativeWorkJsonLd = {
+const primaryImageJsonLd = {
+	'@type': 'ImageObject',
+	'@id': `${pageUrl}#primaryimage`,
+	url: pageImage,
+	contentUrl: pageImage,
+	width: 1600,
+	height: 1000,
+	caption: `Captura del proyecto ${work.title}`,
+	creator: { '@id': 'https://domindez.com/#organization' },
+	license: 'https://domindez.com/aviso-legal',
+	creditText: 'Domindez Studio',
+	keywords: work.stack.join(', '),
+	thumbnail: {
+		'@type': 'ImageObject',
+		url: pageImage,
+		width: 600,
+		height: 400,
+	},
+};
+
+const workJsonLd: Record<string, unknown> = {
 	'@context': 'https://schema.org',
-	'@type': 'CreativeWork',
+	'@type': schemaKind,
 	'@id': pageUrl,
 	name: work.title,
+	headline: work.title,
+	alternativeHeadline: `Caso de estudio: ${work.title}`,
 	description: pageDescription,
+	abstract: work.description,
 	author: { '@id': 'https://domindez.com/#organization' },
 	creator: { '@id': 'https://domindez.com/#organization' },
+	contributor: { '@id': 'https://domindez.com/#founder' },
+	accountablePerson: { '@id': 'https://domindez.com/#founder' },
+	publisher: {
+		'@type': 'Organization',
+		'@id': 'https://domindez.com/#organization',
+		name: 'Domindez Studio',
+		logo: {
+			'@type': 'ImageObject',
+			url: 'https://domindez.com/logo-square.png',
+			width: 512,
+			height: 512,
+		},
+	},
 	dateCreated: work.year,
-	datePublished: `${work.year}-01-01`,
-	dateModified: new Date().toISOString().split('T')[0],
+	datePublished: publishedISO,
+	dateModified: modifiedISO,
 	keywords: [
 		work.category,
 		work.industry,
@@ -72,20 +121,21 @@ const creativeWorkJsonLd = {
 		'diseño web',
 		'desarrollo web',
 		'caso de estudio',
+		'Domindez Studio',
+		'Málaga',
 	].join(', '),
+	inLanguage: 'es-ES',
+	countryOfOrigin: { '@type': 'Country', name: 'España' },
 	url: pageUrl,
-	mainEntityOfPage: pageUrl,
-	image: {
-		'@type': 'ImageObject',
-		url: pageImage,
-		width: 1200,
-		height: 750,
-		alt: `Captura del proyecto ${work.title} diseñado por Domindez Studio`,
-	},
+	mainEntityOfPage: { '@id': 'https://domindez.com/' },
+	image: { '@id': `${pageUrl}#primaryimage` },
+	thumbnailUrl: pageImage,
+	primaryImageOfPage: { '@id': `${pageUrl}#primaryimage` },
 	about: {
 		'@type': 'Service',
 		name: work.services.join(', '),
 		provider: { '@id': 'https://domindez.com/#organization' },
+		areaServed: { '@type': 'Country', name: 'España' },
 	},
 	client: { '@type': 'Organization', name: work.client },
 	provider: { '@id': 'https://domindez.com/#organization' },
@@ -94,26 +144,75 @@ const creativeWorkJsonLd = {
 		name: work.title,
 		url: work.link,
 		creator: { '@id': 'https://domindez.com/#organization' },
+		author: { '@id': 'https://domindez.com/#organization' },
 	},
-	inLanguage: 'es-ES',
 	isPartOf: {
 		'@type': 'CollectionPage',
+		'@id': 'https://domindez.com/#portfolio',
 		name: 'Portfolio de Domindez Studio',
 		url: 'https://domindez.com/#work',
 	},
+	mentions: work.stack.map((tech) => ({
+		'@type': 'Thing',
+		name: tech,
+	})),
 };
 
-const pageJsonLd = [breadcrumbJsonLd, creativeWorkJsonLd];
+// Para WebApplications añadimos propiedades extra que reconoce Google.
+if (schemaKind === 'WebApplication' || schemaKind === 'SoftwareApplication') {
+	workJsonLd.applicationCategory = work.industry;
+	workJsonLd.applicationSubCategory = work.category;
+	workJsonLd.operatingSystem = 'All (Web)';
+	workJsonLd.browserRequirements = 'Requires JavaScript. Requires HTML5.';
+	workJsonLd.url = work.link;
+	workJsonLd.sameAs = work.link;
+	workJsonLd.featureList = work.highlights.map((h) => h.title);
+	workJsonLd.screenshot = { '@id': `${pageUrl}#primaryimage` };
+	workJsonLd.softwareVersion = work.year;
+	workJsonLd.offers = {
+		'@type': 'Offer',
+		url: 'https://domindez.com/#contact',
+		priceCurrency: 'EUR',
+		priceRange: '€€',
+		availability: 'https://schema.org/InStock',
+		validFrom: `${work.year}-01-01`,
+	};
+}
+
+if (work.testimonial) {
+	workJsonLd.review = {
+		'@type': 'Review',
+		author: { '@type': 'Person', name: work.testimonial.author },
+		reviewBody: work.testimonial.quote,
+		reviewRating: {
+			'@type': 'Rating',
+			ratingValue: 5,
+			bestRating: 5,
+		},
+		itemReviewed: { '@id': 'https://domindez.com/#organization' },
+	};
+}
+
+const pageJsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [primaryImageJsonLd, workJsonLd],
+};
 ---
 
 <Layout
 	title={pageTitle}
 	description={pageDescription}
 	image={pageImage}
+	imageAlt={pageImageAlt}
+	imageWidth={1600}
+	imageHeight={1000}
 	canonical={pageUrl}
 	type='article'
-	publishedTime={`${work.year}-01-01`}
-	modifiedTime={new Date().toISOString()}
+	publishedTime={publishedISO}
+	modifiedTime={modifiedISO}
+	schemaType='WebPage'
+	schemaName={pageTitle}
+	schemaDescription={pageDescription}
 >
 	<script type='application/ld+json' set:html={JSON.stringify(pageJsonLd)} is:inline />
 

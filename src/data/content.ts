@@ -34,6 +34,7 @@ export interface Work {
 	highlights: WorkHighlight[];
 	results: WorkResult[];
 	testimonial?: WorkTestimonial;
+	schemaType?: 'CreativeWork' | 'SoftwareApplication' | 'WebApplication' | 'WebSite';
 }
 
 export const works: Work[] = [
