@@ -1,4 +1,4 @@
-Contact: mailto:info@domindez.com
+Contact: mailto:hola@domindez.com
 Contact: https://domindez.com/#contact
 Expires: 2027-12-31T23:59:59z
 Preferred-Languages: es, en
