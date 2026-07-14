@@ -178,6 +178,60 @@ export const works: Work[] = [
 		],
 	},
 	{
+		slug: 'redqr',
+		link: 'https://redqr.app',
+		img: '/works/redqr.jpg',
+		title: 'RedQR',
+		category: 'SaaS',
+		description:
+			'Plataforma de códigos QR dinámicos con analítica de scans, plan free con ad de 5s y plan premium con redirección 302 imperceptible.',
+		stack: ['next', 'supabase', 'stripe', 'typescript', 'tailwind'],
+		year: '2025',
+		client: 'RedQR',
+		industry: 'SaaS / QR dinámicos',
+		duration: '12 semanas',
+		role: 'Producto, frontend, backend, diseño, devops',
+		services: ['SaaS', 'QR dinámicos', 'Edge runtime', 'Analítica', 'Stripe Checkout', 'i18n'],
+		challenge:
+			'El cliente tenía la idea de negocio clara — una plataforma de QR dinámicos para competir con las opciones del mercado, más simple y más barata — pero necesitaba un equipo técnico que la ejecutase de cero. Querían un redirect casi imperceptible, monetización con plan free y premium, y analítica útil desde el primer día, todo en un tiempo ajustado.',
+		solution:
+			'Construimos la plataforma completa con Next.js y Supabase: el usuario crea sus QRs, los descarga y cada escaneo pasa por un route handler en Edge Runtime que hace 302 al destino y registra el evento en Postgres. Plan free con 5 QRs y página de ad de 5s, plan premium con redirección directa, QRs ilimitados, analítica extendida y export CSV. Pagos con Stripe Checkout (mensual y anual) y web en español e inglés con next-intl.',
+		highlights: [
+			{
+				icon: '◆',
+				title: 'Hot path en Edge',
+				description: 'El redirect corre en Vercel Edge Runtime con Supabase por HTTP para mantener latencias bajas.',
+			},
+			{
+				icon: '◆',
+				title: 'Freemium con ad',
+				description: 'Free con 5 QRs y página de ad de 5s antes de la redirección, premium con 302 directo y QRs ilimitados.',
+			},
+			{
+				icon: '◆',
+				title: 'Analítica con plan caps',
+				description: 'Dashboard con scans por día, top países, dispositivos, SO y navegador, con cap de rango según el plan.',
+			},
+			{
+				icon: '◆',
+				title: 'Stripe + i18n',
+				description: 'Suscripción mensual y anual con Stripe Checkout, web completa en español e inglés con next-intl.',
+			},
+		],
+		results: [
+			{ value: '20ms', label: 'Latencia p95 del redirect' },
+			{ value: 'edge', label: 'Cold start mínimo' },
+			{ value: 'Freemium', label: 'Free + premium' },
+			{ value: 'analiticas', label: 'Avanzadas en premium' },
+		],
+		testimonial: {
+			quote:
+				'Necesitábamos un partner técnico que entendiera el producto y lo ejecutase con cabeza. Daniel entregó la plataforma en plazo, con la calidad que esperábamos y proponiendo mejoras que ni habíamos contemplado.',
+			author: 'Cliente',
+			role: 'Fundador',
+		},
+	},
+	{
 		slug: 'hotel-nogalera',
 		link: 'https://hotelnogalera.com/',
 		img: '/works/nogalera.jpg',
