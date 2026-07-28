@@ -953,7 +953,7 @@ export const services: Service[] = [
 		title: 'IA & Automatización',
 		description:
 			'Agentes de IA y automatizaciones a medida que eliminan trabajo repetitivo y aceleran tu operativa.',
-		items: ['OpenAI', 'Anthropic', 'n8n', 'Make', 'Zapier', 'CrewAI', 'LangChain'],
+		items: ['OpenAI', 'Anthropic', 'n8n', 'Make', 'Openclaw', 'CrewAI', 'LangChain'],
 	},
 	{
 		title: 'Desarrollo Backend',
@@ -1122,7 +1122,7 @@ export const stack: StackItem[] = [
 	{ name: 'LangChain', category: 'Agentes & Automatización' },
 	{ name: 'n8n', category: 'Agentes & Automatización' },
 	{ name: 'Make', category: 'Agentes & Automatización' },
-	{ name: 'Zapier', category: 'Agentes & Automatización' },
+	{ name: 'Openclaw', category: 'Agentes & Automatización' },
 	{ name: 'Automatización de proyectos', category: 'Agentes & Automatización' },
 
 	{ name: 'Git', category: 'Herramientas' },
