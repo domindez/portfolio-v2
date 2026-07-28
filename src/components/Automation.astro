@@ -1,0 +1,251 @@
+---
+import { automationUseCases } from '../data/content';
+
+const values = [
+	{
+		title: 'Auditoría del proceso',
+		description: 'Analizamos tu operativa actual, identificamos cuellos de botella y proponemos dónde la IA aporta valor real.',
+	},
+	{
+		title: 'Piloto en 2–4 semanas',
+		description: 'Empezamos con un flujo pequeño, medible y de bajo riesgo. Ves resultados antes de comprometerte a más.',
+	},
+	{
+		title: 'Sin lock-in',
+		description: 'Usamos herramientas estándar, tu data sigue siendo tuya y te enseñamos a mantenerlo. Nada de cajas negras.',
+	},
+];
+---
+
+<section class='automation section' id='automation' aria-labelledby='automation-title'>
+	<div class='container'>
+		<header class='section-head' data-reveal>
+			<p class='eyebrow'><span class='dot'></span> IA &amp; Automatización</p>
+			<h2 class='section-title' id='automation-title'>
+				Agentes que <em class='serif-italic'>trabajan</em> para ti.
+			</h2>
+			<p class='section-lede'>
+				Diseñamos y construimos agentes de IA y automatizaciones a medida que eliminan
+				trabajo repetitivo en tu empresa. Te devuelven horas, no más herramientas que
+				manejar.
+			</p>
+		</header>
+
+		<div class='automation__grid'>
+			<aside class='automation__intro' data-reveal>
+				<ul class='automation__values'>
+					{
+						values.map((v, i) => (
+							<li class='automation__value'>
+								<span class='automation__value-num'>0{i + 1}</span>
+								<div>
+									<h3>{v.title}</h3>
+									<p>{v.description}</p>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+
+				<div class='automation__cta'>
+					<a href='#contact' class='btn magnetic' data-magnetic='0.3'>
+						<span>Hablemos de tu caso</span>
+						<svg
+							class='arrow'
+							width='14'
+							height='14'
+							viewBox='0 0 24 24'
+							fill='none'
+							stroke='currentColor'
+							stroke-width='2'
+							stroke-linecap='square'
+							aria-hidden='true'
+						>
+							<path d='M7 17L17 7M17 7H8M17 7V16'></path>
+						</svg>
+					</a>
+					<a href='#process' class='btn btn--ghost magnetic' data-magnetic='0.3'>
+						<span>Cómo lo hacemos</span>
+					</a>
+				</div>
+			</aside>
+
+			<div class='automation__cases' data-reveal-stagger>
+				{
+					automationUseCases.map((useCase) => (
+						<article class='automation__card'>
+							<div class='automation__card-head'>
+								<span class='automation__card-icon' aria-hidden='true'>
+									{useCase.icon}
+								</span>
+								<h3 class='automation__card-title'>{useCase.title}</h3>
+							</div>
+							<p class='automation__card-desc'>{useCase.description}</p>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.automation {
+		background: var(--bg-2);
+		border-block: 1px solid var(--border);
+	}
+
+	.automation__grid {
+		display: grid;
+		grid-template-columns: 0.85fr 1.15fr;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	/* Intro column (sticky on desktop) */
+	.automation__intro {
+		position: sticky;
+		top: 6rem;
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+	}
+
+	.automation__values {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.automation__value {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 1rem;
+		padding-block: 1.25rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.automation__value:last-child {
+		border-bottom: 1px solid var(--border);
+	}
+
+	.automation__value-num {
+		font-family: var(--font-mono);
+		font-size: var(--fs-200);
+		letter-spacing: 0.16em;
+		color: var(--accent);
+		padding-top: 0.25rem;
+	}
+
+	.automation__value h3 {
+		font-size: var(--fs-400);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+		margin-bottom: 0.4rem;
+	}
+
+	.automation__value p {
+		font-size: var(--fs-200);
+		color: var(--fg-dim);
+		line-height: 1.55;
+	}
+
+	.automation__cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	/* Cases grid */
+	.automation__cases {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+	}
+
+	.automation__card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding: 1.5rem;
+		background: var(--bg-3);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		min-height: 240px;
+		transition:
+			border-color 0.4s var(--ease-out),
+			transform 0.5s var(--ease-out);
+	}
+
+	.automation__card:hover {
+		border-color: var(--border-accent);
+		transform: translateY(-3px);
+	}
+
+	.automation__card-head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.automation__card-icon {
+		font-family: var(--font-mono);
+		font-size: var(--fs-300);
+		color: var(--accent);
+		line-height: 1;
+	}
+
+	.automation__card-title {
+		font-size: var(--fs-400);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+		line-height: 1.2;
+	}
+
+	.automation__card-desc {
+		font-size: var(--fs-200);
+		color: var(--fg-dim);
+		line-height: 1.55;
+		flex-grow: 1;
+	}
+
+	.serif-italic {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-weight: 400;
+		color: var(--accent);
+	}
+
+	/* Tablet */
+	@media (max-width: 1100px) {
+		.automation__grid {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+
+		.automation__intro {
+			position: static;
+		}
+	}
+
+	/* Mobile */
+	@media (max-width: 700px) {
+		.automation__cases {
+			grid-template-columns: 1fr;
+		}
+
+		.automation__card {
+			min-height: 0;
+		}
+
+		.automation__cta {
+			width: 100%;
+		}
+
+		.automation__cta .btn {
+			flex: 1;
+			justify-content: center;
+		}
+	}
+</style>

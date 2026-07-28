@@ -883,6 +883,58 @@ export interface Service {
 	featured?: boolean;
 }
 
+export interface AutomationUseCase {
+	icon: string;
+	title: string;
+	description: string;
+	stack: string[];
+}
+
+export const automationUseCases: AutomationUseCase[] = [
+	{
+		icon: '◆',
+		title: 'Atención al cliente 24/7',
+		description:
+			'Agentes conectados a tu base de conocimiento que responden dudas reales, filtran consultas y derivan a humanos solo cuando hace falta.',
+		stack: ['OpenAI', 'Anthropic', 'RAG'],
+	},
+	{
+		icon: '◆',
+		title: 'Cualificación y seguimiento de leads',
+		description:
+			'Agentes que leen emails, los clasifican, redactan respuestas y avisan a tu equipo cuando toca actuar. Sin perder leads en el limbo.',
+		stack: ['n8n', 'Make', 'Gmail'],
+	},
+	{
+		icon: '◆',
+		title: 'OCR y procesamiento de documentos',
+		description:
+			'Facturas, albaranes, contratos… los escaneas, los entiendes, los metes en tu sistema. Sin picar datos a mano.',
+		stack: ['Claude', 'OpenAI Vision', 'OCR'],
+	},
+	{
+		icon: '◆',
+		title: 'Automatizaciones entre tus herramientas',
+		description:
+			'Conecto tu CRM, tu contabilidad, tu email, tu WhatsApp y tu hoja de cálculo. Lo que hoy haces a mano, lo hago en segundos.',
+		stack: ['Zapier', 'n8n', 'APIs'],
+	},
+	{
+		icon: '◆',
+		title: 'Resúmenes y reporting automático',
+		description:
+			'Reuniones, llamadas, tickets, conversaciones: tu agente escucha, resume y te entrega el informe listo para leer.',
+		stack: ['Whisper', 'Claude', 'Notion'],
+	},
+	{
+		icon: '◆',
+		title: 'Agentes a medida para procesos internos',
+		description:
+			'Diseñamos un agente para tu proceso concreto: presupuestos, pedidos, soporte técnico, control de calidad. Lo entrenamos con tu data.',
+		stack: ['CrewAI', 'LangChain', 'Fine-tuning'],
+	},
+];
+
 export const services: Service[] = [
 	{
 		title: 'Diseño Web',
@@ -896,6 +948,12 @@ export const services: Service[] = [
 		description:
 			'Código limpio, rápido y mantenible con las últimas tecnologías del ecosistema web.',
 		items: ['React', 'Astro', 'Next.js', 'TypeScript'],
+	},
+	{
+		title: 'IA & Automatización',
+		description:
+			'Agentes de IA y automatizaciones a medida que eliminan trabajo repetitivo y aceleran tu operativa.',
+		items: ['OpenAI', 'Anthropic', 'n8n', 'Make', 'Zapier', 'CrewAI', 'LangChain'],
 	},
 	{
 		title: 'Desarrollo Backend',
@@ -914,12 +972,6 @@ export const services: Service[] = [
 		description:
 			'Webs que cargan en menos de un segundo y posicionan en Google desde el día uno.',
 		items: ['Core Web Vitals', 'SEO técnico', 'Analítica'],
-	},
-	{
-		title: 'Mantenimiento',
-		description:
-			'Tu web siempre actualizada, segura y funcionando. Tú céntrate en tu negocio.',
-		items: ['Updates', 'Backups', 'Soporte 24/7'],
 	},
 ];
 
