@@ -916,7 +916,7 @@ export const automationUseCases: AutomationUseCase[] = [
 		icon: '◆',
 		title: 'Automatizaciones entre tus herramientas',
 		description:
-			'Conecto tu CRM, tu contabilidad, tu email, tu WhatsApp y tu hoja de cálculo. Lo que hoy haces a mano, lo hago en segundos.',
+			'Conecto tu CRM, tu contabilidad, tu email, tu WhatsApp y tu hoja de cálculo. Lo que hoy haces a mano, automatizado.',
 		stack: ['Zapier', 'n8n', 'APIs'],
 	},
 	{
