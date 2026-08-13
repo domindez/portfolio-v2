@@ -69,30 +69,6 @@ const perks = [
 					<input type='email' name='email' placeholder='tu@email.com' required />
 				</label>
 
-				<label class='contact__field'>
-					<span>Tipo de proyecto</span>
-					<select name='project' required>
-						<option value='' disabled selected>Elige una opción</option>
-						<option value='web-corporativa'>Web corporativa</option>
-						<option value='ecommerce'>E-commerce</option>
-						<option value='landing'>Landing page</option>
-						<option value='webapp'>Web app / SaaS</option>
-						<option value='agentes-ia'>IA &amp; Automatización</option>
-						<option value='otro'>Otro</option>
-					</select>
-				</label>
-
-				<label class='contact__field'>
-					<span>Presupuesto aproximado</span>
-					<select name='budget'>
-						<option value='' disabled selected>Elige un rango</option>
-						<option value='1-2k'>1.000 € — 2.000 €</option>
-						<option value='2-5k'>2.000 € — 5.000 €</option>
-						<option value='5-10k'>5.000 € — 10.000 €</option>
-						<option value='10k+'>10.000 € o más</option>
-					</select>
-				</label>
-
 				<label class='contact__field contact__field--full'>
 					<span>Mensaje</span>
 					<textarea name='message' rows='4' placeholder='Cuéntanos sobre tu proyecto...' required></textarea>
@@ -369,7 +345,6 @@ const perks = [
 			const data = Object.fromEntries(fd.entries()) as Record<string, string>;
 
 			const projectLabel = data.project || 'Sin especificar';
-			const budgetLabel = data.budget || 'Sin especificar';
 
 			const params = {
 				user_name: data.name || 'Anónimo',
@@ -377,7 +352,6 @@ const perks = [
 				user_phone: '',
 				message: [
 					`Tipo de proyecto: ${projectLabel}`,
-					`Presupuesto aproximado: ${budgetLabel}`,
 					'',
 					data.message || '',
 				].join('\n'),
