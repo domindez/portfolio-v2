@@ -233,30 +233,6 @@ const orgJsonLd = {
 			},
 		})),
 	},
-	aggregateRating: {
-		'@type': 'AggregateRating',
-		ratingValue: 4.9,
-		reviewCount: testimonials.length,
-		bestRating: 5,
-		worstRating: 1,
-		description:
-			'Valoración media de los clientes de Domindez Studio basada en los testimonios publicados en la web.',
-	},
-	review: testimonials.map((t, i) => ({
-		'@type': 'Review',
-		'@id': `https://domindez.com/#review-${t.company.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${i}`,
-		author: {
-			'@type': 'Organization',
-			name: t.company,
-		},
-		reviewRating: {
-			'@type': 'Rating',
-			ratingValue: 5,
-			bestRating: 5,
-		},
-		reviewBody: t.quote,
-		itemReviewed: { '@id': 'https://domindez.com/#organization' },
-	})),
 };
 
 const websiteJsonLd = {
@@ -385,6 +361,30 @@ const localBusinessJsonLd = {
 			closes: '19:00',
 		},
 	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: 4.9,
+		reviewCount: testimonials.length,
+		bestRating: 5,
+		worstRating: 1,
+		description:
+			'Valoración media de los clientes de Domindez Studio basada en los testimonios publicados en la web.',
+	},
+	review: testimonials.map((t, i) => ({
+		'@type': 'Review',
+		'@id': `https://domindez.com/#review-${t.company.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${i}`,
+		author: {
+			'@type': 'Organization',
+			name: t.company,
+		},
+		reviewRating: {
+			'@type': 'Rating',
+			ratingValue: 5,
+			bestRating: 5,
+		},
+		reviewBody: t.quote,
+		itemReviewed: { '@id': 'https://domindez.com/#localbusiness' },
+	})),
 };
 
 const servicesJsonLd = {

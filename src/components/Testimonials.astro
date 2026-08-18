@@ -25,7 +25,13 @@ import { testimonials } from '../data/content';
 						itemscope
 						itemtype='https://schema.org/Review'
 					>
-						<meta itemprop='itemReviewed' content='Domindez Studio' />
+						<span
+							itemprop='itemReviewed'
+							itemscope
+							itemtype='https://schema.org/ProfessionalService'
+						>
+							<meta itemprop='name' content='Domindez Studio' />
+						</span>
 						<svg
 							class='testimonial__quote'
 							width='40'
