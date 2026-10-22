@@ -54,6 +54,11 @@ const ogImageSecure = ogImage.startsWith('http://')
 	? ogImage.replace('http://', 'https://')
 	: ogImage;
 
+// Metadatos de imagen requeridos por Google en los ImageObject (ImageMetadata).
+// Search Console los marcaba como ausentes en domindez.com el 2026-10-22.
+const imageCopyrightNotice = `© ${new Date().getFullYear()} Domindez Studio. Todos los derechos reservados.`;
+const imageAcquireLicensePage = 'https://domindez.com/aviso-legal';
+
 const personJsonLd = {
 	'@type': 'Person',
 	'@id': 'https://domindez.com/#founder',
@@ -121,12 +126,17 @@ const orgJsonLd = {
 		height: 512,
 		caption: 'Domindez Studio',
 		inLanguage: 'es-ES',
+		copyrightNotice: imageCopyrightNotice,
+		acquireLicensePage: imageAcquireLicensePage,
 	},
 	image: {
 		'@type': 'ImageObject',
 		url: ogImageSecure,
 		width: imageWidth,
 		height: imageHeight,
+		caption: imageAlt,
+		copyrightNotice: imageCopyrightNotice,
+		acquireLicensePage: imageAcquireLicensePage,
 	},
 	description,
 	slogan: 'Diseño y desarrollo web a medida',
@@ -279,6 +289,9 @@ const webPageJsonLd = {
 		width: imageWidth,
 		height: imageHeight,
 		alt: imageAlt,
+		caption: imageAlt,
+		copyrightNotice: imageCopyrightNotice,
+		acquireLicensePage: imageAcquireLicensePage,
 	},
 	breadcrumb: { '@id': `${canonicalUrl}#breadcrumb` },
 	datePublished: publishedTime,
