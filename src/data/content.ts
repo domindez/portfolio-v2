@@ -178,6 +178,133 @@ export const works: Work[] = [
 		],
 	},
 	{
+		slug: 'lumeria',
+		link: 'https://lumeriaworld.com',
+		img: '/works/lumeria.jpg',
+		title: 'Lumeria',
+		category: 'Plataforma',
+		description:
+			'Wiki bilingüe de un mundo de fantasía medieval, con atlas interactivo, buscador y una web que se genera a partir de notas en Obsidian.',
+		stack: ['astro', 'javascript', 'css', 'cloudflare'],
+		year: '2026',
+		client: 'Lumeria',
+		industry: 'Worldbuilding / Narrativa',
+		duration: 'Desarrollo continuo',
+		role: 'Producto, diseño, frontend, devops',
+		services: ['Diseño web', 'Desarrollo a medida', 'Mapa interactivo', 'Búsqueda', 'i18n'],
+		challenge:
+			'Un mundo de fantasía con cientos de lugares, personajes y eventos necesita algo más que un documento largo: enlaces entre artículos, un mapa que se pueda recorrer y lectura cómoda en dos idiomas. Además, el autor quería seguir escribiendo en Obsidian sin tocar código para publicar.',
+		solution:
+			'Una wiki estática donde cada nota Markdown se convierte en una página con ficha, enlaces cruzados y versión en español e inglés. Incluye un atlas con mapa navegable, búsqueda instantánea y tarjetas para compartir generadas automáticamente, todo servido desde Cloudflare.',
+		highlights: [
+			{
+				icon: '◆',
+				title: 'Atlas interactivo',
+				description: 'Mapa del mundo con zoom y marcadores sobre los lugares, construido con Leaflet.',
+			},
+			{
+				icon: '◆',
+				title: 'Wiki bilingüe',
+				description: 'Cada artículo existe en español e inglés, con enlaces entre páginas resueltos por idioma.',
+			},
+			{
+				icon: '◆',
+				title: 'Del vault a la web',
+				description: 'El contenido se escribe en Obsidian y se publica sin pasos manuales, con búsqueda y tarjetas OG por página.',
+			},
+		],
+		results: [
+			{ value: 'ES + EN', label: 'Contenido bilingüe' },
+			{ value: '100%', label: 'Sitio estático en Cloudflare' },
+			{ value: '1', label: 'Mapa interactivo del mundo' },
+		],
+		schemaType: 'WebSite',
+	},
+	{
+		slug: 'memento',
+		link: 'https://mementogang.com',
+		img: '/works/memento.jpg',
+		title: 'Memento Tattoo Studio',
+		category: 'Plataforma',
+		description:
+			'Web de un estudio de tatuajes con galerías por artista, reservas online, consentimientos firmados en digital y panel de administración.',
+		stack: ['astro', 'typescript', 'css', 'cloudflare'],
+		year: '2025',
+		client: 'Memento Tattoo Studio',
+		industry: 'Estudio de tatuajes',
+		duration: 'Evolución continua desde 2025',
+		role: 'Diseño, desarrollo, backend, devops',
+		services: ['Diseño web', 'Reservas online', 'Panel de administración', 'Consentimientos digitales'],
+		challenge:
+			'El estudio gestionaba citas y consentimientos en papel y por mensajes sueltos. Necesitaba una web que mostrara el trabajo de cada artista con la calidad que merece y, a la vez, ordenara las reservas y el papeleo legal de cada sesión.',
+		solution:
+			'Una web con estética editorial y galería propia por artista, página de reserva y un panel privado para el equipo. El cliente firma el consentimiento en pantalla y se guarda como PDF, almacenado de forma segura junto a su cita.',
+		highlights: [
+			{
+				icon: '◆',
+				title: 'Galerías por artista',
+				description: 'Cada tatuador tiene su perfil, estilos, tarifas y portfolio de trabajos.',
+			},
+			{
+				icon: '◆',
+				title: 'Consentimiento digital',
+				description: 'Firma en pantalla y generación de PDF guardado en la nube, sin papel.',
+			},
+			{
+				icon: '◆',
+				title: 'Panel de administración',
+				description: 'Acceso privado para que el equipo gestione reservas y documentos.',
+			},
+		],
+		results: [
+			{ value: '0 papel', label: 'Consentimientos firmados en digital' },
+			{ value: '4', label: 'Artistas con galería propia' },
+			{ value: '1', label: 'Panel para gestionarlo todo' },
+		],
+	},
+	{
+		slug: 'el-balance',
+		link: 'https://el-balance.com',
+		img: '/works/el-balance.jpg',
+		title: 'El Balance',
+		category: 'Web App',
+		description:
+			'Informe editorial de datos sobre vivienda, coste de vida, migración y seguridad, con gráficos interactivos y series oficiales del INE y el CGPJ.',
+		stack: ['astro', 'typescript', 'css', 'cloudflare'],
+		year: '2026',
+		client: 'Domindez Studio',
+		industry: 'Medios / Datos abiertos',
+		duration: 'Proyecto propio',
+		role: 'Producto, diseño, datos, desarrollo',
+		services: ['Visualización de datos', 'Diseño editorial', 'Desarrollo a medida', 'Datos abiertos'],
+		challenge:
+			'Los datos oficiales existen, pero están dispersos en tablas difíciles de leer y suelen citarse sin contexto. Había que presentarlos de forma clara, comparable desde un mismo punto de partida y verificable por cualquiera.',
+		solution:
+			'Un sitio estático con once gráficos SVG propios, cada uno con su serie histórica completa, su fuente oficial enlazada y una nota metodológica. Cada gráfico se puede descargar en CSV y compartir como imagen, y toda la colección está disponible en JSON.',
+		highlights: [
+			{
+				icon: '◆',
+				title: 'Gráficos SVG a medida',
+				description: 'Escalas con cero, tooltips por punto y navegación con teclado, sin librerías de gráficos.',
+			},
+			{
+				icon: '◆',
+				title: 'Datos auditables',
+				description: 'Series oficiales del INE y el CGPJ con fuente enlazada, CSV por informe y endpoint /datos.json.',
+			},
+			{
+				icon: '◆',
+				title: 'Listo para compartir',
+				description: 'Imágenes sociales generadas en compilación y un sitio sin cookies ni rastreo.',
+			},
+		],
+		results: [
+			{ value: '11', label: 'Gráficos interactivos' },
+			{ value: '2010', label: 'Series históricas desde' },
+			{ value: '0', label: 'Cookies o rastreadores' },
+		],
+	},
+	{
 		slug: 'redqr',
 		link: 'https://redqr.app',
 		img: '/works/redqr.jpg',
