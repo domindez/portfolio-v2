@@ -548,8 +548,11 @@ const jsonLd = {
 
 	/* ================= MARQUEE ================= */
 	.sh-home .marquee-wrap {
-		overflow: hidden;
-		padding: 18px 0 22px;
+		position: relative;
+		z-index: 2;
+		overflow-x: clip;
+		overflow-y: visible;
+		padding: 34px 0 38px;
 		background: linear-gradient(90deg, #fff4d9 0%, #f3f8e8 45%, #ffe6d8 100%);
 	}
 	.sh-home .marquee { background: var(--leaf); color: #fff; overflow: hidden; padding: 18px 0; transform: rotate(-1.6deg) scale(1.03); box-shadow: 0 24px 40px -28px rgba(15, 31, 23, 0.5); }
