@@ -52,7 +52,8 @@ export default defineConfig({
 			filter: (page) =>
 				!page.includes('/404') &&
 				!page.includes('/api/') &&
-				!page.includes('/admin/'),
+				!page.includes('/admin/') &&
+				!page.includes('/demo/'),
 			customSitemaps: [
 				'https://domindez.com/sitemap-images.xml',
 			],

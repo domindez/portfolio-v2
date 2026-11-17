@@ -1,0 +1,12 @@
+---
+/** Texto bilingüe: pinta ES y EN y el CSS muestra el idioma activo. */
+interface Props {
+	es?: string;
+	en?: string;
+	html?: boolean;
+}
+const { es = '', en } = Astro.props as Props;
+const same = !en || en === es;
+---
+
+{same ? es : <><span data-es>{es}</span><span data-en>{en}</span></>}
