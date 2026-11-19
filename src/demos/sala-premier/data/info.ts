@@ -2,8 +2,8 @@
  * Datos de Sala Premier.
  * - Salas, direcciones, teléfonos y horarios: salapremier.com (nov. 2026).
  * - Concepto, eventos recurrentes y ofertas: Instagram @salapremiermalaga y Oferplan SUR.
- * - Programación semanal y carta de cócteles: CONTENIDO DE EJEMPLO para la demo
- *   (inspirado en lo que publican, pendiente de validar con el cliente).
+ * - Calendario semanal: cartas QR de cada sala (trivify.es/cartasqr, nov. 2026).
+ * - Cócteles "de película" de la home: CONTENIDO DE EJEMPLO para la demo.
  */
 
 export interface Venue {
@@ -67,26 +67,57 @@ export const venues: Venue[] = [
 	},
 ];
 
-/** Programa semanal (índice = getDay(): 0 domingo … 6 sábado). Ejemplo para la demo. */
-export interface Show {
+/**
+ * Calendario semanal real de cada sala (cartas QR de trivify.es, nov. 2026).
+ * day = getDay(): 0 domingo … 6 sábado.
+ */
+export interface SalaEvent {
 	day: number;
-	dayName: string;
-	when: string;
-	title: string;
-	detail: string;
 	venue: string;
-	tag?: string;
+	title: string;
+	time: string;
+	detail: string;
+	note?: string;
 }
 
-export const week: Show[] = [
-	{ day: 1, dayName: 'Lunes', when: 'Todos los lunes', title: 'Trivial Premier', detail: 'Equipos de 2 a 6 · premio para la mesa ganadora', venue: 'Premier Teatinos · 22:00h', tag: 'Entrada libre' },
-	{ day: 2, dayName: 'Martes', when: 'Todos los martes', title: 'Noche de juegos', detail: 'Juegos de mesa de la casa y el cóctel de la semana', venue: 'Todas las salas · desde 19:00h' },
-	{ day: 3, dayName: 'Miércoles', when: 'Todos los miércoles', title: 'Trivial de cine', detail: 'Preguntas de cine y series en pantalla grande', venue: 'Premier Centro · 22:00h', tag: 'Entrada libre' },
-	{ day: 4, dayName: 'Jueves', when: 'Todos los jueves', title: 'Día de la Cerveza', detail: 'Precios especiales en barril e importación · Intercambio de idiomas a las 21:00h', venue: 'Todas las salas · Idiomas en Premier Centro' },
-	{ day: 5, dayName: 'Viernes', when: 'Todos los viernes', title: 'Blues & Hot Jazz', detail: 'Live Blues 20:00h · Hot Jazz 23:00h', venue: 'Premier Huelin', tag: 'En directo' },
-	{ day: 6, dayName: 'Sábado', when: 'Todos los sábados', title: '¿Tienes plan?', detail: 'Música, pintas y el ambientazo de siempre hasta el cierre', venue: 'Todas las salas · hasta 03:00h' },
-	{ day: 0, dayName: 'Domingo', when: 'Todos los domingos', title: 'Domingo de partido', detail: 'Todos los partidos en pantalla grande, con sonido', venue: 'Todas las salas · desde 15:00h' },
+export const events: SalaEvent[] = [
+	// Premier Centro
+	{ day: 2, venue: 'centro', title: 'Pasapalabra', time: '22:00h', detail: 'Ven a jugar y llévate la botella y el bote acumulado.' },
+	{ day: 3, venue: 'centro', title: 'Trivial', time: '22:00h', detail: 'Demuestra lo que sabes y compite por la botella.' },
+	{ day: 4, venue: 'centro', title: 'Día de la Cerveza', time: '11:00 – 21:00h', detail: 'Pintas de Estrella, Erdinger y Guinness a 4 €.' },
+	{ day: 4, venue: 'centro', title: 'Intercambio de idiomas', time: '20:00h', detail: 'Con Málaga Tandem Club. Todos los niveles, todos los idiomas.' },
+	{ day: 0, venue: 'centro', title: 'Bingo', time: '22:00h', detail: 'El domingo se canta línea en Molina Lario.' },
+	// Premier Teatinos
+	{ day: 1, venue: 'teatinos', title: 'Día de la Cerveza', time: 'Hasta las 21:00h', detail: 'Toda la cerveza de barril al 50 %.', note: 'Excepto vísperas de festivo' },
+	{ day: 2, venue: 'teatinos', title: 'Martes de Mojitos', time: 'Hasta las 20:00h', detail: 'Mojitos desde 5 €.', note: 'Excepto vísperas de festivo' },
+	{ day: 2, venue: 'teatinos', title: 'Trivial', time: '20:00h', detail: 'Demuestra lo que sabes y compite por la botella.' },
+	{ day: 3, venue: 'teatinos', title: 'Pasapalabra', time: '20:00h', detail: 'Vente a jugar y llévate el bote acumulado.' },
+	// Premier Huelin
+	{ day: 2, venue: 'huelin', title: 'Trivial', time: '20:00h', detail: 'Demuestra lo que sabes y compite por la botella.' },
+	{ day: 4, venue: 'huelin', title: 'Día de la Cerveza', time: 'Hasta las 21:00h', detail: 'Cañas a 0,50 € y jarras a 2 €.', note: 'Excepto festivos y vísperas' },
+	{ day: 5, venue: 'huelin', title: 'Pasapalabra', time: '20:00h', detail: 'Vente a jugar y llévate el bote acumulado.' },
+	// Premier Granada
+	{ day: 3, venue: 'granada', title: 'Trivial', time: '20:00h', detail: 'Demuestra lo que sabes y compite por la botella.' },
+	{ day: 0, venue: 'granada', title: 'Pasapalabra', time: '20:00h', detail: 'Vente a jugar y llévate el bote acumulado.' },
 ];
+
+/** Semana empezando en lunes. */
+export const weekDays = [
+	{ day: 1, name: 'Lunes' },
+	{ day: 2, name: 'Martes' },
+	{ day: 3, name: 'Miércoles' },
+	{ day: 4, name: 'Jueves' },
+	{ day: 5, name: 'Viernes' },
+	{ day: 6, name: 'Sábado' },
+	{ day: 0, name: 'Domingo' },
+];
+
+/** Texto para las noches sin función especial. */
+export const freeNight = 'Sin función especial: pintas, música y ambiente hasta el cierre.';
+
+export const eventTypes = ['Trivial', 'Pasapalabra', 'Día de la Cerveza', 'Intercambio de idiomas', 'Bingo', 'Martes de Mojitos'];
+
+export const venueShort = (id: string) => venues.find((v) => v.id === id)?.name.replace('Premier ', '') ?? id;
 
 export const cocktails = [
 	{ name: 'El Padrino', desc: 'Whisky escocés y amaretto sobre un bloque de hielo. Una oferta que no podrás rechazar.', price: '9,00' },
@@ -104,19 +135,19 @@ export const offers = [
 ];
 
 export const marquee = [
-	'Trivial Premier',
+	'Trivial',
+	'Pasapalabra',
 	'Día de la Cerveza',
 	'Intercambio de idiomas',
-	'Live Blues & Hot Jazz',
-	'Deportes en pantalla grande',
+	'Bingo de domingo',
+	'Martes de Mojitos',
 	'Halloween Premier',
 	'St. Patrick’s Day',
-	'Juegos de mesa',
 ];
 
 export const info = {
 	name: 'Sala Premier',
-	tagline: 'Un pub irlandés de película',
+	tagline: 'Un pub de película',
 	instagram: 'https://www.instagram.com/salapremiermalaga/',
 	instagramHandle: '@salapremiermalaga',
 	facebook: 'https://www.facebook.com/Salapremier/',

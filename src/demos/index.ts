@@ -9,6 +9,8 @@
 import ShanaoHome from './shanao/ShanaoHome.astro';
 import ShanaoCarta from './shanao/ShanaoCarta.astro';
 import SalaPremierHome from './sala-premier/SalaPremierHome.astro';
+import SalaPremierCarta from './sala-premier/SalaPremierCarta.astro';
+import { venues as salaPremierVenues } from './sala-premier/data/info';
 
 export interface Demo {
 	name: string;
@@ -16,9 +18,19 @@ export interface Demo {
 	Page: (props: any) => any;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	Carta?: (props: any) => any;
+	/** Cartas por local (/demo/<slug>/carta/<id>), para negocios con varias sedes. */
+	Cartas?: {
+		ids: string[];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		Page: (props: any) => any;
+	};
 }
 
 export const demos: Record<string, Demo> = {
 	shanao: { name: 'Shanao Café', Page: ShanaoHome, Carta: ShanaoCarta },
-	'sala-premier': { name: 'Sala Premier', Page: SalaPremierHome },
+	'sala-premier': {
+		name: 'Sala Premier',
+		Page: SalaPremierHome,
+		Cartas: { ids: salaPremierVenues.map((v) => v.id), Page: SalaPremierCarta },
+	},
 };
