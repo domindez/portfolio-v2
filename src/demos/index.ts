@@ -8,6 +8,7 @@
  */
 import ShanaoHome from './shanao/ShanaoHome.astro';
 import ShanaoCarta from './shanao/ShanaoCarta.astro';
+import SalaPremierHome from './sala-premier/SalaPremierHome.astro';
 
 export interface Demo {
 	name: string;
@@ -19,4 +20,5 @@ export interface Demo {
 
 export const demos: Record<string, Demo> = {
 	shanao: { name: 'Shanao Café', Page: ShanaoHome, Carta: ShanaoCarta },
+	'sala-premier': { name: 'Sala Premier', Page: SalaPremierHome },
 };
