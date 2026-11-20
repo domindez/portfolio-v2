@@ -1,0 +1,997 @@
+---
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource-variable/manrope/wght.css';
+import '@fontsource-variable/big-shoulders-display';
+import './unter.css';
+import { Image } from 'astro:assets';
+import DemoLayout from '../../layouts/DemoLayout.astro';
+import T from './components/T.astro';
+import Icon from './components/Icon.astro';
+import { info, timeline, fiestas, leagues, praise, toasts } from './data/info';
+import { taps, tapSizes, bottleCountries, bottles, totalBeers, euro, countryByCode, sampler } from './data/beers';
+import { platos, picar } from './data/menu';
+
+import imgMedallon from '../../assets/demos/unter/medallon.png';
+import imgBarra from '../../assets/demos/unter/barra.jpg';
+import imgCarteles from '../../assets/demos/unter/pared-carteles.jpg';
+import imgGrifoAzul from '../../assets/demos/unter/grifo-azul.jpg';
+import imgTerrazaPretzel from '../../assets/demos/unter/terraza-pretzel.jpg';
+import imgBotaPlaya from '../../assets/demos/unter/bota-playa.jpg';
+import imgTerrazaTabla from '../../assets/demos/unter/terraza-tabla.jpg';
+import imgTerrazaPretzels from '../../assets/demos/unter/terraza-pretzels.jpg';
+import imgBotellasTerraza from '../../assets/demos/unter/botellas-terraza.jpg';
+import imgSampler from '../../assets/demos/unter/sampler.jpg';
+import imgBretzel from '../../assets/demos/unter/bretzel.jpg';
+import imgPlato from '../../assets/demos/unter/plato.jpg';
+import imgHamburguesa from '../../assets/demos/unter/hamburguesa.jpg';
+import imgOktoberfest from '../../assets/demos/unter/oktoberfest.jpg';
+import imgNeveras from '../../assets/demos/unter/neveras.jpg';
+import imgDelirium from '../../assets/demos/unter/delirium.jpg';
+import imgMesaLarga from '../../assets/demos/unter/mesa-larga.jpg';
+
+const base = '/demo/unter';
+const carta = `${base}/carta`;
+const tel = `tel:+34${info.phone.replace(/\s/g, '')}`;
+
+const nav = [
+	{ href: '#grifos', es: 'Grifos', en: 'Taps' },
+	{ href: '#mundo', es: 'Cervezas', en: 'Beers' },
+	{ href: '#cocina', es: 'Cocina', en: 'Kitchen' },
+	{ href: '#terraza', es: 'Terraza', en: 'Terrace' },
+	{ href: '#agenda', es: 'Agenda', en: 'Events' },
+	{ href: '#reserva', es: 'Reservar', en: 'Book' },
+	{ href: '#visita', es: 'Visítanos', en: 'Visit' },
+];
+
+const world = bottleCountries.map((c) => {
+	const list = bottles.filter((b) => b.country === c.code);
+	const top = [...list].sort((a, b) => b.price - a.price).slice(0, 3).map((b) => b.name);
+	return { ...c, top };
+});
+
+const findDish = (name: string) => [...platos.dishes, ...picar.dishes, ...(picar.extra?.dishes ?? [])].find((d) => d.name.es === name)!;
+const kitchen = [
+	{ img: imgPlato, dish: findDish('Codillo de cerdo'), alt: 'Codillo de cerdo con salsa de cerveza y patatas, con una caña al lado' },
+	{ img: imgBretzel, dish: findDish('Bretzel con mantequilla'), alt: 'Bretzel, salchichas y queso con mermelada sobre la mesa' },
+	{ img: imgHamburguesa, dish: findDish('Hamburguesa'), alt: 'Hamburguesa con patatas horneadas y una copa de Tripel Karmeliet' },
+	{ img: imgTerrazaTabla, dish: findDish('Variedad de fiambres y quesos'), alt: 'Tabla de quesos e ibéricos en la terraza con una Brugse Zot' },
+];
+
+const terrace = [
+	{ img: imgTerrazaPretzel, alt: 'Paulaner y bretzel en la terraza con el paseo marítimo y las palmeras detrás', es: 'Paulaner y bretzel', en: 'Paulaner & pretzel' },
+	{ img: imgBotaPlaya, alt: 'Una bota de cerveza en alto con la playa de La Malagueta detrás', es: 'Bota con vistas', en: 'Boot with a view' },
+	{ img: imgTerrazaPretzels, alt: 'Dos jarras de Paulaner y bretzels en la terraza', es: 'Bretzel y Weissbier', en: 'Pretzels & Weissbier' },
+	{ img: imgSampler, alt: 'Tabla de degustación de cinco Chouffe en la terraza', es: 'Sample Chouffe', en: 'Chouffe sampler' },
+	{ img: imgBotellasTerraza, alt: 'Botellas de cerveza de varios países en una mesa de la terraza', es: 'Medio mundo en una mesa', en: 'Half the world on one table' },
+];
+
+const eventImgs: Record<string, { img: ImageMetadata; alt: string }> = {
+	okto: { img: imgOktoberfest, alt: 'Amigos brindando durante el Oktoberfest en la cervecería' },
+	deli: { img: imgDelirium, alt: 'Delirium servida en su copa' },
+	chouffe: { img: imgSampler, alt: 'Tabla de degustación de Chouffe en la terraza' },
+	futbol: { img: imgMesaLarga, alt: 'Mesa larga de amigos celebrando con cervezas' },
+	patrick: { img: imgCarteles, alt: 'Pared de carteles de cerveza del local' },
+};
+const tapNames = ['Paulaner', 'Weihenstephaner', 'Chouffe', 'Delirium Tremens', 'Gulden Draak', 'Pilsner Urquell', 'Guinness', 'Duvel', 'Brugse Zot', 'Schlenkerla', 'Staropramen', 'Brewdog'];
+const slots = (from: number, to: number) => {
+	const out: string[] = [];
+	for (let m = from; m <= to; m += 30) out.push(`${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
+	return out;
+};
+const slotGroups = [
+	{ es: 'Mediodía', en: 'Lunch', times: slots(13 * 60, 15 * 60 + 30) },
+	{ es: 'Tarde', en: 'Afternoon', times: slots(17 * 60, 19 * 60 + 30) },
+	{ es: 'Noche', en: 'Evening', times: slots(20 * 60 + 30, 23 * 60) },
+];
+const whatsapp = `34${info.phone.replace(/\s/g, '')}`;
+
+const stampText = 'Cervecería alemana · Seit 2004 · Buenos Aires · Málaga · ';
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BarOrPub',
+	name: info.name,
+	servesCuisine: ['Alemana', 'Tapas'],
+	telephone: `+34 ${info.phone}`,
+	address: { '@type': 'PostalAddress', streetAddress: info.address, addressLocality: 'Málaga', postalCode: '29016', addressCountry: 'ES' },
+	openingHours: 'Mo-Su 12:00-00:30',
+	aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.6', reviewCount: info.reviews },
+	sameAs: [info.instagram],
+};
+const first = taps[1];
+const tapCountries = new Set(taps.map((t) => t.country)).size;
+---
+
+<DemoLayout
+	title='Cervecería Untertürkheim · Cervecería alemana frente al mar en Málaga'
+	description='Más de 200 cervezas, 20 grifos y cocina alemana en el Paseo Marítimo de La Malagueta. Terraza frente al mar, fútbol y fiestas cerveceras.'
+	themeColor='#0f2a1c'
+	ogImage='/demo-og/unter.jpg'
+	ogImageAlt='Cervecería Untertürkheim: cervecería alemana frente al mar en Málaga.'
+	siteName='Cervecería Untertürkheim'
+	bodyClass='ut'
+>
+	<script slot='head' type='application/ld+json' set:html={JSON.stringify(jsonLd)} />
+	<script slot='head' is:inline>
+		(function () {
+			var r = document.documentElement;
+			r.classList.add('ut-js');
+			var l = null;
+			try { l = localStorage.getItem('unter-lang'); } catch (e) {}
+			if (!l) l = (navigator.language || 'es').slice(0, 2) === 'es' ? 'es' : 'en';
+			r.dataset.lang = l;
+			r.lang = l;
+		})();
+	</script>
+
+	<a class='ut-skip' href='#casa'>Saltar al contenido</a>
+
+	<!-- ============ NAV ============ -->
+	<header class='nav' data-nav>
+		<a class='nav__brand' href='#top' aria-label='Cervecería Untertürkheim, inicio'>
+			<Image src={imgMedallon} alt='' width={128} height={128} class='nav__logo' loading='eager' />
+			<span class='nav__id'>
+				<span class='nav__name'>Untertürkheim</span>
+			</span>
+		</a>
+		<nav class='nav__links' aria-label='Secciones'>
+			{nav.map((l) => <a href={l.href}><T es={l.es} en={l.en} /></a>)}
+		</nav>
+		<div class='nav__right'>
+			<div class='lang' role='group' aria-label='Idioma / Language'>
+				<button type='button' data-set-lang='es'>ES</button>
+				<button type='button' data-set-lang='en'>EN</button>
+			</div>
+			<a class='btn btn--gold nav__cta' href={carta}><T es='La carta' en='Menu' /></a>
+			<button class='nav__burger' type='button' aria-label='Abrir menú' aria-expanded='false' data-menu-open>
+				<Icon name='menu' />
+			</button>
+		</div>
+	</header>
+
+	<div class='menu' data-menu aria-hidden='true'>
+		<div class='menu__head'>
+			<Image src={imgMedallon} alt='' width={96} height={96} class='menu__logo' />
+			<span class='menu__id'>
+				<span class='menu__name'>Untertürkheim</span>
+				<span class='menu__tag'><T es='Cervecería alemana' en='German beer hall' /></span>
+			</span>
+		</div>
+		<button class='menu__close' type='button' aria-label='Cerrar menú' data-menu-close><Icon name='close' size={26} /></button>
+		<nav class='menu__links' aria-label='Menú'>
+			{nav.map((l, i) => <a href={l.href} style={`--i:${i}`}><span class='menu__n'>{String(i + 1).padStart(2, '0')}</span><T es={l.es} en={l.en} /></a>)}
+			<a href={carta} style={`--i:${nav.length}`}><span class='menu__n'>—</span><T es='La carta' en='The menu' /></a>
+		</nav>
+		<p class='menu__foot'>{info.address} · {info.area}</p>
+	</div>
+
+	<main id='top'>
+		<!-- ============ HERO ============ -->
+		<section class='hero' data-hero>
+			<div class='hero__stage wrap'>
+				<p class='hero__kicker' data-in>
+					<span>Cervecería Untertürkheim</span>
+					<span class='hero__dot' aria-hidden='true'>·</span>
+					<span>La Malagueta, Málaga</span>
+				</p>
+
+				<h1 class='hero__title'>
+					<span class='sr-only'>Cervecería Untertürkheim: </span>
+					<span class='hero__line hero__line--sign'><span data-line><T es='Cervecería' en='German' /></span></span>
+					<span class='hero__line hero__line--sign'><span data-line><T es='alemana' en='beer hall' /></span></span>
+					<span class='hero__line hero__line--script'>
+						<span data-line><T es='frente al mar' en='by the sea' /></span>
+					</span>
+				</h1>
+
+				<p class='hero__lead' data-in>
+					<T
+						es={`Más de ${totalBeers} cervezas de 17 países, ${info.taps} grifos y cocina alemana en pleno Paseo Marítimo. El Mediterráneo, a diez pasos de la jarra.`}
+						en={`Over ${totalBeers} beers from 17 countries, ${info.taps} taps and German cooking right on the seafront. The Mediterranean, ten steps from your stein.`}
+					/>
+				</p>
+
+				<div class='hero__ctas' data-in>
+					<a class='btn btn--gold' href={carta}><T es='Ver la carta' en='See the menu' /> <Icon name='arrow' size={18} /></a>
+					<a class='btn btn--line' href='#reserva'><T es='Reservar mesa' en='Book a table' /></a>
+				</div>
+
+				<div class='hero__visual'>
+					<figure class='hero__arch' data-hero-photo>
+						<Image src={imgTerrazaPretzel} alt='Una Paulaner Weißbier y un bretzel en la terraza, con las palmeras del paseo marítimo detrás' widths={[480, 720, 960]} sizes='(max-width: 900px) 80vw, 36vw' loading='eager' fetchpriority='high' />
+					</figure>
+					<div class='stamp hero__stamp' data-hero-stamp>
+						<svg class='stamp__ring' viewBox='0 0 200 200' aria-hidden='true'>
+							<defs><path id='stamp-path' d='M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0' /></defs>
+							<text><textPath href='#stamp-path' textLength='486'>{stampText.toUpperCase()}</textPath></text>
+						</svg>
+						<Image src={imgMedallon} alt='' width={300} height={300} class='stamp__seal' loading='eager' />
+					</div>
+				</div>
+			</div>
+
+			<div class='board' data-board role='region' aria-roledescription='carrusel' aria-label='Cervezas de grifo'>
+				<span class='board__bar' aria-hidden='true'><span data-b-bar></span></span>
+				<div class='board__in wrap'>
+					<p class='board__label'>
+						<span class='board__title'><T es='Ahora de grifo' en='On tap now' /></span>
+						<span class='board__sub'><T es={`${info.taps} grifos · ${tapCountries} países`} en={`${info.taps} taps · ${tapCountries} countries`} /></span>
+					</p>
+					<a class='board__slot' href='#grifos' data-b-go aria-live='off'>
+						<span class='board__n'><span data-b='n'>02</span></span>
+						<span class='board__glass'><span class='board__swatch' data-b-swatch style={`--beer:${first.color}; --foam:${first.foam ?? '#fff8e6'}`}></span></span>
+						<span class='board__text'>
+							<span class='board__name'><span data-b='name'>{first.name}</span></span>
+							<span class='board__meta'><span data-b='meta'><T es={`${first.style.es} · ${countryByCode[first.country]?.name.es ?? ''} · ${first.abv}`} en={`${first.style.en} · ${countryByCode[first.country]?.name.en ?? ''} · ${first.abv}`} /></span></span>
+						</span>
+						<span class='board__price'><span data-b='price'>{euro(first.prices[2] ?? 0)}</span><small data-b='size'>50 cl</small></span>
+					</a>
+					<div class='board__nav'>
+						<button type='button' class='board__btn board__btn--prev' data-b-step='-1' aria-label='Cerveza anterior'><Icon name='arrow' size={18} /></button>
+						<button type='button' class='board__btn' data-b-step='1' aria-label='Siguiente cerveza'><Icon name='arrow' size={18} /></button>
+					</div>
+				</div>
+				<script type='application/json' data-board-taps set:html={JSON.stringify(taps.map((t) => { const s = t.prices[2] != null ? 2 : t.prices[1] != null ? 1 : 0; return { name: t.name, abv: t.abv, price: t.prices[s], size: tapSizes[s].replace('cl', ' cl'), style: t.style, country: countryByCode[t.country]?.name ?? { es: '', en: '' }, color: t.color, foam: t.foam }; }))} />
+			</div>
+		</section>
+
+		<!-- ============ LA CASA ============ -->
+		<section class='sec sec--paper casa-sec' id='casa'>
+			<p class='watermark' aria-hidden='true' data-drift>Willkommen</p>
+			<div class='wrap casa'>
+				<div class='casa__text'>
+					<header class='hd'>
+						<p class='hd__n'><span>01</span><T es='La casa' en='The house' /></p>
+						<h2 class='hd__t reveal'>
+							<T html es='Una cervecería alemana *con el mar enfrente*' en='A German beer hall *facing the sea*' />
+						</h2>
+					</header>
+					<p class='lead reveal'>
+						<T
+							es='Abrimos en Buenos Aires en 2004 y en 2022 cruzamos el Atlántico hasta La Malagueta. Paredes forradas de carteles antiguos, posavasos hasta el techo, cerveza bien tirada y una terraza a pie de paseo marítimo.'
+							en='We opened in Buenos Aires in 2004 and in 2022 crossed the Atlantic to La Malagueta. Walls lined with vintage beer signs, coasters up to the ceiling, properly poured beer and a terrace right on the seafront.'
+						/>
+					</p>
+					<a class='link reveal' href='#historia'><T es='Nuestra historia' en='Our story' /> <Icon name='arrow' size={16} /></a>
+				</div>
+				<figure class='casa__img casa__img--a reveal-img' data-speed='-0.06'>
+					<Image src={imgCarteles} alt='Pared cubierta de carteles de chapa de cervezas de todo el mundo' widths={[420, 720]} sizes='(max-width: 900px) 60vw, 26vw' />
+				</figure>
+				<figure class='casa__img casa__img--b reveal-img' data-speed='0.08'>
+					<Image src={imgGrifoAzul} alt='Torre de grifo de Weihenstephaner sobre la pared roja de la barra' widths={[360, 600]} sizes='(max-width: 900px) 45vw, 18vw' />
+				</figure>
+			</div>
+		</section>
+
+		<!-- ============ GRIFOS ============ -->
+		<section class='sec sec--dark' id='grifos' aria-labelledby='taps-title'>
+			<div class='wrap'>
+				<header class='hd hd--split'>
+					<div>
+						<p class='hd__n'><span>02</span><T es='De grifo' en='On tap' /></p>
+						<h2 class='hd__t reveal' id='taps-title'><T html es='Diecinueve grifos, *recién tirados*' en='Nineteen taps, *freshly poured*' /></h2>
+					</div>
+					<p class='hd__sub reveal'>
+						<T es='De la Paulaner de Múnich a la Gulden Draak de 10,5°. Elige una para ver sus medidas y precios.' en='From Munich’s Paulaner to a 10.5% Gulden Draak. Pick one to see sizes and prices.' />
+					</p>
+				</header>
+
+				<div class='taps'>
+					<ol class='taps__list' data-taps role='listbox' aria-label='Cervezas de grifo'>
+						{taps.map((t, i) => (
+							<li>
+								<button
+									type='button'
+									class='taprow'
+									role='option'
+									aria-selected={t === first ? 'true' : 'false'}
+									data-tap={t.id}
+									data-name={t.name}
+									data-abv={t.abv}
+									data-style-es={t.style.es}
+									data-style-en={t.style.en}
+									data-country={t.country}
+									data-color={t.color}
+									data-foam={t.foam ?? '#f6efdf'}
+									data-prices={JSON.stringify(t.prices)}
+									style={`--beer:${t.color}`}
+								>
+									<span class='taprow__n'>{String(i + 1).padStart(2, '0')}</span>
+									<span class='taprow__name'>{t.name}</span>
+									<span class='taprow__style'><T es={t.style.es} en={t.style.en} /></span>
+									<span class='taprow__abv'>{t.abv}</span>
+								</button>
+							</li>
+						))}
+					</ol>
+
+					<aside class='tapcard' data-tapcard aria-live='polite' style={`--beer:${first.color};--foam:${first.foam ?? '#f6efdf'}`}>
+						<div class='tapcard__glow' aria-hidden='true'></div>
+						<svg class='tapcard__glass' viewBox='0 0 120 200' aria-hidden='true'>
+							<defs>
+								<clipPath id='glass-clip'><path d='M14 8 H106 L96 186 Q95 194 87 194 H33 Q25 194 24 186 Z' /></clipPath>
+								<linearGradient id='glass-shine' x1='0' x2='1'>
+									<stop offset='0' stop-color='#fff' stop-opacity='.0' />
+									<stop offset='.18' stop-color='#fff' stop-opacity='.28' />
+									<stop offset='.3' stop-color='#fff' stop-opacity='0' />
+								</linearGradient>
+							</defs>
+							<g clip-path='url(#glass-clip)'>
+								<rect class='tapcard__beer' data-beer x='0' y='0' width='120' height='200' />
+								<g class='tapcard__bubbles'>
+									{Array.from({ length: 10 }).map((_, i) => (
+										<circle cx={30 + ((i * 23) % 62)} cy='190' r={0.9 + (i % 3) * 0.5} style={`--d:${(i * 0.41) % 2.6}s;--t:${2.2 + (i % 4) * 0.5}s`} />
+									))}
+								</g>
+								<rect class='tapcard__foam' data-foam x='0' y='0' width='120' height='22' />
+								<rect x='0' y='0' width='120' height='200' fill='url(#glass-shine)' />
+							</g>
+							<path d='M14 8 H106 L96 186 Q95 194 87 194 H33 Q25 194 24 186 Z' fill='none' stroke='currentColor' stroke-width='1.2' />
+						</svg>
+						<div class='tapcard__body'>
+							<p class='label tapcard__meta'><span data-tc-country>{countryByCode[first.country]?.name.es}</span> · <span data-tc-abv>{first.abv}</span></p>
+							<h3 class='tapcard__name' data-tc-name>{first.name}</h3>
+							<p class='tapcard__style' data-tc-style>{first.style.es}</p>
+							<ul class='tapcard__sizes'>
+								{tapSizes.map((s, i) => (
+									<li data-size={i} class={first.prices[i] == null ? 'is-off' : ''}>
+										<span>{s}</span>
+										<span data-price>{first.prices[i] == null ? '—' : euro(first.prices[i]!)}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					</aside>
+				</div>
+
+				<div class='taps__foot'>
+					<Image src={imgSampler} alt='' width={120} height={120} class='taps__foot-img' />
+					<p>
+						<strong><T es={sampler.name.es} en={sampler.name.en} /> · {euro(sampler.price)}</strong>
+						<T es='Cinco copitas de 12 cl para probar la familia Chouffe.' en='Five 12 cl glasses to taste the Chouffe family.' />
+					</p>
+					<a class='link' href={`${carta}#grifo`}><T es='Ver todos los grifos' en='All taps' /> <Icon name='arrow' size={16} /></a>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ MARQUESINA ============ -->
+		<div class='marquee marquee--mustard' aria-hidden='true'>
+			<div class='marquee__track'>
+				{[0, 1].map(() => (
+					<div class='marquee__group'>
+						{tapNames.map((n) => <span class='marquee__item'>{n}<i>✦</i></span>)}
+					</div>
+				))}
+			</div>
+		</div>
+
+		<!-- ============ DEL MUNDO ============ -->
+		<section class='sec sec--paper' id='mundo' aria-labelledby='world-title'>
+			<div class='wrap'>
+				<header class='hd hd--split'>
+					<div>
+						<p class='hd__n'><span>03</span><T es='Botellas' en='Bottles' /></p>
+						<h2 class='hd__t reveal' id='world-title'><T html es={`*La vuelta al mundo* en ${bottles.length} cervezas`} en={`*Around the world* in ${bottles.length} beers`} /></h2>
+					</div>
+					<p class='hd__sub reveal'>
+						<T es='Trapenses belgas, ahumadas de Bamberg, IPAs americanas y una Saigon bien fría. Elige un país y te llevamos a su página de la carta.' en='Belgian Trappists, smoked beers from Bamberg, American IPAs and an ice-cold Saigon. Pick a country to jump to it on the menu.' />
+					</p>
+				</header>
+
+				<div class='world'>
+					<ul class='world__index'>
+						{world.map((c) => (
+							<li>
+								<a class='wrow' href={`${carta}?pais=${c.code}#mundo`}>
+									<span class='wrow__name'><T es={c.name.es} en={c.name.en} /></span>
+									<span class='wrow__n'>{c.count}</span>
+									<span class='wrow__top'>{c.top.join(' · ')}</span>
+									<Icon name='arrow' size={18} class='wrow__arrow' />
+								</a>
+							</li>
+						))}
+					</ul>
+					<div class='world__media'>
+						<figure class='reveal-img' data-speed='-0.05'>
+							<Image src={imgNeveras} alt='Las neveras con cervezas de todo el mundo' widths={[400, 700]} sizes='(max-width: 900px) 46vw, 22vw' />
+						</figure>
+						<figure class='reveal-img' data-speed='0.07'>
+							<Image src={imgDelirium} alt='Delirium Nocturnum servida en su copa' widths={[400, 700]} sizes='(max-width: 900px) 46vw, 22vw' />
+						</figure>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ COCINA ============ -->
+		<section class='sec sec--cream' id='cocina' aria-labelledby='kitchen-title'>
+			<div class='wrap'>
+				<header class='hd hd--split'>
+					<div>
+						<p class='hd__n'><span>04</span><T es='Cocina' en='Kitchen' /></p>
+						<h2 class='hd__t reveal' id='kitchen-title'><T html es='Cocina alemana *para acompañar*' en='German food *to go with it*' /></h2>
+					</div>
+					<p class='hd__sub reveal'>
+						<T es='Codillo con salsa de cerveza, salchichas, bretzels y tablas para compartir..' en='Pork knuckle in beer sauce, sausages, pretzels and sharing boards..' />
+					</p>
+				</header>
+
+				<div class='dishes'>
+					{kitchen.map((k, i) => (
+						<article class='dish'>
+							<figure class='dish__img reveal-img'>
+								<Image src={k.img} alt={k.alt} widths={[400, 700]} sizes='(max-width: 700px) 90vw, (max-width: 1100px) 45vw, 25vw' />
+								<span class='dish__n'>{String(i + 1).padStart(2, '0')}</span>
+							</figure>
+							<p class='dish__row'>
+								<span class='dish__name'><T es={k.dish.name.es} en={k.dish.name.en} /></span>
+								<span class='dish__price'>{euro(k.dish.price)}</span>
+							</p>
+							{k.dish.desc && <p class='dish__desc'><T es={k.dish.desc.es} en={k.dish.desc.en} /></p>}
+						</article>
+					))}
+				</div>
+				<div class='sec__more'>
+					<a class='btn btn--dark' href={`${carta}#picar`}><T es='Ver la cocina completa' en='Full food menu' /> <Icon name='arrow' size={18} /></a>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ TERRAZA ============ -->
+		<section class='terrace' id='terraza' aria-labelledby='terrace-title'>
+			<div class='terrace__pin' data-hscroll>
+				<div class='terrace__intro'>
+					<p class='hd__n'><span>05</span><T es='Terraza' en='Terrace' /></p>
+					<h2 class='hd__t' id='terrace-title'><T html es='Una Weissbier *y el Mediterráneo*' en='A Weissbier *and the Mediterranean*' /></h2>
+					<p class='hd__sub'><T es='Terraza a pie de paseo marítimo, al sol desde las doce del mediodía.' en='A terrace right on the seafront, in the sun from midday.' /></p>
+					<div class='terrace__progress' aria-hidden='true'>
+						<span class='terrace__count'><b data-tcount>01</b> / {String(terrace.length).padStart(2, '0')}</span>
+						<span class='terrace__bar'><span data-tprogress></span></span>
+					</div>
+				</div>
+				<div class='terrace__viewport' data-hscroll-viewport>
+					<div class='terrace__track' data-hscroll-track>
+						{terrace.map((t, i) => (
+							<figure class='tphoto'>
+								<div class='tphoto__img'>
+									<Image src={t.img} alt={t.alt} widths={[420, 720]} sizes='(max-width: 900px) 74vw, 26vw' />
+								</div>
+								<figcaption><span>{String(i + 1).padStart(2, '0')}</span><T es={t.es} en={t.en} /></figcaption>
+							</figure>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ HISTORIA ============ -->
+		<section class='sec sec--paper' id='historia' aria-labelledby='story-title'>
+			<div class='wrap'>
+				<header class='hd'>
+					<p class='hd__n'><span>06</span><T es='Historia' en='Story' /></p>
+					<h2 class='hd__t reveal' id='story-title'><T html es='De Stuttgart a La Malagueta, *pasando por Buenos Aires*' en='From Stuttgart to La Malagueta, *by way of Buenos Aires*' /></h2>
+				</header>
+				<ol class='story' data-story>
+					<span class='story__rule' aria-hidden='true'><span data-story-line></span></span>
+					{timeline.map((t) => (
+						<li class='story__item reveal'>
+							<p class='story__year'>{t.yearEn ? <T es={t.year} en={t.yearEn} /> : t.year}</p>
+							<h3 class='story__title'><T es={t.title.es} en={t.title.en} /></h3>
+							<p class='story__text'><T es={t.text.es} en={t.text.en} /></p>
+						</li>
+					))}
+				</ol>
+			</div>
+		</section>
+
+		<!-- ============ AGENDA ============ -->
+		<section class='sec sec--red agenda' id='agenda' aria-labelledby='agenda-title'>
+			<div class='wrap'>
+				<header class='hd hd--split'>
+					<div>
+						<p class='hd__n'><span>07</span><T es='Agenda' en='Events' /></p>
+						<h2 class='hd__t reveal' id='agenda-title'><T html es='Fiestas cerveceras *y fútbol en pantalla*' en='Beer festivals *and football on screen*' /></h2>
+					</div>
+					<p class='hd__sub reveal'><T es='Cinco citas fijas al año, sorteos en Instagram y todos los partidos en pantalla grande.' en='Five fixed dates a year, Instagram giveaways and every match on the big screen.' /></p>
+				</header>
+
+				<div class='agenda__layout'>
+				<ol class='events' data-events>
+					{fiestas.map((f, i) => (
+						<li class={`event reveal${i === 0 ? ' is-active' : ''}`} data-event={i}>
+							<span class='event__n'>{String(i + 1).padStart(2, '0')}</span>
+							<h3 class='event__title'>{f.title}</h3>
+							<p class='event__when'><T es={f.when.es} en={f.when.en} /></p>
+							<p class='event__text'><T es={f.text.es} en={f.text.en} /></p>
+							<figure class='event__thumb'>
+								<Image src={eventImgs[f.id].img} alt={eventImgs[f.id].alt} widths={[200, 400]} sizes='96px' />
+							</figure>
+						</li>
+					))}
+				</ol>
+
+				<div class='events__float' data-float aria-hidden='true'>
+					{fiestas.map((f, i) => <Image src={eventImgs[f.id].img} alt='' widths={[400, 640, 900]} sizes='(min-width: 1001px) 36vw, 1px' class={i === 0 ? 'is-on' : ''} />)}
+				</div>
+				</div>
+
+				<div class='leagues'>
+					<p class='label'><T es='En pantalla' en='On screen' /></p>
+					<ul>{leagues.map((l) => <li>{l}</li>)}</ul>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ OPINIONES ============ -->
+		<section class='sec sec--cream praise' aria-label='Opiniones'>
+			<div class='wrap praise__grid'>
+				<div class='praise__score'>
+					<p class='praise__num'>{info.rating}</p>
+					<p class='praise__stars' aria-label='4,6 de 5 estrellas'>
+						{[0, 1, 2, 3, 4].map((i) => <Icon name='star' size={18} class={i === 4 ? 'is-part' : ''} />)}
+					</p>
+					<p class='label'><T es={`${info.reviews} reseñas en Google`} en={`${info.reviews} Google reviews`} /></p>
+				</div>
+				<ul class='praise__list'>
+					{praise.map((p) => (
+						<li class='reveal'>“<T es={p.es} en={p.en} />”</li>
+					))}
+				</ul>
+			</div>
+		</section>
+
+		<!-- ============ RESERVA ============ -->
+		<section class='sec sec--paper' id='reserva' aria-labelledby='book-title'>
+			<div class='wrap book'>
+				<div class='book__text'>
+					<header class='hd'>
+						<p class='hd__n'><span>08</span><T es='Reserva' en='Booking' /></p>
+						<h2 class='hd__t reveal' id='book-title'><T html es='Guárdanos *una mesa*' en='Save us *a table*' /></h2>
+						<p class='hd__sub'><T es='Elige día, hora y cuántos sois. Al pulsar Reservar se abre WhatsApp con la petición escrita; te confirmamos desde el bar.' en='Pick a day, a time and how many of you. Tapping Book opens WhatsApp with the request written out; we confirm from the bar.' /></p>
+					</header>
+					<p class='book__alt'><Icon name='phone' size={18} /> <T es='¿Grupo de más de 12?' en='Group of 12+?' /> <a href={tel}>{info.phone}</a></p>
+				</div>
+
+				<form class='book__form' data-book data-wa={whatsapp} novalidate>
+					<fieldset class='book__field'>
+						<legend class='label'><Icon name='calendar' size={16} /> <T es='Día' en='Day' /></legend>
+						<div class='book__days' data-book-days role='radiogroup'></div>
+					</fieldset>
+
+					<fieldset class='book__field'>
+						<legend class='label'><Icon name='clock' size={16} /> <T es='Hora' en='Time' /></legend>
+						{slotGroups.map((g) => (
+							<div class='book__slots'>
+								<p class='book__slot-t'><T es={g.es} en={g.en} /></p>
+								<div class='book__chips'>
+									{g.times.map((t) => (
+										<label class='chip'>
+											<input type='radio' name='time' value={t} />
+											<span>{t}</span>
+										</label>
+									))}
+								</div>
+							</div>
+						))}
+					</fieldset>
+
+					<div class='book__row'>
+						<fieldset class='book__field'>
+							<legend class='label'><Icon name='users' size={16} /> <T es='Personas' en='Guests' /></legend>
+							<div class='stepper'>
+								<button type='button' data-step='-1' aria-label='Menos'><Icon name='minus' size={18} /></button>
+								<output data-people aria-live='polite'>2</output>
+								<button type='button' data-step='1' aria-label='Más'><Icon name='plus' size={18} /></button>
+							</div>
+						</fieldset>
+						<label class='book__field book__name'>
+							<span class='label'><T es='Nombre' en='Name' /></span>
+							<input type='text' name='name' autocomplete='name' required data-book-name />
+						</label>
+					</div>
+
+					<div class='book__foot'>
+						<p class='book__sum' data-book-sum aria-live='polite'></p>
+						<button class='btn btn--gold book__go' type='submit'><Icon name='chat' size={18} /> <T es='Reservar' en='Book' /></button>
+					</div>
+				</form>
+			</div>
+		</section>
+
+		<!-- ============ VISITA ============ -->
+		<section class='sec sec--dark' id='visita' aria-labelledby='visit-title'>
+			<div class='wrap visit'>
+				<div class='visit__text'>
+					<header class='hd'>
+						<p class='hd__n'><span>09</span><T es='Visítanos' en='Visit' /></p>
+						<h2 class='hd__t reveal' id='visit-title'><T html es='Frente a la playa *de La Malagueta*' en='Right by *La Malagueta beach*' /></h2>
+					</header>
+					<dl class='visit__info'>
+						<div><dt class='label'><T es='Dirección' en='Address' /></dt><dd>{info.address}<br />{info.area}</dd></div>
+						<div><dt class='label'><T es='Horario' en='Hours' /></dt><dd><T es={info.hours.es} en={info.hours.en} /><br /><span class='status' data-open-status><span class='status__dot'></span><span data-open-text></span></span></dd></div>
+						<div><dt class='label'><T es='Reservas' en='Bookings' /></dt><dd><a href={tel}>{info.phone}</a><br /><T es='Mesas y grupos' en='Tables & groups' /></dd></div>
+						<div><dt class='label'>Instagram</dt><dd><a href={info.instagram} target='_blank' rel='noopener'>{info.instagramHandle}</a><br /><T es='Fiestas y novedades de grifo' en='Events and new taps' /></dd></div>
+					</dl>
+					<div class='visit__ctas'>
+						<a class='btn btn--gold' href='#reserva'><T es='Reservar mesa' en='Book a table' /></a>
+						<a class='btn btn--line' href={info.maps} target='_blank' rel='noopener'><T es='Cómo llegar' en='Directions' /> <Icon name='arrow' size={16} /></a>
+					</div>
+				</div>
+				<figure class='visit__img reveal-img'>
+					<div class='visit__arch'>
+						<Image src={imgTerrazaPretzels} alt='Jarras de Paulaner y bretzels en la terraza del paseo marítimo' widths={[420, 720, 960]} sizes='(max-width: 900px) 92vw, 40vw' />
+					</div>
+				</figure>
+			</div>
+		</section>
+
+		<!-- ============ PROST ============ -->
+		<div class='marquee marquee--toast' aria-hidden='true'>
+			<div class='marquee__track'>
+				{[0, 1].map(() => (
+					<div class='marquee__group'>
+						{toasts.map((t, i) => <span class='marquee__item'>{i % 2 ? <em>{t}</em> : t}<i>✦</i></span>)}
+					</div>
+				))}
+			</div>
+		</div>
+	</main>
+
+	<footer class='foot'>
+		<div class='wrap foot__grid'>
+			<Image src={imgMedallon} alt='Cervecería Untertürkheim' width={96} height={96} class='foot__logo' />
+			<div>
+				<p class='foot__name'>Cervecería Untertürkheim</p>
+				<p class='foot__small'>{info.address} · {info.area}</p>
+				<p class='foot__small'><T es={info.hours.es} en={info.hours.en} /> · <a href={tel}>{info.phone}</a></p>
+			</div>
+			<a class='link' href={carta}><T es='La carta' en='The menu' /> <Icon name='arrow' size={16} /></a>
+		</div>
+		<p class='foot__legal wrap'><T es='Bebe con moderación. Prohibida la venta de alcohol a menores de 18 años.' en='Please drink responsibly. No alcohol sold to under-18s.' /></p>
+	</footer>
+</DemoLayout>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import { initCommon, initLenis, getLang } from './scripts/common';
+	import { initTaps } from './scripts/taps';
+
+	gsap.registerPlugin(ScrollTrigger);
+	initCommon();
+	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const lenis = initLenis();
+	if (lenis) {
+		lenis.on('scroll', ScrollTrigger.update);
+		gsap.ticker.add((t) => lenis.raf(t * 1000));
+		gsap.ticker.lagSmoothing(0);
+	}
+
+	/* ---------- Menú móvil ---------- */
+	const menu = document.querySelector<HTMLElement>('[data-menu]')!;
+	const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]')!;
+	const setMenu = (open: boolean) => {
+		menu.classList.toggle('is-open', open);
+		menu.setAttribute('aria-hidden', String(!open));
+		openBtn.setAttribute('aria-expanded', String(open));
+		document.documentElement.classList.toggle('menu-open', open);
+		if (open) lenis?.stop();
+		else lenis?.start();
+	};
+	openBtn.addEventListener('click', () => setMenu(true));
+	document.querySelector('[data-menu-close]')?.addEventListener('click', () => setMenu(false));
+	menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+	document.addEventListener('keydown', (e) => e.key === 'Escape' && setMenu(false));
+
+	/* ---------- Hero en pantalla ---------- */
+	const heroEl = document.querySelector<HTMLElement>('[data-hero]')!;
+	let heroVisible = true;
+	const heroIO: ((v: boolean) => void)[] = [];
+	new IntersectionObserver(([e]) => {
+		heroVisible = e.isIntersecting;
+		heroIO.forEach((fn) => fn(e.isIntersecting));
+	}, { rootMargin: '-80px 0px 0px 0px' }).observe(heroEl);
+
+	/* ---------- Hero: barra "Ahora de grifo" ---------- */
+	initBoard();
+	function initBoard() {
+		const board = document.querySelector<HTMLElement>('[data-board]');
+		const json = board?.querySelector('[data-board-taps]');
+		if (!board || !json) return;
+		type BT = { name: string; abv: string; price: number; size: string; style: { es: string; en: string }; country: { es: string; en: string }; color: string; foam?: string };
+		const list: BT[] = JSON.parse(json.textContent || '[]');
+		if (!list.length) return;
+		const DURATION = 6.2;
+		const field = (k: string) => board.querySelector<HTMLElement>(`[data-b="${k}"]`)!;
+		const els = { n: field('n'), name: field('name'), meta: field('meta'), price: field('price'), size: field('size') };
+		const swatch = board.querySelector<HTMLElement>('[data-b-swatch]')!;
+		const moving = [els.n, swatch, els.name, els.meta, els.price, els.size];
+		const euroFmt = (n: number) => n.toFixed(2).replace('.', ',') + ' €';
+		let i = 1;
+		let swap: gsap.core.Timeline | null = null;
+
+		const apply = (idx: number) => {
+			const t = list[idx];
+			const l = getLang();
+			els.n.textContent = String(idx + 1).padStart(2, '0');
+			els.name.textContent = t.name;
+			els.meta.textContent = `${t.style[l]} · ${t.country[l]} · ${t.abv}`;
+			els.price.textContent = euroFmt(t.price);
+			els.size.textContent = t.size;
+			swatch.style.setProperty('--beer', t.color);
+			swatch.style.setProperty('--foam', t.foam ?? '#fff8e6');
+		};
+
+		const go = (dir: number) => {
+			i = (i + dir + list.length) % list.length;
+			const idx = i;
+			restart();
+			if (reduce) return apply(idx);
+			swap?.progress(1).kill();
+			swap = gsap.timeline()
+				.to(moving, { yPercent: -110 * dir, opacity: 0, duration: 0.28, ease: 'power2.in', stagger: 0.03 })
+				.add(() => apply(idx))
+				.fromTo(moving, { yPercent: 110 * dir, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.5, ease: 'power3.out', stagger: 0.04 });
+		};
+
+		// Autoplay; se pausa al pasar el ratón, con el foco o fuera de pantalla
+		const bar = board.querySelector<HTMLElement>('[data-b-bar]')!;
+		if (reduce) bar.parentElement!.style.display = 'none';
+		const auto = gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: DURATION, ease: 'none', onComplete: () => go(1) }).pause();
+		const holds = new Set<string>();
+		const sync = () => (holds.size || reduce ? auto.pause() : auto.play());
+		const hold = (k: string, on: boolean) => {
+			if (on) holds.add(k);
+			else holds.delete(k);
+			sync();
+		};
+		function restart() {
+			auto.pause(0);
+			sync();
+		}
+		board.addEventListener('pointerenter', () => hold('hover', true));
+		board.addEventListener('pointerleave', () => hold('hover', false));
+		board.addEventListener('focusin', () => hold('focus', true));
+		board.addEventListener('focusout', (e) => !board.contains(e.relatedTarget as Node) && hold('focus', false));
+		heroIO.push((v) => hold('offscreen', !v));
+		document.addEventListener('visibilitychange', () => hold('hidden', document.hidden));
+		if (!heroVisible) holds.add('offscreen');
+
+		board.querySelectorAll<HTMLButtonElement>('[data-b-step]').forEach((b) => b.addEventListener('click', () => go(Number(b.dataset.bStep))));
+		board.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+				e.preventDefault();
+				go(e.key === 'ArrowRight' ? 1 : -1);
+			}
+		});
+		// Swipe en móvil
+		let x0: number | null = null;
+		board.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+		board.addEventListener('touchend', (e) => {
+			if (x0 == null) return;
+			const dx = e.changedTouches[0].clientX - x0;
+			x0 = null;
+			if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+		});
+
+		// Al pulsar la cerveza: baja a los grifos con ella ya servida
+		board.querySelector('[data-b-go]')?.addEventListener('click', () => {
+			const name = list[i].name;
+			const btn = [...document.querySelectorAll<HTMLButtonElement>('[data-tap]')].find((b) => b.dataset.name === name);
+			btn?.click();
+		});
+
+		apply(i);
+		window.addEventListener('unter:lang', () => apply(i));
+		sync();
+	}
+
+	/* ---------- Reserva por WhatsApp ---------- */
+	initBooking();
+	function initBooking() {
+		const form = document.querySelector<HTMLFormElement>('[data-book]');
+		if (!form) return;
+		const daysEl = form.querySelector<HTMLElement>('[data-book-days]')!;
+		const peopleEl = form.querySelector<HTMLOutputElement>('[data-people]')!;
+		const nameEl = form.querySelector<HTMLInputElement>('[data-book-name]')!;
+		const sumEl = form.querySelector<HTMLElement>('[data-book-sum]')!;
+		const timeInputs = [...form.querySelectorAll<HTMLInputElement>('input[name=time]')];
+		let people = 2;
+		const MAX = 12;
+
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const days = Array.from({ length: 14 }, (_, i) => new Date(today.getFullYear(), today.getMonth(), today.getDate() + i));
+		const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+		const renderDays = () => {
+			const lang = getLang();
+			const loc = lang === 'es' ? 'es-ES' : 'en-GB';
+			const checked = form.querySelector<HTMLInputElement>('input[name=day]:checked')?.value ?? iso(days[0]);
+			daysEl.innerHTML = days
+				.map((d, i) => {
+					const wd = i === 0 ? (lang === 'es' ? 'Hoy' : 'Today') : i === 1 ? (lang === 'es' ? 'Mañana' : 'Tmrw') : d.toLocaleDateString(loc, { weekday: 'short' }).replace('.', '');
+					const mo = d.toLocaleDateString(loc, { month: 'short' }).replace('.', '');
+					return `<label class="day"><input type="radio" name="day" value="${iso(d)}"${iso(d) === checked ? ' checked' : ''}><span class="day__w">${wd}</span><span class="day__n">${d.getDate()}</span><span class="day__m">${mo}</span></label>`;
+				})
+				.join('');
+		};
+
+		const syncTimes = () => {
+			const day = form.querySelector<HTMLInputElement>('input[name=day]:checked')?.value;
+			const isToday = day === iso(days[0]);
+			const now = new Date();
+			const nowMin = now.getHours() * 60 + now.getMinutes() + 30;
+			timeInputs.forEach((inp) => {
+				const [h, m] = inp.value.split(':').map(Number);
+				const past = isToday && h * 60 + m < nowMin;
+				inp.disabled = past;
+				if (past && inp.checked) inp.checked = false;
+			});
+		};
+
+		const dateLabel = (v: string) => {
+			const [y, m, d] = v.split('-').map(Number);
+			return new Date(y, m - 1, d).toLocaleDateString(getLang() === 'es' ? 'es-ES' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+		};
+
+		const update = () => {
+			const es = getLang() === 'es';
+			const day = form.querySelector<HTMLInputElement>('input[name=day]:checked')?.value;
+			const time = form.querySelector<HTMLInputElement>('input[name=time]:checked')?.value;
+			peopleEl.textContent = String(people);
+			nameEl.placeholder = es ? 'A nombre de…' : 'Name for the booking…';
+			const who = es ? `${people} ${people === 1 ? 'persona' : 'personas'}` : `${people} ${people === 1 ? 'guest' : 'guests'}`;
+			sumEl.innerHTML = day && time ? `<strong>${dateLabel(day)}</strong> · ${time} · ${who}` : es ? 'Elige una hora' : 'Pick a time';
+		};
+
+		renderDays();
+		syncTimes();
+		// Si hoy ya no quedan horas, se propone mañana
+		if (timeInputs.every((i) => i.disabled)) {
+			form.querySelector<HTMLInputElement>(`input[name=day][value="${iso(days[1])}"]`)!.checked = true;
+			syncTimes();
+		}
+		update();
+
+		form.addEventListener('change', (e) => {
+			if ((e.target as HTMLInputElement).name === 'day') syncTimes();
+			update();
+		});
+		form.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((b) =>
+			b.addEventListener('click', () => {
+				people = Math.min(MAX, Math.max(1, people + Number(b.dataset.step)));
+				update();
+			}),
+		);
+		window.addEventListener('unter:lang', () => {
+			renderDays();
+			syncTimes();
+			update();
+		});
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const es = getLang() === 'es';
+			const day = form.querySelector<HTMLInputElement>('input[name=day]:checked')?.value;
+			const time = form.querySelector<HTMLInputElement>('input[name=time]:checked')?.value;
+			const name = nameEl.value.trim();
+			form.classList.remove('is-invalid-time', 'is-invalid-name');
+			if (!time) form.classList.add('is-invalid-time');
+			if (!name) form.classList.add('is-invalid-name');
+			if (!day || !time || !name) {
+				sumEl.textContent = es ? (!time ? 'Elige una hora' : 'Dinos a nombre de quién') : !time ? 'Pick a time' : 'Tell us your name';
+				if (!name && time) nameEl.focus();
+				return;
+			}
+			const msg = es
+				? `¡Hola! Me gustaría reservar mesa en Untertürkheim:\n\n📅 ${dateLabel(day)}\n🕗 ${time}\n👥 ${people} ${people === 1 ? 'persona' : 'personas'}\n🙋 A nombre de ${name}\n\n¡Gracias!`
+				: `Hi! I'd like to book a table at Untertürkheim:\n\n📅 ${dateLabel(day)}\n🕗 ${time}\n👥 ${people} ${people === 1 ? 'guest' : 'guests'}\n🙋 Name: ${name}\n\nThanks!`;
+			window.open(`https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+		});
+	}
+
+	if (!reduce) {
+		/* ---------- Hero ---------- */
+		const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+		tl.from('[data-line]', { yPercent: 110, duration: 1.3, stagger: 0.12 }, 0.1)
+			.from('[data-hero-photo]', { clipPath: 'inset(100% 0 0 0 round 999px 999px 0 0)', duration: 1.5, ease: 'expo.inOut' }, 0)
+			.from('[data-hero-photo] img', { scale: 1.3, duration: 2.2, ease: 'power3.out' }, 0.2)
+			.from('[data-hero-stamp]', { scale: 0.6, opacity: 0, duration: 1.1, ease: 'back.out(1.4)' }, 0.9)
+			.from('[data-in]', { y: 22, opacity: 0, duration: 1, stagger: 0.08, ease: 'power3.out' }, 0.45)
+			.from('[data-board] .board__in', { y: 30, opacity: 0, duration: 1, ease: 'power3.out' }, 0.9);
+
+		const heroST = { trigger: '[data-hero]', start: 'top top', end: 'bottom top', scrub: true };
+		gsap.to('[data-hero-photo] img', { yPercent: 10, ease: 'none', scrollTrigger: heroST });
+		gsap.to('[data-hero-stamp]', { yPercent: -40, ease: 'none', scrollTrigger: heroST });
+		gsap.to('[data-hero-stamp] .stamp__ring', { rotate: 90, ease: 'none', scrollTrigger: heroST });
+		gsap.to('.hero__title', { yPercent: -10, ease: 'none', scrollTrigger: heroST });
+
+		/* ---------- Reveals ---------- */
+		gsap.utils.toArray<HTMLElement>('.reveal, .hd__n, .dish__row, .wrow').forEach((el) => {
+			gsap.from(el, { y: 26, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
+		});
+		gsap.utils.toArray<HTMLElement>('.reveal-img').forEach((el) => {
+			gsap.fromTo(el, { clipPath: 'inset(14% 0 14% 0)' }, { clipPath: 'inset(0% 0 0% 0)', duration: 1.4, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+			const img = el.querySelector('img');
+			if (img) gsap.fromTo(img, { scale: 1.18 }, { scale: 1, duration: 1.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+		});
+
+		/* ---------- Parallax suave ---------- */
+		gsap.utils.toArray<HTMLElement>('[data-speed]').forEach((el) => {
+			const s = Number(el.dataset.speed);
+			gsap.to(el, { yPercent: s * -100, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
+		});
+		gsap.utils.toArray<HTMLElement>('[data-drift]').forEach((el) => {
+			gsap.fromTo(el, { xPercent: 8 }, { xPercent: -14, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+		});
+
+		/* ---------- Historia: la regla se dibuja ---------- */
+		const ax = window.matchMedia('(max-width: 900px)').matches ? 'scaleY' : 'scaleX';
+		gsap.fromTo('[data-story-line]', { [ax]: 0 }, { [ax]: 1, ease: 'none', scrollTrigger: { trigger: '[data-story]', start: 'top 80%', end: 'bottom 70%', scrub: true } });
+
+		/* ---------- Marquesinas: aceleran con el scroll ---------- */
+		document.querySelectorAll<HTMLElement>('.marquee__track').forEach((track, i) => {
+			const dir = i % 2 ? 1 : -1;
+			const loop = gsap.fromTo(track, { xPercent: dir < 0 ? 0 : -50 }, { xPercent: dir < 0 ? -50 : 0, duration: 45, ease: 'none', repeat: -1 });
+			ScrollTrigger.create({
+				trigger: track,
+				onUpdate: (st) => {
+					const v = Math.min(5, 1 + Math.abs(st.getVelocity()) / 500);
+					gsap.timeline({ overwrite: true }).to(loop, { timeScale: v, duration: 0.2 }).to(loop, { timeScale: 1, duration: 1.4 });
+				},
+			});
+		});
+	}
+
+	/* ---------- Grifos ---------- */
+	initTaps({ reduce, getLang });
+
+	/* ---------- Terraza: galería horizontal fijada ---------- */
+	const hWrap = document.querySelector<HTMLElement>('[data-hscroll]')!;
+	const hView = document.querySelector<HTMLElement>('[data-hscroll-viewport]')!;
+	const hTrack = document.querySelector<HTMLElement>('[data-hscroll-track]')!;
+	const tBar = document.querySelector<HTMLElement>('[data-tprogress]')!;
+	const tCount = document.querySelector<HTMLElement>('[data-tcount]')!;
+	const nPhotos = hTrack.children.length;
+	const setProgress = (p: number) => {
+		tBar.style.transform = `scaleX(${Math.max(0.04, p)})`;
+		tCount.textContent = String(Math.min(nPhotos, 1 + Math.round(p * (nPhotos - 1)))).padStart(2, '0');
+	};
+	setProgress(0);
+	const mm = gsap.matchMedia();
+	mm.add('(min-width: 900px) and (prefers-reduced-motion: no-preference)', () => {
+		const dist = () => hTrack.scrollWidth - hView.clientWidth;
+		const tween = gsap.to(hTrack, {
+			x: () => -dist(),
+			ease: 'none',
+			scrollTrigger: { trigger: hWrap, start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.8, invalidateOnRefresh: true, onUpdate: (st) => setProgress(st.progress) },
+		});
+		return () => tween.kill();
+	});
+	mm.add('(max-width: 899px), (prefers-reduced-motion: reduce)', () => {
+		const onScroll = () => setProgress(hView.scrollLeft / Math.max(1, hView.scrollWidth - hView.clientWidth));
+		hView.addEventListener('scroll', onScroll, { passive: true });
+		onScroll();
+		return () => hView.removeEventListener('scroll', onScroll);
+	});
+
+	/* ---------- Agenda: la foto sigue al cursor ---------- */
+	const float = document.querySelector<HTMLElement>('[data-float]');
+	const events = document.querySelector<HTMLElement>('[data-events]');
+	if (float && events && window.matchMedia('(hover: hover) and (min-width: 1001px)').matches) {
+		const imgs = [...float.querySelectorAll('img')];
+		const rows = [...events.querySelectorAll<HTMLElement>('[data-event]')];
+		rows.forEach((row) => {
+			row.addEventListener('pointerenter', () => {
+				const i = Number(row.dataset.event);
+				rows.forEach((r, j) => r.classList.toggle('is-active', j === i));
+				imgs.forEach((im, j) => im.classList.toggle('is-on', j === i));
+			});
+		});
+	}
+
+	window.addEventListener('load', () => ScrollTrigger.refresh());
+</script>
