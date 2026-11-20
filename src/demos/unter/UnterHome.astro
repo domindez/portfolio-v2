@@ -946,6 +946,9 @@ const tapCountries = new Set(taps.map((t) => t.country)).size;
 		});
 	}
 
+	// El hero estaba oculto por CSS hasta que GSAP fija el estado inicial
+	document.documentElement.classList.add('ut-ready');
+
 	/* ---------- Grifos ---------- */
 	initTaps({ reduce, getLang });
 

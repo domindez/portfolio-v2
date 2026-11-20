@@ -915,6 +915,12 @@ html.menu-open {
 	}
 }
 
+/* Evita el parpadeo: el hero espera a que GSAP prepare la animación */
+html.ut-js:not(.ut-ready) .hero__stage,
+html.ut-js:not(.ut-ready) .board__in {
+	visibility: hidden;
+}
+
 /* Barra "Ahora de grifo" */
 .board {
 	position: relative;
