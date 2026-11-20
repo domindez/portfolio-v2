@@ -82,7 +82,7 @@ export function initLenis(): Lenis | null {
 			const target = document.querySelector<HTMLElement>(id);
 			if (!target) return;
 			e.preventDefault();
-			lenis.scrollTo(target, { offset: -70, duration: 1.4 });
+			lenis.scrollTo(target, { offset: -70, duration: 1.4, force: true });
 		});
 	});
 	return lenis;
