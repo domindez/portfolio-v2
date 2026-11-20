@@ -56,7 +56,7 @@ html:not([data-lang='en']) .ut [data-en] {
 .ut *::after {
 	box-sizing: border-box;
 }
-.ut :where(.ut) img {
+.ut :where(img) {
 	display: block;
 	max-width: 100%;
 	height: auto;
@@ -68,7 +68,7 @@ html:not([data-lang='en']) .ut [data-en] {
 	font: inherit;
 	color: inherit;
 }
-.ut :where(.ut) figure {
+.ut :where(figure) {
 	margin: 0;
 }
 .ut :focus-visible {
