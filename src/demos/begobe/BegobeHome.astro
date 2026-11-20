@@ -1,0 +1,647 @@
+---
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/dm-serif-display/400.css';
+import '@fontsource-variable/shantell-sans/wght.css';
+import '@fontsource-variable/manrope/wght.css';
+import './begobe.css';
+import './begobe-chrome.css';
+import './begobe-home.css';
+import { Image } from 'astro:assets';
+import DemoLayout from '../../layouts/DemoLayout.astro';
+import T from './components/T.astro';
+import Icon from './components/Icon.astro';
+import Header from './components/Header.astro';
+import Footer from './components/Footer.astro';
+import Picker from './components/Picker.astro';
+import { venues, info, birthday, reviews } from './data/info';
+import { dish, priceFor, euro } from './data/menu';
+
+import sealCream from '../../assets/demos/begobe/seal-cream.png';
+import imgTerraza from '../../assets/demos/begobe/terraza-equipo.jpg';
+import imgTostaHuevos from '../../assets/demos/begobe/tosta-huevos.jpg';
+import imgRollos from '../../assets/demos/begobe/rollos-canela.jpg';
+import imgPan from '../../assets/demos/begobe/pan-rustico.jpg';
+import imgTartaFrutas from '../../assets/demos/begobe/tarta-frutas.jpg';
+import imgVitrinaTartas from '../../assets/demos/begobe/vitrina-tartas.jpg';
+import imgTortillon from '../../assets/demos/begobe/tortillon.jpg';
+import imgPasteles from '../../assets/demos/begobe/pasteles-fresa.jpg';
+import imgTostaSalmon from '../../assets/demos/begobe/tosta-salmon.jpg';
+import imgBagel from '../../assets/demos/begobe/bagel.jpg';
+import imgBocadillos from '../../assets/demos/begobe/bocadillos.jpg';
+import imgAlitas from '../../assets/demos/begobe/alitas.jpg';
+import imgBatidos from '../../assets/demos/begobe/batidos.jpg';
+import imgBowlYogur from '../../assets/demos/begobe/bowl-yogur.jpg';
+import imgZumos from '../../assets/demos/begobe/zumos.jpg';
+import imgVitrinaBocadillos from '../../assets/demos/begobe/vitrina-bocadillos.jpg';
+import imgTartaCumple from '../../assets/demos/begobe/tarta-cumple.jpg';
+import imgSalon from '../../assets/demos/begobe/salon-lunares.jpg';
+import imgParqueBolas from '../../assets/demos/begobe/parque-bolas-equipo.jpg';
+
+const base = '/demo/begobe';
+const cartaUrl = (id: string) => `${base}/carta/${id}`;
+const [torre] = venues;
+const telTorre = `tel:+34${torre.phone!.replace(/\s/g, '')}`;
+
+const fmtPrice = (d: ReturnType<typeof dish>) => {
+	const p = priceFor(d, 'torremolinos');
+	return Array.isArray(p) ? `${euro(p[0])} / ${euro(p[1])}` : p !== undefined ? euro(p) : '';
+};
+
+const reel = [
+	{ img: imgRollos, alt: 'Rollos de canela con pistacho y fresa', es: 'Rollos de canela', en: 'Cinnamon rolls' },
+	{ img: imgPan, alt: 'Pan rústico con semillas recién horneado', es: 'Pan rústico', en: 'Rustic loaf' },
+	{ img: imgTartaFrutas, alt: 'Tarta de frutas con nata y fresas', es: 'Tartas de la casa', en: 'House cakes' },
+	{ img: imgVitrinaTartas, alt: 'Vitrina de tartas y pasteles con flores azules de lunares', es: 'La vitrina', en: 'The display' },
+	{ img: imgTortillon, alt: 'Tortilla de patatas junto a un jarrón azul de lunares', es: 'Tortilla de patatas', en: 'Spanish omelette' },
+	{ img: imgPasteles, alt: 'Pasteles con fresas, arándanos y merengue', es: 'Pasteles', en: 'Pastries' },
+];
+
+const favs = [
+	{ d: dish('tostaricas', 'Pescatore'), sec: { es: 'Tostarica', en: 'Toast' }, img: imgTostaSalmon, alt: 'Tostarica de salmón ahumado con rúcula' },
+	{ d: dish('bagels', 'Bagel serrano'), sec: { es: 'Bagel', en: 'Bagel' }, img: imgBagel, alt: 'Bagel de jamón serrano con tomate y rúcula' },
+	{ d: dish('bocadillos', 'La Colina'), sec: { es: 'Bocadillo gourmet', en: 'Gourmet baguette' }, img: imgBocadillos, alt: 'Bocadillos gourmet en baguette' },
+	{ d: dish('picar', 'Alitas de pollo'), sec: { es: 'Para picar', en: 'To share' }, img: imgAlitas, alt: 'Alitas de pollo con sésamo y salsa barbacoa' },
+	{ d: dish('batidos', 'Lotus'), sec: { es: 'Batido', en: 'Shake' }, img: imgBatidos, alt: 'Batidos de Oreo y Lotus con nata' },
+	{ d: dish('yogures', 'Fruiti'), sec: { es: 'Yogur', en: 'Yoghurt' }, img: imgBowlYogur, alt: 'Bowl de yogur con fresas, arándanos, mango y chocolate' },
+	{ d: dish('zumos', 'Detox'), sec: { es: 'Zumo natural', en: 'Fresh juice' }, img: imgZumos, alt: 'Zumos naturales verde y naranja' },
+];
+
+const placeImgs: Record<string, { img: ImageMetadata; alt: string; pos: string }> = {
+	torremolinos: { img: imgTerraza, alt: 'Equipo de Begobé en la entrada del local de Torremolinos', pos: '50% 40%' },
+	soho: { img: imgVitrinaBocadillos, alt: 'Vitrina de bocadillos y pretzels en Begobé Soho', pos: '50% 50%' },
+};
+
+const timeSlots = (open: number, close: number) => {
+	const out: string[] = [];
+	for (let m = open; m <= close - 30; m += 30) out.push(`${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
+	return out;
+};
+const slotsByVenue = Object.fromEntries(venues.map((v) => [v.id, timeSlots(v.open, v.close)]));
+
+const waBirthday = `https://wa.me/${info.whatsapp}?text=${encodeURIComponent('¡Hola Begobé! Me gustaría información para celebrar un cumpleaños en Torremolinos 🎈')}`;
+const waCake = `https://wa.me/${info.whatsapp}?text=${encodeURIComponent('¡Hola Begobé! Quería encargar una tarta 🎂')}`;
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: info.name,
+	sameAs: [info.instagram],
+	department: venues.map((v) => ({
+		'@type': ['CafeOrCoffeeShop', 'Bakery'],
+		name: v.name,
+		address: { '@type': 'PostalAddress', streetAddress: v.address, postalCode: v.postal, addressLocality: v.city, addressCountry: 'ES' },
+		...(v.phone ? { telephone: `+34 ${v.phone}` } : {}),
+		openingHours: `Mo-Su ${v.hours.replace(/\s/g, '').replace('–', '-')}`,
+		servesCuisine: ['Desayunos', 'Panadería', 'Pastelería'],
+		priceRange: '€',
+		aggregateRating: { '@type': 'AggregateRating', ratingValue: String(v.rating), reviewCount: v.reviews },
+	})),
+};
+---
+
+<DemoLayout
+	title='Begobé Coffee & Kitchen · Tu cafetería de confianza en Torremolinos y Málaga'
+	description='Pan del día, bollería, tostaricas, bocadillos gourmet y cocina non stop. Begobé en Torremolinos (Av. Palma de Mallorca, 9) y en el Soho de Málaga.'
+	themeColor='#06303f'
+	ogImage='/demo-og/begobe.jpg'
+	ogImageAlt='Begobé Coffee & Kitchen: tu cafetería de confianza.'
+	siteName='Begobé Coffee & Kitchen'
+	bodyClass='bgb bgb-home'
+>
+	<script slot='head' type='application/ld+json' set:html={JSON.stringify(jsonLd)} />
+	<script slot='head' is:inline>
+		(function () {
+			var r = document.documentElement;
+			r.classList.add('bgb-js');
+			var l = null;
+			try { l = localStorage.getItem('begobe-lang'); } catch (e) {}
+			if (!l) l = (navigator.language || 'es').slice(0, 2) === 'es' ? 'es' : 'en';
+			r.dataset.lang = l;
+			r.lang = l;
+		})();
+	</script>
+
+	<a class='bgb-skip' href='#obrador'><T es='Saltar al contenido' en='Skip to content' /></a>
+
+	<Header />
+
+	<main>
+		<!-- ============ HERO ============ -->
+		<section class='bgb-hero' id='top'>
+			<div class='bgb-wrap bgb-hero__in'>
+				<div class='bgb-hero__copy'>
+					<p class='bgb-eyebrow' data-in><T es='Cafetería · Panadería · Torremolinos y Málaga' en='Café · Bakery · Torremolinos & Málaga' /></p>
+					<h1 class='bgb-hero__title'>
+						<span class='bgb-line'><span data-line><T es='Tu cafetería' en='Your go-to' /></span></span>
+						<span class='bgb-line'><span data-line><T es='de ' en='' /><em><T es='confianza' en='café' /></em></span></span>
+					</h1>
+					<p class='bgb-hero__lead' data-in>
+						<T
+							es='Nos va lo natural: pan del día, bollería, tostas y bocadillos desde las 8:00, y en Torremolinos una cocina que no para hasta las 22:30. Para desayunar sin prisa, comer, merendar o celebrar.'
+							en='We like it natural: fresh bread, pastries, toasts, sandwiches and a kitchen that never stops, 8:00 to 22:30. For a slow breakfast, lunch, afternoon treat or a party.'
+						/>
+					</p>
+					<div class='bgb-hero__ctas' data-in>
+						<Picker btnClass='bgb-cta bgb-cta--gold' label={{ es: 'Ver carta', en: 'See menu' }} />
+						<a href='#reservar' class='bgb-cta bgb-cta--line'><T es='Reservar mesa' en='Book a table' /></a>
+					</div>
+				</div>
+
+				<div class='bgb-hero__art'>
+					<div class='bgb-arch bgb-ha1' data-par='-5'>
+						<Image src={imgTerraza} alt='El equipo de Begobé recibiendo clientes en la entrada del local de Torremolinos' widths={[480, 720, 960]} sizes='(max-width: 900px) 80vw, 30vw' loading='eager' fetchpriority='high' />
+					</div>
+					<div class='bgb-arch bgb-ha2' data-par='-16'>
+						<Image src={imgTostaHuevos} alt='Tostarica con huevos, rúcula y reducción de balsámico' widths={[240, 400]} sizes='(max-width: 900px) 30vw, 14vw' loading='eager' />
+					</div>
+					<Image src={sealCream} alt='' width={130} class='bgb-hero__seal' loading='eager' />
+					<p class='bgb-hero__cap'>{torre.address}, {torre.city}</p>
+				</div>
+			</div>
+			<p class='bgb-hero__scroll' aria-hidden='true'><i></i><T es='Desliza' en='Scroll' /></p>
+		</section>
+
+		<!-- ============ MANIFIESTO ============ -->
+		<section class='bgb-manifest' aria-labelledby='manifest-title'>
+			<div class='bgb-wrap'>
+				<p class='bgb-eyebrow' id='manifest-title'><T es='Nos va lo natural · Rico y sano' en='We like it natural · Tasty & wholesome' /></p>
+				<p class='bgb-manifest__text' data-words>
+					<T
+						es='Aquí el pan es del día, la bollería se hornea en casa y en Torremolinos la cocina no para. Sin prisas, con buen café y algo rico para todos.'
+						en='Here the bread is fresh, the pastries are baked in-house and in Torremolinos the kitchen never stops. No rush, good coffee and something tasty for everyone.'
+					/>
+				</p>
+			</div>
+		</section>
+
+		<!-- ============ OBRADOR ============ -->
+		<section class='bgb-bakery' id='obrador' aria-labelledby='bakery-title'>
+			<div class='bgb-wrap bgb-bakery__head'>
+				<div>
+					<p class='bgb-eyebrow'><T es='Panadería y pastelería' en='Bakery & patisserie' /></p>
+					<h2 class='bgb-display' id='bakery-title' style='margin-top: 20px'><T html es='Huele a pan *recién hecho*' en='It smells of *fresh bread*' /></h2>
+				</div>
+				<div class='bgb-bakery__side'>
+					<p>
+						<T
+							es='La bollería se hornea aquí mismo: rollos de canela, pan rústico, pasteles y una vitrina de tartas que cambia a diario. ¿Una celebración? Encarga tu tarta, desde 21,50 €/kg.'
+							en='Pastries are baked right here: cinnamon rolls, rustic bread, cakes and a display that changes daily. Celebrating? Order your cake, from €21.50/kg.'
+						/>
+					</p>
+					<a href={waCake} target='_blank' rel='noopener' class='bgb-cta bgb-cta--teal'>
+						<Icon name='whatsapp' size={18} />
+						<T es='Encarga tu tarta' en='Order a cake' />
+					</a>
+				</div>
+			</div>
+			<div class='bgb-reel' data-reel>
+				<div class='bgb-reel__track' data-reel-track>
+					{reel.map((p, i) => (
+						<figure class='bgb-reel__item'>
+							<div class='bgb-arch'>
+								<Image src={p.img} alt={p.alt} widths={[320, 520, 760]} sizes='(max-width: 900px) 68vw, 26vw' />
+							</div>
+							<figcaption><b>{String(i + 1).padStart(2, '0')}</b><T es={p.es} en={p.en} /></figcaption>
+						</figure>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ CARTA ============ -->
+		<section class='bgb-menu-sec' id='carta' aria-labelledby='carta-title'>
+			<div class='bgb-wrap'>
+				<div class='bgb-menu-sec__head'>
+					<div>
+						<p class='bgb-eyebrow'><T es='De la carta' en='From the menu' /></p>
+						<h2 class='bgb-display' id='carta-title' style='margin-top: 20px'><T html es='Lo que más *se pide*' en='What everyone *orders*' /></h2>
+					</div>
+					<div class='bgb-menu-sec__cta'>
+						{venues.map((v, i) => (
+							<a href={cartaUrl(v.id)} class={`bgb-cta ${i === 0 ? 'bgb-cta--teal' : 'bgb-cta--line'}`} style={i === 1 ? 'color: var(--teal)' : ''}>
+								<T es='Carta' en='Menu' /> {v.short}<Icon name='arrow' size={18} />
+							</a>
+						))}
+					</div>
+				</div>
+				<ul class='bgb-bento'>
+					{favs.map((f) => (
+						<li class='bgb-dish'>
+							<div class='bgb-dish__img'>
+								<Image src={f.img} alt={f.alt} widths={[400, 640, 960]} sizes='(max-width: 900px) 72vw, 30vw' />
+							</div>
+							<span class='bgb-dish__price'>{fmtPrice(f.d)}</span>
+							<p class='bgb-dish__sec'><T es={f.sec.es} en={f.sec.en} />{f.d.only === 'torremolinos' && <> · Torremolinos</>}</p>
+							<h3 class='bgb-dish__name'><T es={f.d.name.es} en={f.d.name.en} /></h3>
+							{f.d.desc && <p class='bgb-dish__desc'><T es={f.d.desc.es} en={f.d.desc.en} /></p>}
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+
+		<!-- ============ RESERVA ============ -->
+		<section class='bgb-book' id='reservar' aria-labelledby='book-title'>
+			<div class='bgb-wrap bgb-book__in'>
+				<div class='bgb-book__copy'>
+					<p class='bgb-eyebrow'><T es='Reserva de mesa' en='Table booking' /></p>
+					<h2 class='bgb-display' id='book-title' style='margin-top: 20px'><T html es='Te guardamos *tu mesa*' en='We’ll save *your table*' /></h2>
+					<p class='bgb-book__lead'>
+						<T
+							es='Elige local, día, hora y cuántos sois. Al pulsar el botón se abre WhatsApp con el mensaje ya escrito; solo tienes que enviarlo y te confirmamos.'
+							en='Pick a location, day, time and party size. The button opens WhatsApp with the message already written; just send it and we’ll confirm.'
+						/>
+					</p>
+					<div class='bgb-arch bgb-book__photo'>
+						<Image src={imgSalon} alt='Salón de Begobé decorado con lunares azules' widths={[320, 520, 760]} sizes='(max-width: 900px) 60vw, 24vw' />
+					</div>
+				</div>
+
+				<form class='bgb-form' data-book novalidate>
+					<div class='bgb-field'>
+						<span id='venue-l'><T es='Local' en='Location' /></span>
+						<div class='bgb-pickv' role='radiogroup' aria-labelledby='venue-l'>
+							{venues.map((v, i) => (
+								<label>
+									<input type='radio' name='venue' value={v.id} checked={i === 0} />
+									<span class='bgb-pickv__card'>
+										<b>{v.short}</b>
+										<small>{v.address}</small>
+									</span>
+								</label>
+							))}
+						</div>
+					</div>
+					<div class='bgb-form__grid'>
+						<label class='bgb-field'>
+							<span><T es='Día' en='Date' /></span>
+							<input type='date' name='date' required data-date />
+						</label>
+						<label class='bgb-field'>
+							<span><T es='Hora' en='Time' /></span>
+							<select name='time' required data-time></select>
+						</label>
+					</div>
+					<div class='bgb-field'>
+						<span id='guests-l'><T es='Comensales' en='Guests' /></span>
+						<div class='bgb-step' role='group' aria-labelledby='guests-l'>
+							<button type='button' data-guests='-1' aria-label='Menos'>−</button>
+							<output data-guests-out aria-live='polite'>2</output>
+							<button type='button' data-guests='1' aria-label='Más'>+</button>
+						</div>
+						<small class='bgb-form__hint' data-big hidden><T es='Para más de 10 personas, escríbenos y lo organizamos.' en='For more than 10 people, message us and we’ll sort it out.' /></small>
+					</div>
+					<label class='bgb-field'>
+						<span><T es='Nombre de la reserva' en='Name for the booking' /></span>
+						<input type='text' name='name' autocomplete='given-name' required maxlength='40' data-name />
+					</label>
+					<p class='bgb-form__err' data-err role='alert' hidden><T es='Completa día, hora y nombre.' en='Please fill in date, time and name.' /></p>
+					<button type='submit' class='bgb-cta bgb-cta--gold bgb-form__go'>
+						<Icon name='whatsapp' size={20} />
+						<T es='Reservar por WhatsApp' en='Book via WhatsApp' />
+					</button>
+					<p class='bgb-form__note'><T es='No es una reserva confirmada hasta que te respondamos.' en='Your booking isn’t confirmed until we reply.' /></p>
+				</form>
+				<script type='application/json' id='bgb-book-data' is:inline set:html={JSON.stringify({ slots: slotsByVenue, names: Object.fromEntries(venues.map((v) => [v.id, v.short])), wa: info.whatsapp })} />
+			</div>
+		</section>
+
+		<!-- ============ CUMPLES ============ -->
+		<section class='bgb-party' id='cumples' aria-labelledby='party-title'>
+			<div class='bgb-wrap'>
+				<div class='bgb-party__head'>
+					<div>
+						<p class='bgb-eyebrow'><T es='Cumpleaños en Torremolinos' en='Birthday parties in Torremolinos' /></p>
+						<h2 class='bgb-display' id='party-title' style='margin-top: 20px'><T html es='Un cumple *que se recuerda*' en='A party *to remember*' /></h2>
+					</div>
+					<div class='bgb-party__side'>
+						<p>
+							<T
+								es='Salón amplio, sofá, parque de bolas infantil y una vitrina a rebosar. Vosotros venís a pasarlo bien; nosotros ponemos un camarero pendiente de vuestra fiesta.'
+								en='A big lounge, sofas, a kids’ ball pit and an overflowing cake display. You come to have fun; we give your party its own waiter.'
+							/>
+						</p>
+						<a href={waBirthday} target='_blank' rel='noopener' class='bgb-cta bgb-cta--teal'>
+							<Icon name='whatsapp' size={18} />
+							<T es='Reservar cumple' en='Book a party' />
+						</a>
+					</div>
+				</div>
+
+				<div class='bgb-pack'>
+					<div class='bgb-arch bgb-pack__photo'>
+						<Image src={imgParqueBolas} alt='Una camarera de Begobé feliz dentro del parque de bolas' widths={[360, 560, 760]} sizes='(max-width: 900px) 80vw, 24vw' />
+					</div>
+
+					<article class='bgb-pk bgb-pk--teal'>
+						<p class='bgb-pk__n'>01</p>
+						<h3 class='bgb-pk__t'><T es='El parque' en='The ball pit' /></h3>
+						<p class='bgb-pk__sub'><T es='En exclusiva para vuestra fiesta' en='All to yourselves' /></p>
+						<ul class='bgb-pk__list'>
+							<li><span><T es='De lunes a jueves' en='Monday to Thursday' /></span><b>{birthday.parkWeek} €</b></li>
+							<li><span><T es='Fines de semana y festivos' en='Weekends & holidays' /></span><b>{birthday.parkWeekend} €</b></li>
+						</ul>
+						<p class='bgb-pk__fine'><T es='Se descuenta en consumiciones: menú infantil, comida de los mayores, gofres, crepes, bollería y bebida.' en='It goes towards food & drinks: kids menus, adult food, waffles, crêpes, pastries and drinks.' /></p>
+					</article>
+
+					<article class='bgb-pk bgb-pk--sand'>
+						<p class='bgb-pk__n'>02</p>
+						<h3 class='bgb-pk__t'><T es='La comida' en='The food' /></h3>
+						<p class='bgb-pk__sub'><T es='Menús infantiles y picoteo' en='Kids menus and sharing' /></p>
+						<ul class='bgb-pk__list'>
+							{birthday.kidsMenus.map((m) => (
+								<li><span><T es={m.name.es} en={m.name.en} /></span><b>{euro(m.price)}</b></li>
+							))}
+						</ul>
+						<ul class='bgb-pk__list bgb-pk__list--soft'>
+							{birthday.share.map((m) => (
+								<li><span><T es={m.name.es} en={m.name.en} /></span><b>{m.price}</b></li>
+							))}
+						</ul>
+					</article>
+
+					<article class='bgb-pk bgb-pk--gold'>
+						<p class='bgb-pk__n'>03</p>
+						<h3 class='bgb-pk__t'><T es='La tarta' en='The cake' /></h3>
+						<p class='bgb-pk__sub'><T es='Del recetario de la casa o desde tu foto' en='From our recipe book or from your photo' /></p>
+						<p class='bgb-pk__big'>{birthday.cakeKg.toFixed(2).replace('.', ',')}<small> €/kg</small></p>
+						<div class='bgb-pk__img'>
+							<Image src={imgTartaCumple} alt='Tarta de cumpleaños personalizada' widths={[240, 400]} sizes='(max-width: 900px) 50vw, 14vw' />
+						</div>
+					</article>
+				</div>
+
+				<ol class='bgb-line-steps'>
+					{birthday.steps.map((st) => (
+						<li><strong><T es={st.t.es} en={st.t.en} /></strong><span><T es={st.d.es} en={st.d.en} /></span></li>
+					))}
+				</ol>
+				<p class='bgb-party__fine'><T es={`Reserva con ${birthday.notice} semanas de antelación · Fiestas de ${birthday.window}`} en={`Book ${birthday.notice} weeks ahead · Parties ${birthday.window}`} /></p>
+			</div>
+		</section>
+
+		<!-- ============ LOCALES ============ -->
+		<section class='bgb-places' id='locales' aria-label='Locales'>
+			{venues.map((v) => {
+				const p = placeImgs[v.id];
+				return (
+					<article class='bgb-place'>
+						<div class='bgb-place__bg'>
+							<Image src={p.img} alt={p.alt} widths={[640, 960, 1280]} sizes='(max-width: 900px) 100vw, 50vw' style={`object-position:${p.pos}`} />
+						</div>
+						<p class='bgb-place__rate'><b>{v.rating.toFixed(1).replace('.', ',')}</b><span class='bgb-stars' style={`--r:${v.rating}`} aria-hidden='true'></span><br />{v.reviews} <T es='reseñas en Google' en='Google reviews' /></p>
+						<p class='bgb-eyebrow'><T es={v.area.es} en={v.area.en} /></p>
+						<h2 class='bgb-place__name'>{v.short}</h2>
+						<span class='bgb-status' data-open-status data-venue={v.id}><i></i><span data-open-text>{v.hours}</span></span>
+						<p class='bgb-place__meta'>
+							<span>{v.address} · {v.postal} {v.city}</span>
+							<span><T es='Todos los días' en='Every day' /> · {v.hours}</span>
+							{v.phone && <a href={telTorre}>{v.phone}</a>}
+						</p>
+						<div class='bgb-place__act'>
+							<a href={cartaUrl(v.id)} class='bgb-cta bgb-cta--cream'><T es='Ver carta' en='See menu' /><Icon name='arrow' size={18} /></a>
+							<a href={v.maps} target='_blank' rel='noopener' class='bgb-cta bgb-cta--line'><T es='Cómo llegar' en='Directions' /></a>
+						</div>
+					</article>
+				);
+			})}
+		</section>
+
+		<!-- ============ OPINIONES ============ -->
+		<section class='bgb-reviews' aria-labelledby='reviews-title'>
+			<div class='bgb-wrap'>
+				<div class='bgb-reviews__top'>
+					<div>
+						<p class='bgb-eyebrow'><T es='Lo que dicen en Google' en='What people say on Google' /></p>
+						<h2 class='bgb-display' id='reviews-title' style='margin-top: 20px'><T html es='Hablan *de nosotros*' en='Kind *words*' /></h2>
+					</div>
+					<div class='bgb-scores'>
+						{venues.map((v) => (
+							<p class='bgb-score'><b>{v.rating.toFixed(1).replace('.', ',')}</b><span class='bgb-stars' style={`--r:${v.rating}`} aria-hidden='true'></span><span>{v.short} · {v.reviews}</span></p>
+						))}
+					</div>
+				</div>
+				<div class='bgb-quotes' data-quotes>
+					{reviews.map((r, i) => (
+						<figure class={`bgb-quote${i === 0 ? ' is-active' : ''}`} data-quote>
+							<blockquote><T es={r.text.es} en={r.text.en} /></blockquote>
+							<figcaption class='bgb-quote__by'><strong>{r.author}</strong> · {venues.find((v) => v.id === r.venue)!.short}</figcaption>
+						</figure>
+					))}
+				</div>
+				<div class='bgb-quotes__dots' role='group' aria-label='Reseñas'>
+					{reviews.map((_, i) => <button type='button' data-dot aria-label={`Reseña ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'}></button>)}
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<Footer />
+</DemoLayout>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import Lenis from 'lenis';
+	import { initCommon, madridMinutes, reducedMotion } from './scripts/common';
+
+	gsap.registerPlugin(ScrollTrigger);
+	initCommon();
+	const reduce = reducedMotion();
+	const q = <T extends Element>(s: string) => [...document.querySelectorAll<T>(s)];
+
+	/* ---------- Scroll suave ---------- */
+	if (!reduce) {
+		const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+		lenis.on('scroll', ScrollTrigger.update);
+		gsap.ticker.add((t) => lenis.raf(t * 1000));
+		gsap.ticker.lagSmoothing(0);
+		q<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+			a.addEventListener('click', (e) => {
+				const id = a.getAttribute('href');
+				if (!id || id === '#') return;
+				const target = document.querySelector<HTMLElement>(id);
+				if (!target) return;
+				e.preventDefault();
+				lenis.scrollTo(target, { offset: 0, duration: 1.5, force: true });
+			});
+		});
+	}
+
+	/* ---------- Manifiesto: las palabras se encienden al hacer scroll ---------- */
+	const wordsEl = document.querySelector<HTMLElement>('[data-words]');
+	if (wordsEl) {
+		const split = (node: Node) => {
+			[...node.childNodes].forEach((n) => {
+				if (n.nodeType === Node.TEXT_NODE) {
+					const frag = document.createDocumentFragment();
+					(n.textContent ?? '').split(/(\s+)/).forEach((part) => {
+						if (!part) return;
+						if (/^\s+$/.test(part)) frag.append(part);
+						else {
+							const s = document.createElement('span');
+							s.className = 'w';
+							s.textContent = part;
+							frag.append(s);
+						}
+					});
+					n.replaceWith(frag);
+				} else split(n);
+			});
+		};
+		split(wordsEl);
+		if (!reduce) {
+			ScrollTrigger.create({
+				trigger: wordsEl,
+				start: 'top 80%',
+				once: true,
+				onEnter: () => {
+					wordsEl.querySelectorAll<HTMLElement>('[data-es], [data-en]').forEach((box) => {
+						gsap.to(box.querySelectorAll('.w'), { opacity: 1, duration: 0.7, ease: 'power2.out', stagger: 0.07 });
+					});
+				},
+			});
+		} else q('.w').forEach((w) => w.classList.add('is-on'));
+	}
+
+	/* ---------- Hero ---------- */
+	if (!reduce) {
+		const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+		tl.from('[data-line]', { yPercent: 115, duration: 1.4, stagger: 0.14 }, 0.1)
+			.from('[data-in]', { y: 22, opacity: 0, duration: 1.1, stagger: 0.1, ease: 'power3.out' }, 0.5)
+			.from('.bgb-ha1', { clipPath: 'inset(100% 0 0 0)', duration: 1.7, ease: 'expo.inOut' }, 0.15)
+			.from('.bgb-ha1 img', { scale: 1.3, duration: 2.2, ease: 'power3.out' }, 0.15)
+			.from('.bgb-ha2', { clipPath: 'inset(100% 0 0 0)', duration: 1.5, ease: 'expo.inOut' }, 0.6)
+			.from('.bgb-hero__seal', { scale: 0.4, opacity: 0, duration: 1.4, ease: 'back.out(1.6)' }, 1.1)
+			.from('.bgb-hero__cap', { x: -30, opacity: 0, duration: 1, ease: 'power3.out' }, 1.3);
+
+		q<HTMLElement>('[data-par]').forEach((el) => {
+			const y = Number(el.dataset.par);
+			gsap.to(el, { yPercent: y, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
+		});
+
+		q<HTMLElement>('[data-reveal]').forEach((el) => {
+			gsap.from(el, { y: 40, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 92%', once: true } });
+		});
+		q<HTMLElement>('.bgb-dish, .bgb-pk, .bgb-place').forEach((el) => {
+			gsap.from(el, { y: 36, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 94%', once: true } });
+		});
+	}
+
+	const mm = gsap.matchMedia();
+
+	/* ---------- Obrador: carrusel horizontal anclado (escritorio) ---------- */
+	mm.add('(min-width: 901px)', () => {
+		const reel = document.querySelector<HTMLElement>('[data-reel]');
+		const track = document.querySelector<HTMLElement>('[data-reel-track]');
+		if (!reel || !track) return;
+		const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
+		const tween = gsap.to(track, {
+			x: () => -dist(),
+			ease: 'none',
+			scrollTrigger: { trigger: reel, start: 'center center', end: () => `+=${dist()}`, pin: true, scrub: true, invalidateOnRefresh: true },
+		});
+		return () => {
+			tween.scrollTrigger?.kill();
+			tween.kill();
+			gsap.set(track, { clearProps: 'transform' });
+		};
+	});
+
+	/* ---------- Reserva por WhatsApp ---------- */
+	const form = document.querySelector<HTMLFormElement>('[data-book]');
+	const data = JSON.parse(document.getElementById('bgb-book-data')?.textContent ?? '{}') as { slots: Record<string, string[]>; names: Record<string, string>; wa: string };
+	if (form) {
+		const dateEl = form.querySelector<HTMLInputElement>('[data-date]')!;
+		const timeEl = form.querySelector<HTMLSelectElement>('[data-time]')!;
+		const nameEl = form.querySelector<HTMLInputElement>('[data-name]')!;
+		const out = form.querySelector<HTMLOutputElement>('[data-guests-out]')!;
+		const big = form.querySelector<HTMLElement>('[data-big]')!;
+		const err = form.querySelector<HTMLElement>('[data-err]')!;
+		const venue = () => form.querySelector<HTMLInputElement>('input[name="venue"]:checked')?.value ?? 'torremolinos';
+		const lang = () => (document.documentElement.dataset.lang === 'en' ? 'en' : 'es');
+		let guests = 2;
+		const madridToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Madrid' }).format(new Date());
+		dateEl.min = madridToday();
+		dateEl.value = madridToday();
+
+		const fillTimes = () => {
+			const keep = timeEl.value;
+			const today = dateEl.value === madridToday();
+			const now = madridMinutes();
+			const slots = (data.slots[venue()] ?? []).filter((t) => {
+				if (!today) return true;
+				const [h, m] = t.split(':').map(Number);
+				return h * 60 + m > now + 30;
+			});
+			timeEl.innerHTML = '';
+			if (!slots.length) {
+				const o = document.createElement('option');
+				o.value = '';
+				o.textContent = lang() === 'en' ? 'No slots left today' : 'Hoy no quedan horas';
+				timeEl.append(o);
+				return;
+			}
+			slots.forEach((t) => {
+				const o = document.createElement('option');
+				o.value = t;
+				o.textContent = t;
+				timeEl.append(o);
+			});
+			if (slots.includes(keep)) timeEl.value = keep;
+		};
+		const setGuests = (n: number) => {
+			guests = Math.min(12, Math.max(1, n));
+			out.textContent = String(guests);
+			big.hidden = guests <= 10;
+		};
+		form.querySelectorAll<HTMLButtonElement>('[data-guests]').forEach((b) => b.addEventListener('click', () => setGuests(guests + Number(b.dataset.guests))));
+		form.querySelectorAll('input[name="venue"]').forEach((r) => r.addEventListener('change', fillTimes));
+		dateEl.addEventListener('change', fillTimes);
+		fillTimes();
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const name = nameEl.value.trim();
+			const ok = !!dateEl.value && !!timeEl.value && !!name;
+			err.hidden = ok;
+			if (!ok) return;
+			const en = lang() === 'en';
+			const [y, mo, d] = dateEl.value.split('-').map(Number);
+			const day = new Intl.DateTimeFormat(en ? 'en-GB' : 'es-ES', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(y, mo - 1, d));
+			const place = data.names[venue()];
+			const msg = en
+				? `Hi Begobé! I’d like to book a table at ${place} on ${day} at ${timeEl.value} for ${guests} ${guests === 1 ? 'person' : 'people'}. Name: ${name}. Thank you!`
+				: `¡Hola Begobé! Quería reservar mesa en ${place} el ${day} a las ${timeEl.value} para ${guests} ${guests === 1 ? 'persona' : 'personas'}. A nombre de ${name}. ¡Gracias!`;
+			window.open(`https://wa.me/${data.wa}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+		});
+		window.addEventListener('bgb:lang', fillTimes);
+	}
+
+	/* ---------- Reseñas: una frase cada vez ---------- */
+	const quotes = q<HTMLElement>('[data-quote]');
+	const dots = q<HTMLButtonElement>('[data-dot]');
+	let qi = 0;
+	let timer: number | undefined;
+	const showQuote = (i: number) => {
+		qi = (i + quotes.length) % quotes.length;
+		quotes.forEach((el, k) => el.classList.toggle('is-active', k === qi));
+		dots.forEach((d, k) => d.setAttribute('aria-current', String(k === qi)));
+	};
+	const arm = () => {
+		window.clearInterval(timer);
+		if (!reduce) timer = window.setInterval(() => showQuote(qi + 1), 7000);
+	};
+	dots.forEach((d, k) =>
+		d.addEventListener('click', () => {
+			showQuote(k);
+			arm();
+		}),
+	);
+	arm();
+
+	// El hero estaba oculto por CSS hasta que GSAP fija el estado inicial
+	document.documentElement.classList.add('bgb-ready');
+	window.addEventListener('load', () => ScrollTrigger.refresh());
+</script>

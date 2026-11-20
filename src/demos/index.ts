@@ -15,6 +15,9 @@ import SalaPremierCarta from './sala-premier/SalaPremierCarta.astro';
 import { venues as salaPremierVenues } from './sala-premier/data/info';
 import UnterHome from './unter/UnterHome.astro';
 import UnterCarta from './unter/UnterCarta.astro';
+import BegobeHome from './begobe/BegobeHome.astro';
+import BegobeCarta from './begobe/BegobeCarta.astro';
+import { venues as begobeVenues } from './begobe/data/info';
 
 export interface Demo {
 	name: string;
@@ -38,4 +41,9 @@ export const demos: Record<string, Demo> = {
 		Cartas: { ids: salaPremierVenues.map((v) => v.id), Page: SalaPremierCarta },
 	},
 	unter: { name: 'Cervecería Untertürkheim', Page: UnterHome, Carta: UnterCarta },
+	begobe: {
+		name: 'Begobé Coffee & Kitchen',
+		Page: BegobeHome,
+		Cartas: { ids: begobeVenues.map((v) => v.id), Page: BegobeCarta },
+	},
 };
