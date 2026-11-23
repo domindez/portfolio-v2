@@ -1,0 +1,12 @@
+---
+import Page from '../../../demos/begobe/BegobeCarta.astro';
+import { venues } from '../../../demos/begobe/data/info';
+
+export function getStaticPaths() {
+	return venues.map((v) => ({ params: { sala: v.id } }));
+}
+
+const { sala } = Astro.params;
+---
+
+<Page sala={sala} />

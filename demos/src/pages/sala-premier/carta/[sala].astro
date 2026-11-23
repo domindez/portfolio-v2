@@ -1,0 +1,12 @@
+---
+import Page from '../../../demos/sala-premier/SalaPremierCarta.astro';
+import { venues } from '../../../demos/sala-premier/data/info';
+
+export function getStaticPaths() {
+	return venues.map((v) => ({ params: { sala: v.id } }));
+}
+
+const { sala } = Astro.params;
+---
+
+<Page sala={sala} />

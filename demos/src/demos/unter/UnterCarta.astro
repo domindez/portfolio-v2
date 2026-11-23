@@ -1,0 +1,1010 @@
+---
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource-variable/manrope/wght.css';
+import '@fontsource-variable/big-shoulders-display';
+import './unter.css';
+import { Image } from 'astro:assets';
+import DemoLayout from '../../layouts/DemoLayout.astro';
+import T from './components/T.astro';
+import Item from './components/Item.astro';
+import { info, toasts } from './data/info';
+import { taps, sampler, bottles, bottleCountries, countryByCode, euro } from './data/beers';
+import { picar, platos, postres } from './data/menu';
+import imgMedallon from '../../assets/demos/unter/medallon.png';
+import imgPaulaner from '../../assets/demos/unter/paulaner.jpg';
+import imgSampler from '../../assets/demos/unter/sampler.jpg';
+import imgNeveras from '../../assets/demos/unter/neveras.jpg';
+import imgBretzel from '../../assets/demos/unter/bretzel.jpg';
+import imgPlato from '../../assets/demos/unter/plato.jpg';
+
+const base = '/unter';
+const tel = `tel:+34${info.phone.replace(/\s/g, '')}`;
+const PER_COUNTRY = 10;
+
+const tabs = [
+	{ id: 'grifo', es: 'De grifo', en: 'On tap' },
+	{ id: 'mundo', es: 'Del mundo', en: 'World beers' },
+	{ id: 'picar', es: 'Para picar', en: 'Bites' },
+	{ id: 'platos', es: 'Platos', en: 'Plates' },
+	{ id: 'postres', es: 'Postres', en: 'Desserts' },
+];
+
+/* Medidas de grifo, con su vaso */
+const sizes = [
+	{ es: 'Caña', en: 'Small', vol: '25 cl', icon: 'M8 9h8l-.9 12H8.9Z', liquid: 'M8.3 12h7.4l-.66 9H8.96Z' },
+	{ es: 'Copa', en: 'Glass', vol: '33 cl', icon: 'M7.5 5h9l-1.1 16H8.6Z', liquid: 'M7.8 9h8.4l-.8 12H8.6Z' },
+	{ es: 'Pinta', en: 'Pint', vol: '50 cl', icon: 'M5.5 3h13l-1.6 18H7.1Z', liquid: 'M5.9 7h12.2l-1.24 14H7.14Z' },
+	{ es: 'Jarra', en: 'Stein', vol: '1 L', icon: 'M3.5 4h12v16.5a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5Zm12 4h3a1.5 1.5 0 0 1 1.5 1.5v5a1.5 1.5 0 0 1-1.5 1.5h-3', liquid: 'M3.9 8h11.2v12.6H3.9Z' },
+];
+
+/* Grifos agrupados por país (en el orden de la carta) */
+const tapGroups: { code: string; items: typeof taps }[] = [];
+for (const t of taps) {
+	let g = tapGroups.find((x) => x.code === t.country);
+	if (!g) tapGroups.push((g = { code: t.country, items: [] }));
+	g.items.push(t);
+}
+
+const byCountry = bottleCountries.map((c) => ({ ...c, items: bottles.filter((b) => b.country === c.code).slice(0, PER_COUNTRY) }));
+const shown = byCountry.reduce((n, c) => n + c.items.length, 0);
+const abvNum = (s: string) => parseFloat(s.replace(',', '.'));
+---
+
+<DemoLayout
+	title='La carta · Cervecería Untertürkheim (Málaga)'
+	description='Carta de la Cervecería Untertürkheim: 19 grifos, cervezas de 17 países y cocina alemana en La Malagueta.'
+	themeColor='#0f2a1c'
+	ogImage='/demo-og/unter.jpg'
+	ogImageAlt='Cervecería Untertürkheim: cervecería alemana frente al mar en Málaga.'
+	siteName='Cervecería Untertürkheim'
+	bodyClass='ut ct'
+>
+	<script slot='head' is:inline>
+		(function () {
+			var r = document.documentElement;
+			r.classList.add('ut-js');
+			var l = null;
+			try { l = localStorage.getItem('unter-lang'); } catch (e) {}
+			if (!l) l = (navigator.language || 'es').slice(0, 2) === 'es' ? 'es' : 'en';
+			r.dataset.lang = l;
+			r.lang = l;
+		})();
+	</script>
+
+	<header class='ct-top'>
+		<div class='ct-top__row'>
+			<a class='ct-back' href={base} aria-label='Volver a la web'>
+				<Image src={imgMedallon} alt='' width={88} height={88} class='ct-top__logo' loading='eager' />
+				<span class='ct-top__name'>Untertürkheim</span>
+			</a>
+			<h1 class='ct-top__title'><T html es='La *carta*' en='The *menu*' /></h1>
+			<div class='lang' role='group' aria-label='Idioma / Language'>
+				<button type='button' data-set-lang='es'>ES</button>
+				<button type='button' data-set-lang='en'>EN</button>
+			</div>
+		</div>
+	</header>
+
+	<nav class='ct-tabs' aria-label='Secciones de la carta' data-tabs>
+		<div class='ct-tabs__inner'>
+			{tabs.map((t, i) => (
+				<a href={`#${t.id}`} class={`ct-tab${i === 0 ? ' is-active' : ''}`} data-tab={t.id}>
+					<span class='ct-tab__n'>{String(i + 1).padStart(2, '0')}</span>
+					<T es={t.es} en={t.en} />
+				</a>
+			))}
+		</div>
+	</nav>
+
+	<main class='ct-main'>
+		<!-- ============ DE GRIFO ============ -->
+		<section class='ct-sec' id='grifo' data-sec>
+			<div class='wrap'>
+				<header class='ct-head'>
+					<div>
+						<p class='hd__n'><span>01</span><T es={`${taps.length} grifos`} en={`${taps.length} taps`} /></p>
+						<h2 class='ct-h2'><T html es='Cerveza *de grifo*' en='Draught *beer*' /></h2>
+						<p class='ct-intro'><T es='Cuatro medidas, de la caña a la jarra de litro. Busca tu cerveza y lee el precio en la columna de tu vaso.' en='Four sizes, from a small glass to a one-litre stein. Find your beer and read the price under your glass.' /></p>
+					</div>
+					<figure class='ct-head__img'>
+						<Image src={imgPaulaner} alt='Paulaner de trigo recién tirada en la barra' widths={[300, 560]} sizes='220px' />
+					</figure>
+				</header>
+
+				<ul class='sizes' aria-label='Medidas'>
+					{sizes.map((s) => (
+						<li class='sizes__item'>
+							<svg viewBox='0 0 24 24' aria-hidden='true'><path d={s.liquid} class='sizes__liquid' /><path d={s.icon} class='sizes__glass' /></svg>
+							<span class='sizes__name'><T es={s.es} en={s.en} /></span>
+							<span class='sizes__vol'>{s.vol}</span>
+						</li>
+					))}
+				</ul>
+
+				<div class='tg-list'>
+					{tapGroups.map((g) => {
+						const c = countryByCode[g.code];
+						return (
+							<section class='tg' data-rv style={`--flag:${c?.flag}`}>
+								<div class='tg__head'>
+									<h3 class='tg__name'><span class='flag' aria-hidden='true'></span><T es={c?.name.es} en={c?.name.en} /></h3>
+									{sizes.map((s) => (
+										<span class='tg__col'>
+											<svg viewBox='0 0 24 24' aria-hidden='true'><path d={s.icon} /></svg>
+											<span>{s.vol}</span>
+										</span>
+									))}
+								</div>
+								<ul class='tg__rows'>
+									{g.items.map((t) => (
+										<li class='tap' style={`--beer:${t.color}`}>
+											<div class='tap__id'>
+												<span class='tap__swatch' aria-hidden='true'></span>
+												<div>
+													<p class='tap__name'>{t.name}</p>
+													<p class='tap__meta'><T es={t.style.es} en={t.style.en} /> · {t.abv}</p>
+												</div>
+											</div>
+											{t.prices.map((p, i) => (
+												<span class={`tap__p${p == null ? ' is-off' : ''}`} aria-label={`${sizes[i].vol}: ${p == null ? '—' : euro(p)}`}>
+													{p == null ? '—' : euro(p)}
+												</span>
+											))}
+										</li>
+									))}
+								</ul>
+							</section>
+						);
+					})}
+				</div>
+
+				<article class='ct-feature' data-rv>
+					<Image src={imgSampler} alt='Tabla con cinco copitas de Chouffe en la terraza' widths={[360, 640]} sizes='(max-width: 700px) 90vw, 240px' class='ct-feature__img' />
+					<div class='ct-feature__body'>
+						<p class='label'><T es='Para probar de todo' en='Try them all' /></p>
+						<p class='ct-item__row'>
+							<span class='ct-feature__title'><T es={sampler.name.es} en={sampler.name.en} /></span>
+							<span class='ct-item__dots' aria-hidden='true'></span>
+							<span class='ct-item__price'>{euro(sampler.price)}</span>
+						</p>
+						<p class='ct-item__desc'><T es={sampler.desc.es} en={sampler.desc.en} /></p>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<!-- ============ DEL MUNDO ============ -->
+		<section class='ct-sec' id='mundo' data-sec>
+			<div class='wrap'>
+				<header class='ct-head'>
+					<div>
+						<p class='hd__n'><span>02</span><T es={`${bottleCountries.length} países`} en={`${bottleCountries.length} countries`} /></p>
+						<h2 class='ct-h2'><T html es='Cervezas *del mundo*' en='Beers *of the world*' /></h2>
+						<p class='ct-intro'><T es='Una selección de nuestras botellas. En barra tenemos más de 200: pregúntanos por tu favorita.' en='A selection of our bottles. We stock over 200 at the bar: ask for your favourite.' /></p>
+					</div>
+					<figure class='ct-head__img'>
+						<Image src={imgNeveras} alt='Las neveras con cervezas de todo el mundo' widths={[300, 560]} sizes='220px' />
+					</figure>
+				</header>
+
+				<nav class='ct-countries' aria-label='Ir a un país' data-countries>
+					{bottleCountries.map((c) => (
+						<a class='ct-chip' href={`#pais-${c.code}`} data-country={c.code} style={`--flag:${c.flag}`}>
+							<span class='flag' aria-hidden='true'></span>
+							<T es={c.name.es} en={c.name.en} />
+						</a>
+					))}
+				</nav>
+
+				<div class='ct-world'>
+					{byCountry.map((c) => (
+						<section class='ct-group' id={`pais-${c.code}`} style={`--flag:${c.flag}`} data-rv>
+							<h3 class='ct-h3'>
+								<span class='flag flag--lg' aria-hidden='true'></span>
+								<T es={c.name.es} en={c.name.en} />
+							</h3>
+							<ul class='ct-list'>
+								{c.items.map((b) => (
+									<li class='ct-item'>
+										<p class='ct-item__row'>
+											<span class='ct-item__name'>{b.name}</span>
+											<span class='ct-item__dots' aria-hidden='true'></span>
+											<span class='ct-item__price'>{euro(b.price)}</span>
+										</p>
+										<p class='ct-item__desc'>
+											<T es={b.style.es} en={b.style.en} /> · {b.size} · <span class={abvNum(b.abv) < 0.6 ? 'ct-zero' : undefined}>{b.abv}</span>
+										</p>
+									</li>
+								))}
+							</ul>
+						</section>
+					))}
+				</div>
+				<p class='ct-note'><T es={`Mostramos ${shown} de más de 200 referencias.`} en={`Showing ${shown} of 200+ beers.`} /></p>
+			</div>
+		</section>
+
+		<!-- ============ PARA PICAR ============ -->
+		<section class='ct-sec' id='picar' data-sec>
+			<div class='wrap'>
+				<header class='ct-head'>
+					<div>
+						<p class='hd__n'><span>03</span><T es={picar.kicker.es} en={picar.kicker.en} /></p>
+						<h2 class='ct-h2'><T html es={picar.title.es} en={picar.title.en} /></h2>
+						{picar.intro && <p class='ct-intro'><T es={picar.intro.es} en={picar.intro.en} /></p>}
+					</div>
+					<figure class='ct-head__img'>
+						<Image src={imgBretzel} alt='Bretzel, salchichas y queso sobre la mesa' widths={[300, 560]} sizes='220px' />
+					</figure>
+				</header>
+				<ul class='ct-list'>
+					{picar.dishes.map((d) => <Item dish={d} />)}
+				</ul>
+				{picar.extra && (
+					<div class='ct-boards'>
+						<h3 class='ct-h3'><T es={picar.extra.title.es} en={picar.extra.title.en} /></h3>
+						<ul class='ct-list'>
+							{picar.extra.dishes.map((d) => <Item dish={d} />)}
+						</ul>
+					</div>
+				)}
+				{picar.notes?.map((n) => <p class='ct-note'><T es={n.es} en={n.en} /></p>)}
+			</div>
+		</section>
+
+		<!-- ============ PLATOS ============ -->
+		<section class='ct-sec' id='platos' data-sec>
+			<div class='wrap'>
+				<header class='ct-head'>
+					<div>
+						<p class='hd__n'><span>04</span><T es={platos.kicker.es} en={platos.kicker.en} /></p>
+						<h2 class='ct-h2'><T html es={platos.title.es} en={platos.title.en} /></h2>
+						{platos.intro && <p class='ct-intro'><T es={platos.intro.es} en={platos.intro.en} /></p>}
+					</div>
+					<figure class='ct-head__img'>
+						<Image src={imgPlato} alt='Codillo con salsa de cerveza y patatas en la terraza' widths={[300, 560]} sizes='220px' />
+					</figure>
+				</header>
+				<ul class='ct-list'>
+					{platos.dishes.map((d) => <Item dish={d} />)}
+				</ul>
+				{platos.notes?.map((n) => <p class='ct-note'><T es={n.es} en={n.en} /></p>)}
+			</div>
+		</section>
+
+		<!-- ============ POSTRES ============ -->
+		<section class='ct-sec' id='postres' data-sec>
+			<div class='wrap'>
+				<header class='ct-head ct-head--solo'>
+					<div>
+						<p class='hd__n'><span>05</span><T es={postres.kicker.es} en={postres.kicker.en} /></p>
+						<h2 class='ct-h2'><T html es={postres.title.es} en={postres.title.en} /></h2>
+					</div>
+				</header>
+				<ul class='ct-list ct-list--three'>
+					{postres.dishes.map((d) => <Item dish={d} />)}
+				</ul>
+			</div>
+		</section>
+	</main>
+
+	<div class='marquee marquee--toast' aria-hidden='true'>
+		<div class='marquee__track'>
+			{[0, 1].map(() => (
+				<div class='marquee__group'>
+					{toasts.map((t, i) => <span class='marquee__item'>{i % 2 ? <em>{t}</em> : t}<i>✦</i></span>)}
+				</div>
+			))}
+		</div>
+	</div>
+
+	<footer class='ct-foot'>
+		<div class='wrap'>
+			<Image src={imgMedallon} alt='' width={96} height={96} class='ct-foot__logo' />
+			<p><T es='¿Alergias o intolerancias? Pregunta al personal: te informamos de los alérgenos de cada plato.' en='Allergies or intolerances? Ask our staff for allergen information on every dish.' /></p>
+			<p class='ct-foot__small'>{info.address} · {info.area} · <a href={tel}>{info.phone}</a></p>
+			<a class='btn btn--line btn--sm' href={base}><T es='Volver a la web' en='Back to the website' /></a>
+		</div>
+	</footer>
+</DemoLayout>
+
+<style is:global>
+	.ut.ct {
+		background: var(--paper);
+		color: var(--ink);
+	}
+
+	/* Cabecera compacta */
+	.ut .ct-top {
+		background: var(--green-900);
+		color: var(--paper);
+		padding: calc(var(--frame) + 12px) calc(var(--frame) + var(--gutter)) 14px;
+	}
+	.ut .ct-top__row {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		gap: 16px;
+		max-width: var(--wrap);
+		margin: 0 auto;
+	}
+	.ut .ct-back {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		text-decoration: none;
+	}
+	.ut .ct-top__logo {
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+	}
+	.ut .ct-top__name {
+		font-family: var(--font-sign);
+		font-weight: 800;
+		font-size: 1.25rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--gold-light);
+	}
+	.ut .ct-top__title {
+		margin: 0;
+		font-family: var(--font-sign);
+		font-weight: 900;
+		font-size: clamp(2.2rem, 5vw, 3.2rem);
+		line-height: 1;
+		text-transform: uppercase;
+	}
+	.ut .ct-top__title em,
+	.ut .ct-h2 em {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 340;
+		font-size: 0.86em;
+		letter-spacing: -0.02em;
+		text-transform: none;
+		color: var(--gold-deep);
+	}
+	.ut .ct-top__title em {
+		color: var(--gold-light);
+	}
+	.ut .ct-top .lang {
+		justify-self: end;
+	}
+	@media (max-width: 600px) {
+		.ut .ct-top__name {
+			display: none;
+		}
+		.ut .ct-top__logo {
+			width: 38px;
+			height: 38px;
+		}
+	}
+
+	/* Pestañas */
+	.ut .ct-tabs {
+		position: sticky;
+		top: var(--frame);
+		z-index: 40;
+		background: color-mix(in srgb, var(--paper) 94%, transparent);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid var(--line-light);
+	}
+	.ut .ct-tabs__inner {
+		display: flex;
+		gap: clamp(18px, 3.4vw, 40px);
+		max-width: var(--wrap);
+		margin: 0 auto;
+		padding: 0 var(--gutter);
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+	.ut .ct-tabs__inner::-webkit-scrollbar {
+		display: none;
+	}
+	.ut .ct-tab {
+		position: relative;
+		flex: none;
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+		padding: 16px 0 14px;
+		font-size: 0.74rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		text-decoration: none;
+		color: var(--ink-soft);
+		transition: color 0.25s;
+	}
+	.ut .ct-tab__n {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 400;
+		font-size: 0.85rem;
+		letter-spacing: 0;
+		text-transform: none;
+		color: var(--gold-deep);
+	}
+	.ut .ct-tab::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -1px;
+		height: 3px;
+		background: var(--mustard);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.35s var(--ease);
+	}
+	.ut .ct-tab.is-active {
+		color: var(--ink);
+	}
+	.ut .ct-tab.is-active::after {
+		transform: scaleX(1);
+	}
+
+	/* Secciones */
+	.ut .ct-sec {
+		padding: clamp(60px, 8vw, 100px) 0;
+		scroll-margin-top: calc(50px + var(--frame));
+	}
+	.ut .ct-sec:nth-child(even) {
+		background: var(--cream);
+	}
+	.ut .ct-head {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 30px;
+		align-items: end;
+		margin-bottom: clamp(30px, 4vw, 50px);
+	}
+	.ut .ct-head__img {
+		position: relative;
+		width: clamp(120px, 18vw, 210px);
+		rotate: 3deg;
+	}
+	.ut .ct-head__img::before {
+		content: '';
+		position: absolute;
+		inset: -8px;
+		border: 1px solid color-mix(in srgb, var(--gold-deep) 60%, transparent);
+		border-radius: 999px 999px 0 0;
+	}
+	.ut .ct-head__img img {
+		width: 100%;
+		aspect-ratio: 3 / 4;
+		object-fit: cover;
+		border-radius: 999px 999px 0 0;
+	}
+	.ut .ct-h2 {
+		margin: 0;
+		font-family: var(--font-sign);
+		font-weight: 800;
+		font-size: clamp(2.8rem, 6vw, 5rem);
+		line-height: 0.9;
+		text-transform: uppercase;
+	}
+	.ut .ct-h3 {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 0 0 8px;
+		padding-bottom: 12px;
+		border-bottom: 2px solid var(--ink);
+		font-family: var(--font-sign);
+		font-weight: 800;
+		font-size: clamp(1.8rem, 3vw, 2.4rem);
+		line-height: 1;
+		text-transform: uppercase;
+	}
+	.ut .ct-intro {
+		max-width: 52ch;
+		margin: 16px 0 0;
+		color: var(--ink-soft);
+	}
+	.ut .ct-note {
+		margin: 28px 0 0;
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 0.95rem;
+		color: var(--ink-soft);
+	}
+@media (max-width: 600px) {
+	.ut .ct-head { gap: 0 20px; align-items: end; }
+	.ut .ct-head > div { display: contents; }
+	.ut .ct-head .hd__n { grid-column: 1; grid-row: 1; align-self: start; }
+	.ut .ct-head .ct-h2 { grid-column: 1; grid-row: 2; }
+	.ut .ct-head__img { grid-column: 2; grid-row: 1 / 3; width: 96px; align-self: center; }
+	.ut .ct-head .ct-intro { grid-column: 1 / -1; grid-row: 3; max-width: none; }
+}
+
+	/* Banderita de dos colores */
+	.ut .flag {
+		flex: none;
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: var(--flag);
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+	}
+	.ut .flag--lg {
+		width: 26px;
+		height: 26px;
+	}
+
+	/* Fila única de carta (sin separadores) */
+	.ut .ct-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 22px 56px;
+		padding-top: 14px;
+	}
+	.ut .ct-list--one {
+		grid-template-columns: 1fr;
+		padding-top: 18px;
+	}
+	.ut .ct-list--three {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+	.ut .ct-item__row {
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+		margin: 0;
+	}
+	.ut .ct-item__name {
+		font-family: var(--font-display);
+		font-weight: 450;
+		font-size: 1.16rem;
+		line-height: 1.3;
+	}
+	.ut .ct-item__dots {
+		flex: 1;
+		min-width: 16px;
+		border-bottom: 1px dotted color-mix(in srgb, var(--ink) 35%, transparent);
+		transform: translateY(-5px);
+	}
+	.ut .ct-item__price {
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+		white-space: nowrap;
+		font-variant-numeric: tabular-nums;
+		color: var(--gold-deep);
+	}
+	.ut .ct-item__desc {
+		margin: 4px 0 0;
+		font-size: 0.88rem;
+		color: var(--ink-soft);
+	}
+	.ut .ct-tag {
+		display: inline-block;
+		margin-left: 10px;
+		vertical-align: 3px;
+		padding: 2px 8px;
+		border: 1px solid var(--green-700);
+		border-radius: 2px;
+		font-family: var(--font-sans);
+		font-size: 0.6rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--green-700);
+	}
+	.ut .ct-tag--house {
+		border-color: var(--mustard);
+		background: var(--mustard);
+		color: var(--green-950);
+	}
+	.ut .ct-zero {
+		color: var(--green-700);
+		font-weight: 700;
+	}
+	@media (max-width: 900px) {
+		.ut .ct-list--three {
+			grid-template-columns: 1fr;
+		}
+	}
+	@media (max-width: 760px) {
+		.ut .ct-list {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* ---------- Grifos ---------- */
+	.ut .sizes {
+		list-style: none;
+		margin: 0 0 40px;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		background: var(--green-900);
+		color: var(--paper);
+	}
+	.ut .sizes__item {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-template-rows: auto auto;
+		column-gap: 14px;
+		align-items: center;
+		padding: 18px 20px;
+	}
+	.ut .sizes__item + .sizes__item {
+		border-left: 1px solid var(--line-dark);
+	}
+	.ut .sizes__item svg {
+		grid-row: 1 / 3;
+		width: 40px;
+		height: 40px;
+	}
+	.ut .sizes__glass {
+		fill: none;
+		stroke: var(--gold-light);
+		stroke-width: 1.2;
+		stroke-linejoin: round;
+	}
+	.ut .sizes__liquid {
+		fill: var(--mustard);
+		opacity: 0.85;
+	}
+	.ut .sizes__name {
+		font-family: var(--font-sign);
+		font-weight: 800;
+		font-size: 1.5rem;
+		line-height: 1;
+		text-transform: uppercase;
+	}
+	.ut .sizes__vol {
+		font-family: var(--font-display);
+		font-style: italic;
+		color: var(--gold-light);
+	}
+
+	.ut .tg-list {
+		display: grid;
+		gap: 36px;
+	}
+	.ut .tg__head,
+	.ut .tap {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) repeat(4, 92px);
+		gap: 8px;
+		align-items: center;
+	}
+	.ut .tg__head {
+		padding-bottom: 10px;
+		border-bottom: 2px solid var(--ink);
+	}
+	.ut .tg__name {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 0;
+		font-family: var(--font-sign);
+		font-weight: 800;
+		font-size: clamp(1.7rem, 2.6vw, 2.2rem);
+		line-height: 1;
+		text-transform: uppercase;
+	}
+	.ut .tg__col {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 6px;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ink-soft);
+	}
+	.ut .tg__col svg {
+		width: 18px;
+		height: 18px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.4;
+	}
+	.ut .tg__rows {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.ut .tap {
+		padding: 12px 0;
+	}
+	.ut .tap:nth-child(even) {
+		background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ink) 4%, transparent) 30%);
+	}
+	.ut .tap__id {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		min-width: 0;
+	}
+	.ut .tap__swatch {
+		flex: none;
+		width: 14px;
+		height: 22px;
+		border-radius: 2px 2px 4px 4px;
+		background: linear-gradient(180deg, #fbf3df 0 22%, var(--beer) 22%);
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+	}
+	.ut .tap__name {
+		margin: 0;
+		font-family: var(--font-display);
+		font-weight: 450;
+		font-size: 1.16rem;
+		line-height: 1.25;
+	}
+	.ut .tap__meta {
+		margin: 2px 0 0;
+		font-size: 0.84rem;
+		color: var(--ink-soft);
+	}
+	.ut .tap__p {
+		text-align: right;
+		font-family: var(--font-display);
+		font-size: 1.08rem;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+		color: var(--gold-deep);
+	}
+	.ut .tap__p.is-off {
+		color: var(--ink-soft);
+		opacity: 0.35;
+	}
+	@media (max-width: 760px) {
+		.ut .sizes {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+		.ut .sizes__item:nth-child(3) {
+			border-left: 0;
+		}
+		.ut .sizes__item:nth-child(n + 3) {
+			border-top: 1px solid var(--line-dark);
+		}
+		.ut .tg__head,
+		.ut .tap {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			column-gap: 6px;
+		}
+		.ut .tg__name,
+		.ut .tap__id {
+			grid-column: 1 / -1;
+		}
+		.ut .tg__name {
+			margin-bottom: 8px;
+		}
+		.ut .tg__col {
+			justify-content: flex-start;
+		}
+		.ut .tap {
+			row-gap: 6px;
+		}
+		.ut .tap__p {
+			text-align: left;
+			padding-left: 28px;
+			font-size: 1rem;
+		}
+		.ut .tg__col {
+			padding-left: 28px;
+		}
+		.ut .tg__col svg {
+			display: none;
+		}
+	}
+
+	.ut .ct-feature {
+		display: grid;
+		grid-template-columns: 240px minmax(0, 1fr);
+		gap: 32px;
+		align-items: center;
+		margin-top: 44px;
+		padding: 20px;
+		background: var(--green-900);
+		color: var(--paper);
+	}
+	.ut .ct-feature__img {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+	}
+	.ut .ct-feature__body .label {
+		margin-bottom: 10px;
+		color: var(--gold);
+	}
+	.ut .ct-feature__title {
+		font-family: var(--font-sign);
+		font-weight: 800;
+		font-size: clamp(2rem, 3.4vw, 2.8rem);
+		line-height: 1;
+		text-transform: uppercase;
+	}
+	.ut .ct-feature .ct-item__desc {
+		color: color-mix(in srgb, var(--paper) 72%, transparent);
+	}
+	.ut .ct-feature .ct-item__dots {
+		border-color: var(--line-dark);
+	}
+	.ut .ct-feature .ct-item__price {
+		font-size: 1.5rem;
+		color: var(--gold-light);
+	}
+	@media (max-width: 760px) {
+		.ut .ct-feature {
+			grid-template-columns: 1fr;
+			gap: 18px;
+		}
+	}
+
+	/* ---------- Mundo ---------- */
+	.ut .ct-countries {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-bottom: 50px;
+	}
+	.ut .ct-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 14px 8px 10px;
+		border: 1px solid var(--line-light);
+		border-radius: 999px;
+		background: var(--paper);
+		font-size: 0.88rem;
+		text-decoration: none;
+		transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+	}
+	.ut .ct-chip:hover {
+		border-color: var(--ink);
+		transform: translateY(-2px);
+	}
+	.ut .ct-chip.is-on {
+		background: var(--green-900);
+		border-color: var(--green-900);
+		color: var(--paper);
+	}
+	.ut .ct-world {
+		display: grid;
+		gap: 56px;
+	}
+	.ut .ct-group {
+		scroll-margin-top: calc(70px + var(--frame));
+	}
+	@media (max-width: 760px) {
+		.ut .ct-countries {
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			scrollbar-width: none;
+			margin-inline: calc(var(--gutter) * -1);
+			padding-inline: var(--gutter);
+		}
+		.ut .ct-countries::-webkit-scrollbar {
+			display: none;
+		}
+		.ut .ct-chip {
+			flex: none;
+		}
+	}
+
+	/* ---------- Tablas ---------- */
+	.ut .ct-boards {
+		margin-top: 60px;
+	}
+	.ut .ct-boards > .ct-h3 {
+		margin-bottom: 24px;
+	}
+	/* ---------- Pie ---------- */
+	.ut.ct .marquee__track {
+		animation: ut-ct-marquee 50s linear infinite;
+	}
+	@keyframes ut-ct-marquee {
+		to {
+			transform: translateX(-50%);
+		}
+	}
+	.ut .ct-foot {
+		background: var(--green-950);
+		color: var(--paper);
+		padding: 50px 0 120px;
+		text-align: center;
+	}
+	.ut .ct-foot__logo {
+		width: 64px;
+		height: 64px;
+		margin: 0 auto 24px;
+		border-radius: 50%;
+	}
+	.ut .ct-foot p {
+		max-width: 56ch;
+		margin: 0 auto 10px;
+	}
+	.ut .ct-foot__small {
+		font-size: 0.85rem;
+		opacity: 0.65;
+	}
+	.ut .ct-foot a:not(.btn) {
+		text-decoration: none;
+	}
+	.ut .ct-foot .btn {
+		margin-top: 22px;
+	}
+
+	/* ---------- Aparición suave ---------- */
+	html.ut-js .ut.ct [data-rv] {
+		opacity: 0;
+		transform: translateY(18px);
+		transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+	}
+	html.ut-js .ut.ct [data-rv].is-in {
+		opacity: 1;
+		transform: none;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.ut.ct .marquee__track {
+			animation: none;
+		}
+		html.ut-js .ut.ct [data-rv] {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	import { initLang } from './scripts/common';
+
+	initLang();
+
+	/* ---------- Pestañas con scroll-spy ---------- */
+	const tabs = [...document.querySelectorAll<HTMLAnchorElement>('[data-tab]')];
+	const secs = [...document.querySelectorAll<HTMLElement>('[data-sec]')];
+	const setActive = (id: string) => {
+		tabs.forEach((t) => {
+			const on = t.dataset.tab === id;
+			t.classList.toggle('is-active', on);
+			if (on) t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+		});
+	};
+	const io = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)), { rootMargin: '-45% 0px -50% 0px' });
+	secs.forEach((s) => io.observe(s));
+
+	/* ---------- Países: marca el país visible ---------- */
+	const chips = [...document.querySelectorAll<HTMLAnchorElement>('[data-country]')];
+	const groups = [...document.querySelectorAll<HTMLElement>('.ct-group')];
+	const gio = new IntersectionObserver(
+		(entries) =>
+			entries.forEach((e) => {
+				if (!e.isIntersecting) return;
+				const code = e.target.id.replace('pais-', '');
+				chips.forEach((c) => c.classList.toggle('is-on', c.dataset.country === code));
+			}),
+		{ rootMargin: '-40% 0px -55% 0px' },
+	);
+	groups.forEach((g) => gio.observe(g));
+
+	// Deep-link desde la home: ?pais=BE
+	const p = new URLSearchParams(location.search).get('pais');
+	if (p) requestAnimationFrame(() => document.getElementById(`pais-${p}`)?.scrollIntoView());
+
+	/* ---------- Aparición suave ---------- */
+	const rv = new IntersectionObserver(
+		(entries) =>
+			entries.forEach((e) => {
+				if (e.isIntersecting) {
+					e.target.classList.add('is-in');
+					rv.unobserve(e.target);
+				}
+			}),
+		{ rootMargin: '0px 0px -8% 0px' },
+	);
+	document.querySelectorAll('[data-rv]').forEach((el) => rv.observe(el));
+</script>

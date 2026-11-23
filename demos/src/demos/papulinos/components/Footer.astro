@@ -1,0 +1,47 @@
+---
+/** Pie con los tres locales y redes. */
+import T from './T.astro';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { venues, info, tel } from '../data/info';
+---
+
+<footer class='pp-foot'>
+	<div class='pp-foot__in'>
+		<div class='pp-foot__brand'>
+			<Logo width={190} />
+			<p class='pp-foot__claim'>
+				<T es='Carnes a la brasa en Málaga' en='Chargrilled meat in Málaga' />
+			</p>
+			<p class='pp-script pp-foot__script'><T es='desde 1984' en='since 1984' /></p>
+		</div>
+		<div class='pp-foot__venues'>
+			{venues.map((v) => (
+				<div class='pp-foot__venue'>
+					<p class='pp-foot__vname'>
+						{v.short}
+					</p>
+					<p>
+						{v.address}
+						<br />
+						{v.postal} Málaga
+					</p>
+					<p class='pp-foot__hours'><T es={v.hours.es} en={v.hours.en} /></p>
+					<p class='pp-foot__links'>
+						<a href={tel(v.phone)}>{v.phone}</a>
+						<a href={v.maps} target='_blank' rel='noopener'><T es='Mapa' en='Map' /></a>
+						<a href={`/papulinos/carta/${v.id}`}><T es='Carta' en='Menu' /></a>
+					</p>
+				</div>
+			))}
+		</div>
+	</div>
+	<div class='pp-foot__bottom'>
+		<p class='pp-foot__social'>
+			<a href={info.instagram} target='_blank' rel='noopener'><Icon name='instagram' size={18} /> Instagram</a>
+			<a href={info.facebook} target='_blank' rel='noopener'><Icon name='facebook' size={18} /> Facebook</a>
+			<a href={`mailto:${info.email}`}><Icon name='mail' size={18} /> {info.email}</a>
+		</p>
+		<p>© {new Date().getFullYear()} Restaurantes Papulinos</p>
+	</div>
+</footer>

@@ -1,0 +1,12 @@
+---
+import Page from '../../../demos/papulinos/PapulinosCarta.astro';
+import { venues } from '../../../demos/papulinos/data/info';
+
+export function getStaticPaths() {
+	return venues.map((v) => ({ params: { sala: v.id } }));
+}
+
+const { sala } = Astro.params;
+---
+
+<Page sala={sala} />

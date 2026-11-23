@@ -1,0 +1,129 @@
+---
+/**
+ * Layout para las demos comerciales (demos.domindez.com/<slug>).
+ *
+ * - No usa Layout.astro: nada de Header/Footer/Preloader/cursor del estudio.
+ * - Siempre noindex: las demos no se enlazan ni se indexan (y están fuera del sitemap).
+ * - Muestra una pastilla discreta "Demo preparada por Domindez Studio".
+ *   Se oculta con ?clean (y se recuerda durante la sesión) o con la X.
+ */
+interface Props {
+	title: string;
+	description: string;
+	themeColor?: string;
+	favicon?: string;
+	lang?: string;
+	bodyClass?: string;
+	/** Ruta (desde /public) o URL de la imagen para compartir; 1200×630. */
+	ogImage?: string;
+	ogImageAlt?: string;
+	siteName?: string;
+}
+
+const {
+	title,
+	description,
+	themeColor = '#ffffff',
+	favicon = '/favicon.svg',
+	lang = 'es',
+	bodyClass = '',
+	ogImage,
+	ogImageAlt = '',
+	siteName,
+} = Astro.props as Props;
+
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site ?? 'https://demos.domindez.com').toString() : undefined;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://demos.domindez.com').toString();
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover' />
+		<title>{title}</title>
+		<meta name='description' content={description} />
+		<meta name='robots' content='noindex, nofollow, noarchive' />
+		<meta name='googlebot' content='noindex, nofollow' />
+		<link rel='canonical' href={canonical} />
+		<meta name='theme-color' content={themeColor} />
+		<link rel='icon' href={favicon} />
+		<meta property='og:title' content={title} />
+		<meta property='og:description' content={description} />
+		<meta property='og:type' content='website' />
+		<meta property='og:url' content={canonical} />
+		<meta property='og:locale' content={lang === 'es' ? 'es_ES' : 'en_US'} />
+		{siteName && <meta property='og:site_name' content={siteName} />}
+		<meta name='twitter:card' content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+		<meta name='twitter:title' content={title} />
+		<meta name='twitter:description' content={description} />
+		{ogImageUrl && (
+			<>
+				<meta property='og:image' content={ogImageUrl} />
+				<meta property='og:image:secure_url' content={ogImageUrl} />
+				<meta property='og:image:type' content='image/jpeg' />
+				<meta property='og:image:width' content='1200' />
+				<meta property='og:image:height' content='630' />
+				<meta property='og:image:alt' content={ogImageAlt} />
+				<meta name='twitter:image' content={ogImageUrl} />
+			</>
+		)}
+		<script is:inline>
+			try {
+				var q = new URLSearchParams(location.search);
+				if (q.has('clean')) sessionStorage.setItem('demo-clean', '1');
+				if (q.has('studio')) sessionStorage.removeItem('demo-clean');
+				if (sessionStorage.getItem('demo-clean') === '1') document.documentElement.classList.add('demo-clean');
+			} catch (e) {}
+		</script>
+		<slot name='head' />
+	</head>
+	<body class={bodyClass}>
+		<slot />
+
+		<aside class='demo-badge' aria-label='Información de la demo'>
+			<a href='https://domindez.com/#contact' target='_blank' rel='noopener' class='demo-badge__link'>
+				<span class='demo-badge__dot' aria-hidden='true'></span>
+				<span>Demo preparada por <strong>Domindez Studio</strong></span>
+			</a>
+			<a href='https://wa.me/34660882876' target='_blank' rel='noopener' class='demo-badge__cta'>Hablemos</a>
+			<button type='button' class='demo-badge__close' aria-label='Ocultar aviso'>×</button>
+		</aside>
+
+		<style is:global>
+			.demo-badge {
+				position: fixed;
+				left: 50%;
+				bottom: max(14px, env(safe-area-inset-bottom));
+				transform: translateX(-50%);
+				z-index: 9999;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				padding: 5px 5px 5px 14px;
+				border-radius: 999px;
+				background: rgba(10, 10, 10, 0.86);
+				backdrop-filter: blur(10px);
+				-webkit-backdrop-filter: blur(10px);
+				color: #f5f5f0;
+				font: 500 12px/1.2 system-ui, -apple-system, 'Segoe UI', sans-serif;
+				box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+				white-space: nowrap;
+				max-width: calc(100vw - 24px);
+			}
+			.demo-badge a { color: inherit; text-decoration: none; }
+			.demo-badge__link { display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; }
+			.demo-badge__dot { width: 7px; height: 7px; border-radius: 50%; background: #c3ff00; flex: none; box-shadow: 0 0 8px #c3ff00; }
+			.demo-badge__cta { background: #c3ff00; color: #0a0a0a !important; padding: 7px 12px; border-radius: 999px; font-weight: 700; }
+			.demo-badge__close { background: none; border: 0; color: #a1a1a1; font-size: 18px; line-height: 1; padding: 4px 8px; cursor: pointer; }
+			.demo-clean .demo-badge { display: none; }
+			@media (max-width: 380px) { .demo-badge__link span:last-child { font-size: 11px; } }
+		</style>
+		<script is:inline>
+			document.querySelector('.demo-badge__close')?.addEventListener('click', function () {
+				document.documentElement.classList.add('demo-clean');
+				try { sessionStorage.setItem('demo-clean', '1'); } catch (e) {}
+			});
+		</script>
+	</body>
+</html>

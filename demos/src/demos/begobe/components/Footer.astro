@@ -1,0 +1,61 @@
+---
+/** Pie compartido por la landing y la carta. */
+import { Image } from 'astro:assets';
+import T from './T.astro';
+import Icon from './Icon.astro';
+import { venues, info } from '../data/info';
+import logoStackCream from '../../../assets/demos/begobe/logo-stack-cream.png';
+import sealCream from '../../../assets/demos/begobe/seal-cream.png';
+
+interface Props {
+	base?: string;
+}
+const { base = '' } = Astro.props as Props;
+const telTorre = `tel:+34${venues[0].phone!.replace(/\s/g, '')}`;
+const waCake = `https://wa.me/${info.whatsapp}?text=${encodeURIComponent('¡Hola Begobé! Quería encargar una tarta 🎂')}`;
+const cartaUrl = (id: string) => `/begobe/carta/${id}`;
+---
+
+<footer class='bgb-foot'>
+	<div class='bgb-wrap'>
+		<p class='bgb-foot__big'><T html es='Nos va lo *natural*.' en='We like it *natural*.' /></p>
+		<div class='bgb-foot__cta'>
+			{venues.map((v, i) => (
+				<a href={cartaUrl(v.id)} class={`bgb-cta ${i === 0 ? 'bgb-cta--gold' : 'bgb-cta--cream'}`}><T es='Carta' en='Menu' /> {v.short}<Icon name='arrow' size={18} /></a>
+			))}
+			<a href={info.instagram} target='_blank' rel='noopener' class='bgb-cta bgb-cta--line'><Icon name='instagram' size={18} />{info.handle}</a>
+		</div>
+		<div class='bgb-foot__top'>
+			<div>
+				<Image src={logoStackCream} alt='Begobé Coffee & Kitchen' width={260} class='bgb-foot__logo' />
+				<p class='bgb-hand bgb-foot__motto'><T es={info.motto.es} en={info.motto.en} /></p>
+			</div>
+			{venues.map((v) => (
+				<div class='bgb-foot__col'>
+					<h3>{v.short}</h3>
+					<p>{v.address}<br />{v.postal} {v.city}</p>
+					<p><T es='Todos los días' en='Every day' /> · {v.hours}</p>
+					{v.phone && <p><a href={telTorre}>{v.phone}</a></p>}
+					<p class='bgb-foot__links'>
+						<a href={cartaUrl(v.id)}><T es='Carta' en='Menu' /></a>
+						<a href={v.maps} target='_blank' rel='noopener'><T es='Mapa' en='Map' /></a>
+					</p>
+				</div>
+			))}
+			<div class='bgb-foot__col'>
+				<h3><T es='Más' en='More' /></h3>
+				<p><a href={`${base}#reservar`}><T es='Reservar mesa' en='Book a table' /></a></p>
+				<p><a href={`${base}#cumples`}><T es='Cumpleaños' en='Birthday parties' /></a></p>
+				<p><a href={waCake} target='_blank' rel='noopener'><T es='Encargos de tartas' en='Cake orders' /></a></p>
+			</div>
+		</div>
+		<div class='bgb-foot__bottom'>
+			<Image src={sealCream} alt='' width={108} class='bgb-foot__seal' />
+			<p>© {new Date().getFullYear()} Begobé Coffee & Kitchen</p>
+			<div class='bgb-lang bgb-lang--light' role='group' aria-label='Idioma / Language'>
+				<button type='button' data-set-lang='es' aria-pressed='true'>ES</button>
+				<button type='button' data-set-lang='en' aria-pressed='false'>EN</button>
+			</div>
+		</div>
+	</div>
+</footer>
