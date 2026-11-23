@@ -1,0 +1,4 @@
+# Las demos comerciales viven ahora en su propio proyecto (demos/ → demos.domindez.com).
+# Mantiene vivos los enlaces que ya se han enviado: /demo/<slug>[/carta[/<local>]] y sus imágenes OG.
+/demo/* https://demos.domindez.com/:splat 301
+/demo-og/* https://demos.domindez.com/demo-og/:splat 301
