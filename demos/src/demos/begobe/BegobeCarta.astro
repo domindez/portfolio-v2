@@ -9,6 +9,8 @@ import './begobe-chrome.css';
 import './begobe-carta.css';
 import { Image } from 'astro:assets';
 import DemoLayout from '../../layouts/DemoLayout.astro';
+import fontInstrument from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
+import fontManrope from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 import T from './components/T.astro';
 import Item from './components/Item.astro';
 import Header from './components/Header.astro';
@@ -74,6 +76,8 @@ const home = '/begobe';
 	siteName='Begobé Coffee & Kitchen'
 	bodyClass='bgb bgb--carta'
 >
+	<link slot='head' rel='preload' as='font' type='font/woff2' href={fontInstrument} crossorigin />
+	<link slot='head' rel='preload' as='font' type='font/woff2' href={fontManrope} crossorigin />
 	<script slot='head' is:inline>
 		(function () {
 			var r = document.documentElement;

@@ -6,6 +6,8 @@ import '@fontsource-variable/big-shoulders-display';
 import './unter.css';
 import { Image } from 'astro:assets';
 import DemoLayout from '../../layouts/DemoLayout.astro';
+import fontFraunces from '@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url';
+import fontManrope from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 import T from './components/T.astro';
 import Icon from './components/Icon.astro';
 import { info, timeline, fiestas, leagues, praise, toasts } from './data/info';
@@ -112,6 +114,8 @@ const tapCountries = new Set(taps.map((t) => t.country)).size;
 	siteName='Cervecería Untertürkheim'
 	bodyClass='ut'
 >
+	<link slot='head' rel='preload' as='font' type='font/woff2' href={fontFraunces} crossorigin />
+	<link slot='head' rel='preload' as='font' type='font/woff2' href={fontManrope} crossorigin />
 	<script slot='head' type='application/ld+json' set:html={JSON.stringify(jsonLd)} />
 	<script slot='head' is:inline>
 		(function () {

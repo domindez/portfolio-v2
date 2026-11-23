@@ -8,6 +8,8 @@ import './papulinos-chrome.css';
 import './papulinos-carta.css';
 import { Image } from 'astro:assets';
 import DemoLayout from '../../layouts/DemoLayout.astro';
+import fontAlfa from '@fontsource/alfa-slab-one/files/alfa-slab-one-latin-400-normal.woff2?url';
+import fontArchivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 import T from './components/T.astro';
 import Icon from './components/Icon.astro';
 import Item from './components/Item.astro';
@@ -53,6 +55,8 @@ const photos: Record<string, { img: ImageMetadata; alt: string; cap: { es: strin
 	siteName='Papulinos'
 	bodyClass='pp pp-carta'
 >
+	<link slot='head' rel='preload' as='font' type='font/woff2' href={fontAlfa} crossorigin />
+	<link slot='head' rel='preload' as='font' type='font/woff2' href={fontArchivo} crossorigin />
 	<script slot='head' is:inline>
 		(function () {
 			var r = document.documentElement;

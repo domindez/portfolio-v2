@@ -8,6 +8,8 @@ import './papulinos-chrome.css';
 import './papulinos-home.css';
 import { Image } from 'astro:assets';
 import DemoLayout from '../../layouts/DemoLayout.astro';
+import fontAlfa from '@fontsource/alfa-slab-one/files/alfa-slab-one-latin-400-normal.woff2?url';
+import fontArchivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 import T from './components/T.astro';
 import Icon from './components/Icon.astro';
 import Header from './components/Header.astro';
@@ -68,6 +70,8 @@ const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 	siteName='Papulinos'
 	bodyClass='pp pp-home'
 >
+	<link slot='head' rel='preload' as='font' type='font/woff2' href={fontAlfa} crossorigin />
+	<link slot='head' rel='preload' as='font' type='font/woff2' href={fontArchivo} crossorigin />
 	<script slot='head' is:inline>
 		(function () {
 			var r = document.documentElement;
