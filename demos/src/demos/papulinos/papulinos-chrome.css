@@ -252,7 +252,7 @@ html.pp-menu-open .pp .pp-burger__lines::after {
 	z-index: 55;
 	overflow-y: auto;
 	overscroll-behavior: contain;
-	background: var(--paper) var(--grain);
+	background: var(--paper-bg);
 	color: var(--ink);
 	visibility: hidden;
 	clip-path: inset(0 0 100% 0);

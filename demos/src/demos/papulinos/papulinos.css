@@ -14,7 +14,7 @@
 	--ink-3: #85766a;
 	--coal: #1b1512;
 	--coal-2: #251d18;
-	--paper: #f3ead8;
+	--paper: #f6eedd;
 	--paper-2: #ebdfc8;
 	--paper-3: #e0d1b5;
 	--cream: #f7f0e2;
@@ -36,11 +36,12 @@
 	--r-m: 20px;
 	--r-l: 32px;
 
-	/* Grano de papel */
-	--grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .22 0 0 0 0 .15 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+	/* Textura de papel kraft (ambientCG Paper004, CC0): velo de color encima para suavizarla */
+	--paper-bg: linear-gradient(rgba(246, 238, 221, 0.8), rgba(246, 238, 221, 0.8)), url(/papulinos/paper.jpg) 0 0 / 520px #e6d8bc;
+	--paper-2-bg: linear-gradient(rgba(235, 223, 200, 0.8), rgba(235, 223, 200, 0.8)), url(/papulinos/paper.jpg) 0 0 / 520px #dccdae;
 
 	margin: 0;
-	background: var(--paper) var(--grain);
+	background: var(--paper-bg);
 	color: var(--ink);
 	font-family: var(--f-body);
 	font-size: 16.5px;
