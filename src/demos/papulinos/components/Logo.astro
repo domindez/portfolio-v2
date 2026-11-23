@@ -1,0 +1,43 @@
+---
+/**
+ * Logotipo Papulinos redibujado en SVG: la tabla roja de bordes astillados
+ * con el nombre en mayúsculas condensadas (como en sus platos y servilletas).
+ */
+interface Props {
+	/** 'cream' = letras crema (fondos oscuros) · 'ink' = letras negras como el cartel original */
+	ink?: 'cream' | 'ink';
+	class?: string;
+	width?: number;
+}
+const { ink = 'cream', class: cls = '', width = 168 } = Astro.props as Props;
+
+// Ruido determinista para que los bordes sean siempre iguales
+let seed = 7;
+const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280) * 2 - 1;
+
+const W = 320;
+const top: string[] = [];
+const bot: string[] = [];
+for (let x = 18; x <= W - 18; x += 14) {
+	top.push(`${x},${(9 + rnd() * 1.6).toFixed(1)}`);
+	bot.push(`${W - x},${(83 + rnd() * 1.6).toFixed(1)}`);
+}
+const right = ['311,15', '318,24', '309,33', '317,44', '308,55', '316,66', '307,76'];
+const left = ['10,77', '2,68', '11,58', '3,47', '12,37', '4,26', '13,16'];
+const board = [...top, ...right, ...bot, ...left].join(' ');
+const fill = ink === 'ink' ? '#16100d' : '#f8efe2';
+---
+
+<svg class={`pp-logo ${cls}`} width={width} viewBox='0 0 320 92' role='img' aria-label='Papulinos'>
+	<polygon points={board} fill='var(--red, #c8221a)' />
+	<polygon points={board} fill='none' stroke={fill} stroke-opacity='0.35' stroke-width='1.4' transform='translate(160 46) scale(0.93 0.8) translate(-160 -46)' />
+	<text
+		x='160'
+		y='63'
+		text-anchor='middle'
+		textLength='246'
+		lengthAdjust='spacingAndGlyphs'
+		fill={fill}
+		style="font-family:'Archivo Variable','Arial Narrow',Impact,sans-serif;font-weight:850;font-stretch:72%;font-size:52px;letter-spacing:.01em">PAPULINOS</text
+	>
+</svg>

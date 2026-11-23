@@ -1,0 +1,82 @@
+---
+/** Cabecera fija (siempre visible) + menú móvil, compartidos por la home y la carta. */
+import T from './T.astro';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import Picker from './Picker.astro';
+import Status from './Status.astro';
+import { venues, info, tel } from '../data/info';
+
+interface Props {
+	/** En la carta los enlaces apuntan a la home */
+	carta?: boolean;
+}
+const { carta = false } = Astro.props as Props;
+const home = '/demo/papulinos';
+const base = carta ? home : '';
+
+const nav = [
+	{ href: `${base}#locales`, es: 'Locales', en: 'Locations' },
+	{ href: `${base}#parrilla`, es: 'La parrilla', en: 'The grill' },
+	{ href: `${base}#historia`, es: 'Historia', en: 'Our story' },
+	{ href: `${base}#reservar`, es: 'Reservar', en: 'Book' },
+];
+---
+
+<header class='pp-nav' data-nav>
+	<a class='pp-nav__brand' href={carta ? home : '#top'} aria-label='Papulinos, inicio'>
+		<Logo width={146} />
+	</a>
+	<nav class='pp-nav__links' aria-label='Secciones'>
+		{nav.map((l) => <a href={l.href}><T es={l.es} en={l.en} /></a>)}
+	</nav>
+	<div class='pp-nav__end'>
+		<div class='pp-lang' role='group' aria-label='Idioma / Language'>
+			<button type='button' data-set-lang='es' aria-pressed='true'>ES</button>
+			<button type='button' data-set-lang='en' aria-pressed='false'>EN</button>
+		</div>
+		<Picker label={{ es: 'Carta', en: 'Menu' }} />
+		<button type='button' class='pp-burger' data-menu-toggle aria-expanded='false' aria-controls='pp-menu'>
+			<span class='pp-burger__lines' aria-hidden='true'></span>
+			<span class='pp-burger__txt'><T es='Menú' en='Menu' /></span>
+		</button>
+	</div>
+</header>
+
+<div class='pp-menu' id='pp-menu' data-menu aria-hidden='true'>
+	<div class='pp-menu__inner'>
+		<nav class='pp-menu__links' aria-label='Menú'>
+			{nav.map((l, i) => (
+				<a href={l.href}>
+					<small>{String(i + 1).padStart(2, '0')}</small>
+					<T es={l.es} en={l.en} />
+				</a>
+			))}
+		</nav>
+		<p class='pp-menu__t'><T es='La carta de cada local' en='Each location’s menu' /></p>
+		<ul class='pp-menu__cartas'>
+			{venues.map((v) => (
+				<li>
+					<a class='pp-menu__carta' href={`${home}/carta/${v.id}`}>
+						<span class='pp-menu__vtxt'>
+							<strong>{v.short}</strong>
+							<Status venue={v} />
+						</span>
+						<Icon name='arrow' size={20} />
+					</a>
+					<a class='pp-menu__tel' href={tel(v.phone)}>
+						<Icon name='phone' size={16} />
+						{v.phone}
+					</a>
+				</li>
+			))}
+		</ul>
+		<div class='pp-menu__foot'>
+			<div class='pp-lang' role='group' aria-label='Idioma / Language'>
+				<button type='button' data-set-lang='es' aria-pressed='true'>ES</button>
+				<button type='button' data-set-lang='en' aria-pressed='false'>EN</button>
+			</div>
+			<a href={info.instagram} target='_blank' rel='noopener' class='pp-menu__ig'><Icon name='instagram' size={18} /> @restaurantespapulinos</a>
+		</div>
+	</div>
+</div>

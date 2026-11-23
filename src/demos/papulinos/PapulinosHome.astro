@@ -1,0 +1,374 @@
+---
+import '@fontsource/alfa-slab-one/400.css';
+import '@fontsource/yellowtail/400.css';
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/archivo/wdth-italic.css';
+import './papulinos.css';
+import './papulinos-chrome.css';
+import './papulinos-home.css';
+import { Image } from 'astro:assets';
+import DemoLayout from '../../layouts/DemoLayout.astro';
+import T from './components/T.astro';
+import Icon from './components/Icon.astro';
+import Header from './components/Header.astro';
+import Footer from './components/Footer.astro';
+import Picker from './components/Picker.astro';
+import Status from './components/Status.astro';
+import { venues, info, reviews, timeline, tel, venueById, type VenueId } from './data/info';
+import { dish, euroFull } from './data/menu';
+
+import imgCarnes from '../../assets/demos/papulinos/parrilla-carnes.jpg';
+import imgChuleton from '../../assets/demos/papulinos/chuleton.jpg';
+import imgBrocheta from '../../assets/demos/papulinos/brocheta.jpg';
+import imgPulpo from '../../assets/demos/papulinos/pulpo.jpg';
+import imgChorizo from '../../assets/demos/papulinos/chorizo-morcilla.jpg';
+import imgParrilla from '../../assets/demos/papulinos/parrilla.jpg';
+import imgFachada from '../../assets/demos/papulinos/fachada-malasana.jpg';
+import imgTerraza from '../../assets/demos/papulinos/terraza-santa-paula.jpg';
+import imgSalonIV from '../../assets/demos/papulinos/salon-don-cristian.jpg';
+import imgPatio from '../../assets/demos/papulinos/patio-malasana.jpg';
+import imgBarra from '../../assets/demos/papulinos/barra-don-cristian.jpg';
+import imgEquipo from '../../assets/demos/papulinos/equipo.jpg';
+import imgPatata from '../../assets/demos/papulinos/patata.jpg';
+
+const base = '/demo/papulinos';
+const carta = (id: string) => `${base}/carta/${id}`;
+
+const venueImg: Record<VenueId, { img: ImageMetadata; alt: string; pos: string }> = {
+	malasana: { img: imgFachada, alt: 'Fachada encalada de Papulinos Malasaña en la calle Malasaña, con zócalo ocre y puerta de madera', pos: '50% 60%' },
+	'santa-paula': { img: imgTerraza, alt: 'Terraza de Papulinos Santa Paula con toldos rojos bajo los árboles', pos: '50% 50%' },
+	'don-cristian': { img: imgSalonIV, alt: 'Barra y salón de Papulinos Don Cristian en la calle Don Cristian', pos: '50% 50%' },
+};
+
+const grill = [
+	{ img: imgChuleton, alt: 'Chuletón a la brasa con patata asada y alioli en plato de Papulinos', d: dish('carnes', 'Chuletón de añojo'), pos: '50% 60%' },
+	{ img: imgBrocheta, alt: 'Brocheta de solomillo con pimiento y cebolla a la brasa', d: dish('carnes', 'Brocheta de solomillo de cerdo'), pos: '50% 50%' },
+	{ img: imgParrilla, alt: 'Pinchitos y brochetas sobre la parrilla de carbón', d: dish('carnes', 'Pinchitos de pollo'), pos: '50% 50%' },
+	{ img: imgPulpo, alt: 'Pata de pulpo a la brasa con aceite de oliva', d: dish('brasa-entrantes', 'Pata de pulpo a la brasa'), pos: '50% 50%' },
+	{ img: imgChorizo, alt: 'Chorizo criollo y morcilla de Burgos a la brasa', d: dish('brasa-entrantes', 'Chorizo criollo'), pos: '50% 45%' },
+];
+
+const timelineImg: Record<string, { img: ImageMetadata; alt: string }> = {
+	'1984': { img: imgPatio, alt: 'Salón de Papulinos Malasaña con techo de madera y mesas rústicas' },
+	III: { img: imgTerraza, alt: 'Terraza de Papulinos Santa Paula en Santa Paula' },
+	'2017': { img: imgBarra, alt: 'Barra de Papulinos Don Cristian con plantas y lámpara de mimbre' },
+	'2026': { img: imgEquipo, alt: 'El equipo de Papulinos con sus polos rojos' },
+};
+
+const patata = dish('guarnicion', 'Patata asada con alioli casero');
+const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+---
+
+<DemoLayout
+	title='Papulinos · Carnes a la brasa en Málaga desde 1984'
+	description='Tres asadores de toda la vida en Málaga: Malasaña, Santa Paula y Don Cristian. Carnes a la brasa, patata asada con alioli casero y carta digital de cada local.'
+	themeColor='#1b1512'
+	ogImage='/demo-og/papulinos.jpg'
+	ogImageAlt='Papulinos, carnes a la brasa en Málaga desde 1984.'
+	siteName='Papulinos'
+	bodyClass='pp pp-home'
+>
+	<script slot='head' is:inline>
+		(function () {
+			var r = document.documentElement;
+			r.classList.add('pp-js');
+			var l = null;
+			try { l = localStorage.getItem('papulinos-lang'); } catch (e) {}
+			if (!l) l = (navigator.language || 'es').slice(0, 2) === 'es' ? 'es' : 'en';
+			r.dataset.lang = l;
+			r.lang = l;
+		})();
+	</script>
+
+	<a class='pp-skip' href='#locales'><T es='Saltar al contenido' en='Skip to content' /></a>
+	<Header />
+
+	<main id='top'>
+		<!-- ============ HERO ============ -->
+		<section class='pp-hero' aria-labelledby='pp-hero-t'>
+			<div class='pp-wrap'>
+				<div class='pp-hero__grid'>
+					<div class='pp-hero__txt'>
+						<h1 class='pp-hero__t' id='pp-hero-t'>
+							<span><T es='Carnes' en='Meat' /></span>
+							<span><T es='a la' en='over' /> <b><T es='brasa' en='coals' /></b></span>
+						</h1>
+						<p class='pp-hero__lead'>
+							<T
+								es='Carbón de verdad, buena carne y la patata asada con alioli de siempre. Así llevamos más de cuarenta años en Málaga, en tres casas con el mismo fuego.'
+								en='Real charcoal, good meat and the same baked potato with aioli as always. That’s how we’ve done it in Málaga for over forty years, in three houses sharing one fire.'
+							/>
+						</p>
+						<div class='pp-hero__ctas'>
+							<Picker btnClass='pp-btn pp-btn--red pp-btn--lg' label={{ es: 'Ver la carta', en: 'See the menu' }} align='left' />
+							<a href='#reservar' class='pp-btn pp-btn--ink pp-btn--lg'><T es='Reservar mesa' en='Book a table' /></a>
+						</div>
+					</div>
+					<div class='pp-hero__photos'>
+						<figure class='pp-photo pp-hero__main'>
+							<div class='pp-hero__frame'>
+								<Image src={imgCarnes} alt='Brochetas, pinchitos y carne sobre la parrilla de carbón de Papulinos' widths={[640, 1000, 1333]} sizes='(max-width: 900px) 92vw, 600px' loading='eager' fetchpriority='high' />
+								<canvas class='pp-hero__embers' data-embers aria-hidden='true'></canvas>
+							</div>
+							<figcaption><T es='La parrilla, encendida desde el mediodía' en='The grill, lit from noon' /></figcaption>
+						</figure>
+					</div>
+				</div>
+			</div>
+			<ul class='pp-hero__venues'>
+				{venues.map((v) => (
+					<li>
+						<a href={carta(v.id)}>
+							<span class='pp-hero__vtxt'>
+								<strong>{v.short}</strong>
+								<Status venue={v} />
+							</span>
+							<span class='pp-hero__vgo'>
+								<T es='Carta' en='Menu' />
+								<Icon name='arrow' size={16} />
+							</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<!-- ============ LOCALES ============ -->
+		<section class='pp-venues' id='locales' aria-labelledby='pp-venues-t'>
+			<div class='pp-wrap'>
+				<header class='pp-shead' data-reveal>
+					<p class='pp-label'><T es='Tres casas, un mismo fuego' en='Three houses, one fire' /></p>
+					<h2 class='pp-h2' id='pp-venues-t'><T es='¿A qué Papulinos vas?' en='Which Papulinos are you heading to?' /></h2>
+					<p class='pp-shead__lead'>
+						<T es='Cada local tiene su carácter y su carta. Elige el tuyo, mira qué hay en la parrilla y llama para reservar.' en='Each place has its own character and menu. Pick yours, see what’s on the grill and call to book.' />
+					</p>
+				</header>
+				<div class='pp-venues__grid'>
+					{venues.map((v, i) => {
+						const im = venueImg[v.id];
+						return (
+							<article class='pp-venue' data-reveal style={`--d:${i * 90}ms`}>
+								<header class='pp-venue__top'>
+									<div>
+										<h3 class='pp-venue__name'>{v.short}</h3>
+										<p class='pp-venue__area'>
+											<T es={v.area.es} en={v.area.en} />
+										</p>
+									</div>
+								</header>
+								<div class='pp-venue__media'>
+									<Image src={im.img} alt={im.alt} widths={[480, 760]} sizes='(max-width: 900px) 92vw, 380px' style={`object-position:${im.pos}`} />
+									{v.since && <span class='pp-venue__since'>{v.since}</span>}
+								</div>
+								<p class='pp-venue__blurb'>
+									<T es={v.blurb.es} en={v.blurb.en} />
+								</p>
+								<dl class='pp-venue__info'>
+									<div>
+										<dt><T es='Dónde' en='Where' /></dt>
+										<dd>
+											<a href={v.maps} target='_blank' rel='noopener'>{v.address}</a>
+										</dd>
+									</div>
+									<div>
+										<dt><T es='Horario' en='Hours' /></dt>
+										<dd><T es={v.hours.es} en={v.hours.en} /></dd>
+									</div>
+									<div>
+										<dt><T es='Ahora' en='Now' /></dt>
+										<dd><Status venue={v} /></dd>
+									</div>
+									<div>
+										<dt><T es='Reservas' en='Bookings' /></dt>
+										<dd>
+											<a href={tel(v.phone)}>{v.phone}</a>
+										</dd>
+									</div>
+								</dl>
+								<a href={carta(v.id)} class='pp-btn pp-btn--red pp-venue__cta'>
+									<T es={`Carta de ${v.short}`} en={`${v.short} menu`} />
+									<Icon name='arrow' size={18} />
+								</a>
+							</article>
+						);
+					})}
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ LA PARRILLA ============ -->
+		<section class='pp-grill' id='parrilla' aria-labelledby='pp-grill-t'>
+			<div class='pp-wrap'>
+				<header class='pp-grill__head' data-reveal>
+					<div>
+						<p class='pp-label pp-label--light'><T es='Lo que sale de la parrilla' en='Off the grill' /></p>
+						<h2 class='pp-h2 pp-h2--light' id='pp-grill-t'><T es='Fuego lento, carne de verdad' en='Slow fire, real meat' /></h2>
+					</div>
+				</header>
+			</div>
+			<div class='pp-wrap'>
+				<ul class='pp-mosaic'>
+					{grill.map((g, i) => (
+						<li class={`pp-mosaic__item${i === 0 ? ' is-big' : ''}`} data-reveal style={`--d:${(i % 4) * 60}ms`}>
+							<Image src={g.img} alt={g.alt} widths={i === 0 ? [600, 900] : [360, 560]} sizes={i === 0 ? '(max-width: 700px) 92vw, 600px' : '(max-width: 700px) 46vw, 300px'} style={`object-position:${g.pos}`} />
+							<p class='pp-mosaic__cap'>
+								<span><T es={g.d.name.es} en={g.d.name.en} /></span>
+								<b>
+									{euroFull(g.d.price)}
+									{g.d.per100 && <small>/100 g</small>}
+								</b>
+							</p>
+						</li>
+					))}
+				</ul>
+			</div>
+			<div class='pp-wrap pp-grill__foot'>
+				<p><T es='Más de 60 platos en carta: ibéricos, ensaladas, cordero lechal, cochinillo al horno…' en='Over 60 dishes: Ibérico cuts, salads, milk-fed lamb, roast suckling pig…' /></p>
+				<Picker btnClass='pp-btn pp-btn--cream' label={{ es: 'Ver la carta completa', en: 'See the full menu' }} align='left' />
+			</div>
+		</section>
+
+		<!-- ============ PATATA ============ -->
+		<section class='pp-potato' aria-labelledby='pp-potato-t'>
+			<div class='pp-wrap pp-potato__in'>
+				<div class='pp-potato__plate' data-reveal>
+					<Image src={imgPatata} alt='Patata asada abierta en papel de plata con alioli casero' widths={[480, 820]} sizes='(max-width: 900px) 84vw, 500px' />
+				</div>
+				<div class='pp-potato__txt' data-reveal>
+					<p class='pp-label'><T es='La otra estrella de la casa' en='The other house star' /></p>
+					<h2 class='pp-h2' id='pp-potato-t'><T es='La patata de toda la vida' en='The potato everyone talks about' /></h2>
+					<p class='pp-potato__lead'>
+						<T
+							es='Asada despacio en su papel de plata, abierta al momento y con una buena cucharada de nuestro alioli casero. Hay quien viene por la carne y vuelve por la patata.'
+							en='Slow-baked in foil, opened at the table and topped with a generous spoonful of our homemade aioli. Some come for the meat and come back for the potato.'
+						/>
+					</p>
+					<p class='pp-potato__line'>
+						<span><T es='Patata asada con alioli casero' en='Baked potato with homemade aioli' /></span>
+						<i aria-hidden='true'></i>
+						<b>{euroFull(patata.price)}</b>
+					</p>
+					<blockquote class='pp-quote'>
+						<p><T es='Increíble las papas y los pinchos.' en='The potatoes and the skewers are incredible.' /></p>
+						<cite><T es='Reseña en Google · Malasaña' en='Google review · Malasaña' /></cite>
+					</blockquote>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ HISTORIA ============ -->
+		<section class='pp-story' id='historia' aria-labelledby='pp-story-t'>
+			<div class='pp-wrap'>
+				<header class='pp-shead pp-shead--center' data-reveal>
+					<p class='pp-label'><T es='Nuestra historia' en='Our story' /></p>
+					<h2 class='pp-h2' id='pp-story-t'><T es='Más de 40 años avivando la brasa' en='Over 40 years stoking the coals' /></h2>
+				</header>
+				<ol class='pp-tl'>
+					{timeline.map((t, i) => {
+						const im = timelineImg[t.year];
+						const v = t.venue ? venueById(t.venue) : null;
+						return (
+							<li class={`pp-tl__item${i % 2 ? ' is-alt' : ''}`} data-reveal>
+								<figure class='pp-photo pp-tl__media'>
+									<Image src={im.img} alt={im.alt} widths={[480, 800]} sizes='(max-width: 900px) 90vw, 460px' />
+								</figure>
+								<div class='pp-tl__txt'>
+									<span class='pp-tl__year'>{t.year === 'III' ? <T es='Después' en='Later' /> : t.year}</span>
+									<h3><T es={t.title.es} en={t.title.en} /></h3>
+									<p><T es={t.text.es} en={t.text.en} /></p>
+									{v && (
+										<a href={carta(v.id)} class='pp-link'>
+											<T es={`Carta de ${v.short}`} en={`${v.short} menu`} /> <Icon name='arrow' size={16} />
+										</a>
+									)}
+								</div>
+							</li>
+						);
+					})}
+				</ol>
+				<div class='pp-award' data-reveal>
+					<p class='pp-award__k'>{info.awardBy}</p>
+					<p class='pp-award__t'><T es={info.award.es} en={info.award.en} /></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============ RESEÑAS ============ -->
+		<section class='pp-reviews' aria-labelledby='pp-reviews-t'>
+			<div class='pp-wrap'>
+				<header class='pp-shead' data-reveal>
+					<p class='pp-label'><T es='Lo que dicen de nosotros' en='What people say' /></p>
+					<h2 class='pp-h2' id='pp-reviews-t'><T es='Clientes de toda la vida' en='Lifelong regulars' /></h2>
+				</header>
+				<div class='pp-scores' data-reveal>
+					{venues.map((v) => (
+						<div class='pp-score'>
+							<p class='pp-score__n'>
+								{v.rating}
+								<small>/5</small>
+							</p>
+							<p class='pp-score__v'>{v.short}</p>
+							<p class='pp-score__c'>
+								{fmtCount(v.reviews)} <T es='reseñas en' en='reviews on' /> {v.ratingSource}
+							</p>
+						</div>
+					))}
+				</div>
+				<ul class='pp-quotes'>
+					{reviews.map((r, i) => (
+						<li class='pp-qitem' data-reveal style={`--d:${i * 70}ms`}>
+							<p>
+								<T es={r.q.es} en={r.q.en} />
+							</p>
+							<span class='pp-qitem__who'>
+								{r.who === 'Cliente de Google' ? <T es='Cliente de Google' en='Google reviewer' /> : r.who} · {venueById(r.venue).short}
+							</span>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+
+		<!-- ============ RESERVAR ============ -->
+		<section class='pp-book' id='reservar' aria-labelledby='pp-book-t'>
+			<div class='pp-wrap pp-book__in'>
+				<div class='pp-book__txt' data-reveal>
+					<p class='pp-label pp-label--light'><T es='Reserva tu mesa' en='Book a table' /></p>
+					<h2 class='pp-h2 pp-h2--light' id='pp-book-t'><T es='Te guardamos sitio junto a la brasa' en='We’ll save you a seat by the grill' /></h2>
+					<p>
+						<T es='Los fines de semana se llena: mejor llamar antes. Te atiende directamente el local que elijas.' en='Weekends fill up fast, so call ahead. The location you choose takes your booking directly.' />
+					</p>
+					<p class='pp-book__pay'>
+						<T es='Aceptamos tarjetas y cheques restaurante:' en='We accept meal cards & vouchers:' /> {info.payments.join(' · ')}
+					</p>
+				</div>
+				<ul class='pp-book__list' data-reveal>
+					{venues.map((v) => (
+						<li>
+							<a class='pp-book__row' href={tel(v.phone)}>
+								<span class='pp-book__v'>
+									<strong>{v.short}</strong>
+									<Status venue={v} />
+								</span>
+								<span class='pp-book__tel'>
+									<Icon name='phone' size={18} />
+									<span>{v.phone}</span>
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+	</main>
+
+	<Footer />
+</DemoLayout>
+
+<script>
+	import { initCommon, initEmbers } from './scripts/common';
+
+	initCommon();
+	initEmbers();
+
+</script>

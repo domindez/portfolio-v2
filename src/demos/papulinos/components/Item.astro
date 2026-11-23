@@ -1,0 +1,48 @@
+---
+/** Fila de la carta: nombre · puntos · precio, con distintivos y descripción. */
+import T from './T.astro';
+import Icon from './Icon.astro';
+import { euroFull, type Dish } from '../data/menu';
+
+interface Props {
+	dish: Dish;
+}
+const { dish: d } = Astro.props;
+---
+
+<li class='pp-item'>
+	<div class='pp-item__row'>
+		<h4 class='pp-item__name'>
+			<T es={d.name.es} en={d.name.en} />
+			{d.spicy && (
+				<span class='pp-tag pp-tag--spicy'>
+					<Icon name='chili' size={13} />
+					<T es='picante' en='spicy' />
+				</span>
+			)}
+			{d.veggie && (
+				<span class='pp-tag pp-tag--veg'>
+					<Icon name='leaf' size={13} />
+					<T es='veggie' en='veggie' />
+				</span>
+			)}
+			{d.forTwo && (
+				<span class='pp-tag'>
+					<Icon name='two' size={13} />
+					<T es='para 2' en='for 2' />
+				</span>
+			)}
+		</h4>
+		<span class='pp-item__dots' aria-hidden='true'></span>
+		<span class='pp-item__price'>
+			{euroFull(d.price)}
+			{d.per100 && <small>/100 g</small>}
+			{d.unit && <small><T es='/ud' en='/pc' /></small>}
+		</span>
+	</div>
+	{d.desc && (
+		<p class='pp-item__desc'>
+			<T es={d.desc.es} en={d.desc.en} />
+		</p>
+	)}
+</li>

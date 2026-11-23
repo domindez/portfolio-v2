@@ -1,0 +1,33 @@
+---
+/** Desplegable "Ver la carta": elige uno de los tres locales. */
+import T from './T.astro';
+import Icon from './Icon.astro';
+import Status from './Status.astro';
+import { venues } from '../data/info';
+
+interface Props {
+	btnClass?: string;
+	label?: { es: string; en: string };
+	align?: 'right' | 'left';
+}
+const { btnClass = 'pp-btn pp-btn--red pp-btn--sm', label = { es: 'Ver la carta', en: 'See the menu' }, align = 'right' } = Astro.props as Props;
+---
+
+<div class={`pp-picker pp-picker--${align}`} data-picker>
+	<button type='button' class={btnClass} data-picker-btn aria-expanded='false' aria-haspopup='true'>
+		<T es={label.es} en={label.en} />
+		<Icon name='chevron' size={16} class='pp-picker__chev' />
+	</button>
+	<div class='pp-picker__pop' role='menu'>
+		<p class='pp-picker__t'><T es='Elige local' en='Pick a location' /></p>
+		{venues.map((v) => (
+			<a href={`/demo/papulinos/carta/${v.id}`} role='menuitem' class='pp-picker__opt'>
+				<span class='pp-picker__txt'>
+					<strong>{v.short}</strong>
+					<Status venue={v} />
+				</span>
+				<Icon name='arrow' size={18} class='pp-picker__go' />
+			</a>
+		))}
+	</div>
+</div>

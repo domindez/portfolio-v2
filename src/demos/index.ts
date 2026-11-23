@@ -18,6 +18,9 @@ import UnterCarta from './unter/UnterCarta.astro';
 import BegobeHome from './begobe/BegobeHome.astro';
 import BegobeCarta from './begobe/BegobeCarta.astro';
 import { venues as begobeVenues } from './begobe/data/info';
+import PapulinosHome from './papulinos/PapulinosHome.astro';
+import PapulinosCarta from './papulinos/PapulinosCarta.astro';
+import { venues as papulinosVenues } from './papulinos/data/info';
 
 export interface Demo {
 	name: string;
@@ -45,5 +48,10 @@ export const demos: Record<string, Demo> = {
 		name: 'Begobé Coffee & Kitchen',
 		Page: BegobeHome,
 		Cartas: { ids: begobeVenues.map((v) => v.id), Page: BegobeCarta },
+	},
+	papulinos: {
+		name: 'Papulinos',
+		Page: PapulinosHome,
+		Cartas: { ids: papulinosVenues.map((v) => v.id), Page: PapulinosCarta },
 	},
 };
