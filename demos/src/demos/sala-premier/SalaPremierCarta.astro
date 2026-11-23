@@ -214,6 +214,9 @@ const week = weekDays
 <script>
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 	gsap.registerPlugin(ScrollTrigger);
 	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

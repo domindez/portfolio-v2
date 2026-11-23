@@ -738,6 +738,9 @@ const jsonLd = {
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	import { initShanaoCommon } from './scripts/common';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 
 	gsap.registerPlugin(ScrollTrigger);
 	const lenis = initShanaoCommon();

@@ -662,6 +662,9 @@ const tapCountries = new Set(taps.map((t) => t.country)).size;
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	import { initCommon, initLenis, getLang } from './scripts/common';
 	import { initTaps } from './scripts/taps';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 
 	gsap.registerPlugin(ScrollTrigger);
 	initCommon();

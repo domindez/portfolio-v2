@@ -422,6 +422,9 @@ const tagLabel: Record<Tag, { es: string; en: string }> = {
 
 <script>
 	import { initShanaoCommon } from './scripts/common';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 
 	const lenis = initShanaoCommon();
 	const root = document.documentElement;

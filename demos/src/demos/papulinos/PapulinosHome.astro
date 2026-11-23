@@ -371,6 +371,9 @@ const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 <script>
 	import { initCommon, initEmbers } from './scripts/common';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 
 	initCommon();
 	initEmbers();

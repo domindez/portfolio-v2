@@ -76,6 +76,35 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://demos.domin
 				if (sessionStorage.getItem('demo-clean') === '1') document.documentElement.classList.add('demo-clean');
 			} catch (e) {}
 		</script>
+		<!--
+			Sin salto de fuentes: la página se mantiene invisible hasta que cargan las fuentes que usa
+			(máx. 1,5 s) y los scripts de cada demo esperan a window.demoFontsReady (ver fonts-ready.ts)
+			para arrancar sus animaciones de entrada a la vez. Con la caché llena se resuelve en un par
+			de frames. Sin JS no se oculta nada.
+		-->
+		<style is:inline>html.demo-fonts-wait body { opacity: 0 !important; }</style>
+		<script is:inline>
+			(function () {
+				var r = document.documentElement;
+				r.classList.add('demo-fonts-wait');
+				window.demoFontsReady = new Promise(function (resolve) {
+					var done = function () {
+						r.classList.remove('demo-fonts-wait');
+						resolve();
+					};
+					setTimeout(done, 1500);
+					if (!document.fonts) return done();
+					// Dos frames tras el parseo: el layout ya ha pedido todas las fuentes que usa la página.
+					document.addEventListener('DOMContentLoaded', function () {
+						requestAnimationFrame(function () {
+							requestAnimationFrame(function () {
+								document.fonts.ready.then(done, done);
+							});
+						});
+					});
+				});
+			})();
+		</script>
 		<slot name='head' />
 	</head>
 	<body class={bodyClass}>

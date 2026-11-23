@@ -449,6 +449,9 @@ const jsonLd = {
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	import Lenis from 'lenis';
 	import { initCommon, madridMinutes, reducedMotion } from './scripts/common';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 
 	gsap.registerPlugin(ScrollTrigger);
 	initCommon();

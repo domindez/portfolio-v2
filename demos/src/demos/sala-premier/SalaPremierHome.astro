@@ -648,6 +648,9 @@ const nextDate = (d: number) => {
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	import { events, weekDays, venueShort } from './data/info';
 	import { createFilmGrain } from './scripts/film-grain';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 
 	gsap.registerPlugin(ScrollTrigger);
 	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

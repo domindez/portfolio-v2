@@ -165,6 +165,9 @@ const photos: Record<string, { img: ImageMetadata; alt: string; cap: { es: strin
 
 <script>
 	import { initCommon, reducedMotion } from './scripts/common';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 
 	initCommon();
 

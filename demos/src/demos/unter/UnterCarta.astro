@@ -965,6 +965,9 @@ const abvNum = (s: string) => parseFloat(s.replace(',', '.'));
 
 <script>
 	import { initLang } from './scripts/common';
+	import { fontsReady } from '../../layouts/fonts-ready';
+
+	await fontsReady();
 
 	initLang();
 
