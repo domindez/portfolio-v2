@@ -71,6 +71,40 @@
 	width: 100%;
 	height: 100%;
 	pointer-events: none;
+	z-index: 2;
+}
+/* Resplandor de brasa en la base que respira */
+.pp .pp-hero__frame::before {
+	content: '';
+	position: absolute;
+	inset: auto 0 0 0;
+	height: 40%;
+	z-index: 1;
+	pointer-events: none;
+	background: radial-gradient(ellipse 70% 100% at 65% 115%, rgba(255, 100, 30, 0.28), rgba(200, 50, 20, 0.1) 50%, transparent 78%);
+	animation: pp-glow 4.5s ease-in-out infinite;
+}
+.pp .pp-hero__frame img {
+	transform-origin: 60% 60%;
+	animation: pp-hero-zoom 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both, pp-hero-drift 24s ease-in-out 1.8s infinite alternate;
+}
+@keyframes pp-glow {
+	0%, 100% { opacity: 0.7; }
+	50% { opacity: 1; }
+}
+@keyframes pp-hero-zoom {
+	from { transform: scale(1.18); filter: brightness(0.4) saturate(1.3); }
+	to { transform: scale(1.06); filter: none; }
+}
+@keyframes pp-hero-drift {
+	from { transform: scale(1.06); }
+	to { transform: scale(1.12) translate(-1%, -1%); }
+}
+@media (prefers-reduced-motion: reduce) {
+	.pp .pp-hero__frame::before,
+	.pp .pp-hero__frame img {
+		animation: none;
+	}
 }
 
 .pp .pp-hero__venues {
@@ -514,28 +548,27 @@
 	align-items: center;
 	gap: clamp(40px, 8vw, 110px);
 }
-/* El plato: foto circular sobre un disco dorado desplazado */
+/* La foto: rectangular, con un marco dorado desplazado detrás */
 .pp .pp-potato__plate {
 	position: relative;
 	justify-self: center;
-	width: min(500px, 100%);
-	aspect-ratio: 1;
+	width: min(480px, 100%);
+	aspect-ratio: 4 / 4.6;
 }
 .pp .pp-potato__plate::before {
 	content: '';
 	position: absolute;
 	inset: 0;
-	transform: translate(7%, 6%);
-	border-radius: 50%;
-	background: var(--albero);
+	transform: translate(14px, 14px);
+	border: 3px solid var(--albero);
 }
 .pp .pp-potato__plate img {
 	position: relative;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	border-radius: 50%;
-	box-shadow: 0 30px 50px -28px rgba(27, 21, 18, 0.7);
+	object-position: 60% 40%;
+	box-shadow: 0 30px 50px -30px rgba(27, 21, 18, 0.7);
 }
 .pp .pp-potato__txt {
 	display: grid;
@@ -594,8 +627,8 @@
 		grid-template-columns: 1fr;
 	}
 	.pp .pp-potato__plate {
-		width: min(380px, 84%);
-		margin-right: 6%;
+		width: min(380px, calc(100% - 14px));
+		margin-right: 14px;
 	}
 }
 
@@ -889,5 +922,59 @@
 		height: 46px;
 		border-radius: 50%;
 		border: 2px solid var(--cream);
+	}
+}
+
+/* ---------- Hero: entrada escalonada ---------- */
+/* Título: cada línea sube desde detrás de una máscara */
+.pp .pp-hero__t > span {
+	display: block;
+	overflow: hidden;
+	padding-bottom: 0.14em;
+	margin-bottom: -0.14em;
+}
+.pp .pp-line {
+	display: block;
+	animation: pp-line 1.1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+	animation-delay: var(--hd, 0ms);
+}
+.pp .pp-hero__t > span:nth-child(1) { --hd: 200ms; }
+.pp .pp-hero__t > span:nth-child(2) { --hd: 340ms; }
+/* Resto: fundido con un ligero ascenso */
+.pp .pp-hero__lead,
+.pp .pp-hero__ctas,
+.pp .pp-hero__main figcaption,
+.pp .pp-hero__venues {
+	animation: pp-rise 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+	animation-delay: var(--hd, 0ms);
+}
+.pp .pp-hero__lead { --hd: 600ms; }
+.pp .pp-hero__ctas { --hd: 750ms; }
+.pp .pp-hero__venues { --hd: 950ms; }
+.pp .pp-hero__main figcaption { --hd: 1150ms; }
+/* Espera a que la página esté lista (fuentes cargadas) para arrancar */
+html.pp-js:not(.pp-ready) .pp .pp-line,
+html.pp-js:not(.pp-ready) .pp .pp-hero__lead,
+html.pp-js:not(.pp-ready) .pp .pp-hero__ctas,
+html.pp-js:not(.pp-ready) .pp .pp-hero__main figcaption,
+html.pp-js:not(.pp-ready) .pp .pp-hero__venues,
+html.pp-js:not(.pp-ready) .pp .pp-hero__frame img {
+	animation-play-state: paused;
+}
+@keyframes pp-line {
+	from { transform: translateY(150%); }
+	to { transform: none; }
+}
+@keyframes pp-rise {
+	from { opacity: 0; transform: translateY(20px); }
+	to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.pp .pp-line,
+	.pp .pp-hero__lead,
+	.pp .pp-hero__ctas,
+	.pp .pp-hero__main figcaption,
+	.pp .pp-hero__venues {
+		animation: none;
 	}
 }

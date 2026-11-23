@@ -176,25 +176,26 @@ export function initEmbers() {
 	};
 	resize();
 	window.addEventListener('resize', resize);
-	type P = { x: number; y: number; vx: number; vy: number; r: number; life: number; max: number; hue: number };
-	const count = w < 700 ? 14 : 26;
+	type P = { x: number; y: number; vx: number; vy: number; r: number; life: number; max: number; hue: number; ph: number };
+	const count = w < 700 ? 22 : 46;
 	const spawn = (p?: P): P => {
-		const max = 220 + Math.random() * 320;
+		const x = (w < 700 ? Math.random() : 0.3 + Math.random() * 0.7) * w;
 		return Object.assign(p ?? ({} as P), {
-			x: Math.random() * w,
-			y: h + Math.random() * 40,
-			vx: (Math.random() - 0.5) * 0.35,
-			vy: -(0.25 + Math.random() * 0.55),
-			r: 0.5 + Math.random() * 1.1,
+			x,
+			y: h * (0.9 + Math.random() * 0.2),
+			vx: (Math.random() - 0.3) * 0.25,
+			vy: -(0.35 + Math.random() * 0.7),
+			r: 0.6 + Math.random() * 1.1,
 			life: 0,
-			max,
-			hue: 18 + Math.random() * 26,
+			max: 260 + Math.random() * 280,
+			hue: 8 + Math.random() * 26,
+			ph: Math.random() * 100,
 		});
 	};
 	const ps: P[] = Array.from({ length: count }, () => {
 		const p = spawn();
-		p.y = Math.random() * h;
 		p.life = Math.random() * p.max;
+		p.y = h - (p.life / p.max) * h * 0.8;
 		return p;
 	});
 	let visible = true;
@@ -205,27 +206,30 @@ export function initEmbers() {
 		if (!visible || document.hidden) return;
 		t += 1;
 		ctx.clearRect(0, 0, w, h);
-		ctx.globalCompositeOperation = 'lighter';
 		for (const p of ps) {
 			p.life += 1;
-			p.x += p.vx + Math.sin((p.life + p.hue * 9) / 38) * 0.35;
+			p.x += p.vx + Math.sin((p.life + p.ph) / 30) * 0.4;
 			p.y += p.vy;
 			const k = p.life / p.max;
 			if (k >= 1 || p.y < -10) {
 				spawn(p);
 				continue;
 			}
-			const a = Math.sin(Math.PI * k) * (0.35 + 0.25 * Math.sin((t + p.hue * 7) / 9));
-			const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
-			g.addColorStop(0, `hsla(${p.hue + 12}, 100%, 72%, ${a})`);
-			g.addColorStop(0.4, `hsla(${p.hue}, 100%, 55%, ${a * 0.55})`);
-			g.addColorStop(1, `hsla(${p.hue}, 100%, 45%, 0)`);
-			ctx.fillStyle = g;
+			// Nace de golpe, se apaga poco a poco y parpadea como una brasa
+			const fade = k < 0.08 ? k / 0.08 : Math.pow(1 - k, 1.4);
+			const flick = 0.75 + 0.25 * Math.sin((t + p.ph * 5) / 5);
+			const a = fade * flick;
+			// Del amarillo anaranjado al rojo oscuro al enfriarse
+			const light = 70 - k * 30;
+			ctx.fillStyle = `hsla(${p.hue}, 100%, ${light}%, ${a * 0.18})`;
 			ctx.beginPath();
-			ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+			ctx.arc(p.x, p.y, p.r * 2.6, 0, Math.PI * 2);
+			ctx.fill();
+			ctx.fillStyle = `hsla(${p.hue + 8}, 100%, ${light + 12}%, ${a})`;
+			ctx.beginPath();
+			ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
 			ctx.fill();
 		}
-		ctx.globalCompositeOperation = 'source-over';
 	};
 	tick();
 }
