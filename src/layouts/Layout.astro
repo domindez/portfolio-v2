@@ -7,7 +7,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Preloader from '../components/Preloader.astro';
-import { works, services, testimonials, process } from '../data/content';
+import { works, services, process } from '../data/content';
 
 interface Props {
 	title?: string;
@@ -106,7 +106,7 @@ const personJsonLd = {
 		addressCountry: 'ES',
 	},
 	nationality: { '@type': 'Country', name: 'España' },
-	sameAs: ['https://github.com/domindez'],
+	sameAs: ['https://github.com/domindez', 'https://www.linkedin.com/in/domindez'],
 };
 
 const orgJsonLd = {
@@ -190,8 +190,8 @@ const orgJsonLd = {
 			hoursAvailable: {
 				'@type': 'OpeningHoursSpecification',
 				dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-				opens: '09:00',
-				closes: '19:00',
+				opens: '08:00',
+				closes: '19:30',
 			},
 		},
 		{
@@ -220,11 +220,12 @@ const orgJsonLd = {
 		{
 			'@type': 'OpeningHoursSpecification',
 			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-			opens: '09:00',
-			closes: '19:00',
+			opens: '08:00',
+			closes: '19:30',
 		},
 	],
-	sameAs: ['https://github.com/domindez'],
+	foundingDate: '2019',
+	sameAs: ['https://github.com/domindez', 'https://www.linkedin.com/in/domindez'],
 	priceRange: '€€',
 	paymentAccepted: 'Cash, Credit Card, Bank Transfer, Invoice',
 	currenciesAccepted: 'EUR',
@@ -370,34 +371,10 @@ const localBusinessJsonLd = {
 		{
 			'@type': 'OpeningHoursSpecification',
 			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-			opens: '09:00',
-			closes: '19:00',
+			opens: '08:00',
+			closes: '19:30',
 		},
 	],
-	aggregateRating: {
-		'@type': 'AggregateRating',
-		ratingValue: 4.9,
-		reviewCount: testimonials.length,
-		bestRating: 5,
-		worstRating: 1,
-		description:
-			'Valoración media de los clientes de Domindez Studio basada en los testimonios publicados en la web.',
-	},
-	review: testimonials.map((t, i) => ({
-		'@type': 'Review',
-		'@id': `https://domindez.com/#review-${t.company.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${i}`,
-		author: {
-			'@type': 'Organization',
-			name: t.company,
-		},
-		reviewRating: {
-			'@type': 'Rating',
-			ratingValue: 5,
-			bestRating: 5,
-		},
-		reviewBody: t.quote,
-		itemReviewed: { '@id': 'https://domindez.com/#localbusiness' },
-	})),
 };
 
 const servicesJsonLd = {

@@ -187,20 +187,6 @@ if (schemaKind === 'WebApplication' || schemaKind === 'SoftwareApplication') {
 	};
 }
 
-if (work.testimonial) {
-	workJsonLd.review = {
-		'@type': 'Review',
-		author: { '@type': 'Person', name: work.testimonial.author },
-		reviewBody: work.testimonial.quote,
-		reviewRating: {
-			'@type': 'Rating',
-			ratingValue: 5,
-			bestRating: 5,
-		},
-		itemReviewed: { '@id': 'https://domindez.com/#localbusiness' },
-	};
-}
-
 const pageJsonLd = {
 	'@context': 'https://schema.org',
 	'@graph': [primaryImageJsonLd, workJsonLd],
