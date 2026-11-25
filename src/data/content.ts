@@ -711,7 +711,7 @@ export const works: Work[] = [
 		category: 'Plataforma',
 		description:
 			'Plataforma que consume datos de mercados de predicción como Polymarket y los muestra en gráficas de probabilidad sobre eventos políticos y económicos en español.',
-		stack: ['astro', 'tailwind', 'typescript'],
+		stack: ['astro', 'react', 'typescript', 'tailwind', 'cloudflare'],
 		year: '2024',
 		client: 'Politichance',
 		industry: 'Prediction markets / Información política',
